@@ -21,7 +21,6 @@ class _HomeState extends State<Home> {
       child: const Column(
         children: [
           Text("Hey"),
-          Text("Hey"),
         ],
       ),
     );
