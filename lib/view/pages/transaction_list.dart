@@ -17,9 +17,19 @@ class _TransactionListState extends State<TransactionList> {
     Transaction(title: "Gift", amount: 20000, category: "income", icon: Icons.card_giftcard, date: DateTime(2024, 7, 1)),
   ];
 
-  String _formatNumber(int number) {
-    return NumberFormat("#,###").format(number).replaceAll(",", " ");
+  String _formatNumberTotal(int number) {
+  if (number >= 1000000000000) {
+    return '${(number / 1000000000000).toStringAsFixed(1)} T';
+  } else if (number >= 1000000000) {
+    return '${(number / 1000000000).toStringAsFixed(1)} B';
+  } else if (number >= 1000000) {
+    return '${(number / 1000000).toStringAsFixed(1)} M';
+  } else if (number >= 1000) {
+    return '${(number / 1000).toStringAsFixed(1)} K';
+  } else {
+    return number.toString();
   }
+}
 
   @override
   Widget build(BuildContext context) {
@@ -56,12 +66,18 @@ class _TransactionListState extends State<TransactionList> {
                       Expanded(
                         child: Card(
                           color: Theme.of(context).disabledColor,
-                          child: const ListTile(
-                            title: Text("Total Expense", style: TextStyle(color: Colors.white),),
+                          child: ListTile(
+                            title: const Text("Total Expense", style: TextStyle(color: Colors.white),),
                             subtitle: Row(
                               children: [
-                                Text("Ar  ", style: TextStyle(color: Colors.white),),
-                                Text("20 000", style: TextStyle(color: Colors.white, fontSize: 25),),
+                                const Text("Ar  ", style: TextStyle(color: Colors.white),),
+                                Text(
+                                  _formatNumberTotal(20000),
+                                  style: const TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 25,
+                                  ),
+                                ),
                               ]
                             ),
                           ),
@@ -70,12 +86,15 @@ class _TransactionListState extends State<TransactionList> {
                       Expanded(
                         child: Card(
                           color: Theme.of(context).primaryColorDark,
-                          child: const ListTile(
-                            title: Text("Total Income", style: TextStyle(color: Colors.white),),
+                          child: ListTile(
+                            title: const Text("Total Income", style: TextStyle(color: Colors.white),),
                             subtitle: Row(
                               children: [
-                                Text("Ar  ", style: TextStyle(color: Colors.white),),
-                                Text("20 000", style: TextStyle(color: Colors.white, fontSize: 25),),
+                                const Text("Ar  ", style: TextStyle(color: Colors.white),),
+                                Text(
+                                  _formatNumberTotal(15000000),
+                                  style: const TextStyle(color: Colors.white, fontSize: 25),
+                                ),
                               ]
                             ),
                           ),
@@ -106,7 +125,7 @@ class _TransactionListState extends State<TransactionList> {
                     ),
                   ),
                   subtitle: Text(
-                    _formatNumber(transaction.amount),
+                    _formatNumberTotal(transaction.amount),
                     style: TextStyle(
                       color: Theme.of(context).focusColor,
                       fontSize: 15,
