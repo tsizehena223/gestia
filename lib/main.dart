@@ -28,6 +28,7 @@ class MyApp extends StatelessWidget {
         disabledColor: const Color(0xFF242425),
         primaryColor: const Color(0xFF0D0D0D),
         focusColor: const Color(0xFF868686),
+        fontFamily: "Roboto",
       ),
     );
   }
@@ -41,7 +42,7 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  final int _pageIndex = 1;
+  final int _pageIndex = 0;
 
   static final List<Widget> _pages = <Widget>[
     const Accueil(),
@@ -51,13 +52,11 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: DefaultTextStyle(
-        style: const TextStyle(fontFamily: 'Roboto'),
-        child: IndexedStack(
-          index: _pageIndex,
-          children: _pages,
-        ),
+      body: IndexedStack(
+        index: _pageIndex,
+        children: _pages,
       ),
+      backgroundColor: Theme.of(context).primaryColor,
     );
   }
 }
