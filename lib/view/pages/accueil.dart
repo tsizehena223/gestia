@@ -63,7 +63,7 @@ class _AccueilState extends State<Accueil> {
                 ),
               ),
               onChanged: (String? value) => {
-                if (value == null) {
+                if (value == null || value == "") {
                   setState(
                     () {
                       _isInputNameValid = false;
@@ -98,7 +98,7 @@ class _AccueilState extends State<Accueil> {
                 ),
               ),
               onChanged: (String? value) => {
-                if (value == null) {
+                if (value == null || value == "") {
                   setState(
                     () {
                     _isInputNumberValid = false;

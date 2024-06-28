@@ -121,22 +121,22 @@ class _HomeState extends State<Home> {
               ),
               child: Column(
                 children: [
-                  ListTile(
-                    leading: CircleAvatar(
-                      backgroundColor: Theme.of(context).primaryColorDark,
-                      child: const Icon(Icons.person, color: Colors.white,),
-                    ),
-                    title: Text(
-                      userName,
-                      style: const TextStyle(fontWeight: FontWeight.bold),
-                    ),
-                    subtitle: const Text("Welcome to GestIA"),
-                    trailing: const Badge(
-                      child: CircleAvatar(
-                        backgroundColor: Color.fromARGB(255, 217, 236, 39),
-                        child: Icon(Icons.notifications_outlined),
-                      ),
-                    ),
+                  FutureBuilder(
+                    future: SharedPreferencesUtil.retrieveUserName(),
+                    builder: (context, snapshot) {
+                      String data = snapshot.data ?? "username";
+                      return ListTile(
+                        leading: CircleAvatar(
+                          backgroundColor: Theme.of(context).primaryColorDark,
+                          child: const Icon(Icons.person, color: Colors.white,),
+                        ),
+                        title: Text(
+                          data,
+                          style: const TextStyle(fontWeight: FontWeight.bold),
+                        ),
+                        subtitle: const Text("Welcome to GestIA"),
+                      );
+                    }
                   ),
                   ListTile(
                     minVerticalPadding: 20,
