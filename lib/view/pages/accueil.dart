@@ -93,12 +93,13 @@ class _AccueilState extends State<Accueil> {
                 fillColor: Colors.white,
                 labelText: "Type your current balance",
                 labelStyle: TextStyle(color: Theme.of(context).focusColor),
+                suffix: const Text("Ar", style: TextStyle(color: Colors.white),),
                 border: const OutlineInputBorder(
                   borderRadius: BorderRadius.all(Radius.circular(20)),
                 ),
               ),
               onChanged: (String? value) => {
-                if (value == null || value == "") {
+                if (value == null || value == "" || int.tryParse(value) == null) {
                   setState(
                     () {
                     _isInputNumberValid = false;
