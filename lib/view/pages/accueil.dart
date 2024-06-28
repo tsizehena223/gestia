@@ -59,15 +59,15 @@ class _AccueilState extends State<Accueil> {
               ),
               onSubmitted: (value) => {},
               onChanged: (String? value) => {
-                if (value != null) {
+                if (value == null) {
                   setState(
                     () {
-                      _isInputNameValid = true;
+                      _isInputNameValid = false;
                     }
                   )
                 } else {
                   setState(() {
-                    _isInputNameValid = false;
+                    _isInputNameValid = true;
                   })
                 },
               },
@@ -94,15 +94,15 @@ class _AccueilState extends State<Accueil> {
               ),
               onSubmitted: (value) => {},
               onChanged: (String? value) => {
-                if (value != null) {
+                if (value == null) {
                   setState(
                     () {
-                    _isInputNumberValid = true;
+                    _isInputNumberValid = false;
                     }
                   )
                 } else {
                   setState(() {
-                    _isInputNumberValid = false;
+                    _isInputNumberValid = true;
                   })
                 },
               },
