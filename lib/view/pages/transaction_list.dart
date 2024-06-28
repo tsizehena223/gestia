@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:gestia/model/transaction.dart';
+import 'package:gestia/utils/format_data.dart';
 import 'package:intl/intl.dart';
 
 class TransactionList extends StatefulWidget {
@@ -16,20 +17,6 @@ class _TransactionListState extends State<TransactionList> {
     Transaction(title: "Transport", amount: 200, category: "expense", icon: Icons.train, date: DateTime(2024, 2, 20)),
     Transaction(title: "Gift", amount: 20000, category: "income", icon: Icons.card_giftcard, date: DateTime(2024, 7, 1)),
   ];
-
-  String _formatNumberTotal(int number) {
-  if (number >= 1000000000000) {
-    return '${(number / 1000000000000).toStringAsFixed(1)} T';
-  } else if (number >= 1000000000) {
-    return '${(number / 1000000000).toStringAsFixed(1)} B';
-  } else if (number >= 1000000) {
-    return '${(number / 1000000).toStringAsFixed(1)} M';
-  } else if (number >= 1000) {
-    return '${(number / 1000).toStringAsFixed(1)} K';
-  } else {
-    return number.toString();
-  }
-}
 
   @override
   Widget build(BuildContext context) {
@@ -72,7 +59,7 @@ class _TransactionListState extends State<TransactionList> {
                               children: [
                                 const Text("Ar  ", style: TextStyle(color: Colors.white),),
                                 Text(
-                                  _formatNumberTotal(20000),
+                                  FormatData.formatNumber(20000),
                                   style: const TextStyle(
                                     color: Colors.white,
                                     fontSize: 25,
@@ -92,7 +79,7 @@ class _TransactionListState extends State<TransactionList> {
                               children: [
                                 const Text("Ar  ", style: TextStyle(color: Colors.white),),
                                 Text(
-                                  _formatNumberTotal(15000000),
+                                  FormatData.formatNumber(15000000),
                                   style: const TextStyle(color: Colors.white, fontSize: 25),
                                 ),
                               ]
@@ -125,7 +112,7 @@ class _TransactionListState extends State<TransactionList> {
                     ),
                   ),
                   subtitle: Text(
-                    _formatNumberTotal(transaction.amount),
+                    FormatData.formatNumber(transaction.amount),
                     style: TextStyle(
                       color: Theme.of(context).focusColor,
                       fontSize: 15,

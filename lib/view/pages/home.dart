@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:gestia/model/transaction.dart';
+import 'package:gestia/utils/format_data.dart';
 import 'package:gestia/utils/shared_preferences_util.dart';
 import 'package:gestia/view/pages/transaction_list.dart';
 import 'package:intl/intl.dart';
@@ -39,20 +40,6 @@ class _HomeState extends State<Home> {
     });
   }
 
-  String _formatNumber(int number) {
-    if (number >= 1000000000000) {
-      return '${(number / 1000000000000).toStringAsFixed(1)} T';
-    } else if (number >= 1000000000) {
-      return '${(number / 1000000000).toStringAsFixed(1)} B';
-    } else if (number >= 1000000) {
-      return '${(number / 1000000).toStringAsFixed(1)} M';
-    } else if (number >= 1000) {
-      return '${(number / 1000).toStringAsFixed(1)} K';
-    } else {
-      return number.toString();
-    }
-  }
-
   int _currentPageIndex = 0;
 
   @override
@@ -65,7 +52,7 @@ class _HomeState extends State<Home> {
   Widget build(BuildContext context) {
     DateTime now = DateTime.now();
     String formattedDate = DateFormat('EEEE, MMM d, yyyy').format(now);
-    String balanceFormated = _formatNumber(userBalance);
+    String balanceFormated = FormatData.formatNumber(userBalance);
 
     final List<Widget> pages = [
       home(context, balanceFormated, formattedDate),
@@ -271,7 +258,7 @@ class _HomeState extends State<Home> {
                             ),
                           ),
                           trailing: Text(
-                            _formatNumber(transaction.amount),
+                            FormatData.formatNumber(transaction.amount),
                             style: TextStyle(
                               color: (transaction.category == 'expense') ? Colors.red : Colors.green,
                               fontSize: 20,
