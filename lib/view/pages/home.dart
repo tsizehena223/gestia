@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:gestia/utils/shared_preferences_util.dart';
 import 'package:intl/intl.dart';
 
 class Home extends StatefulWidget {
@@ -9,7 +10,17 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
-  final int _balance = 25000700;
+  String userName = "";
+  int userBalance = 0;
+
+  void _retrieveUser() async {
+    await SharedPreferencesUtil.retrieveUserName().then((value) {
+      userName = value ?? "";
+    });
+    await SharedPreferencesUtil.retrieveBalance().then((value) {
+      userBalance = value ?? 0;
+    });
+  }
 
   final List<Map<String, dynamic>> _activities =  [
     {"title": "Food", "category": "expense", "amount": 12000, "icon": Icons.fastfood_rounded},
@@ -33,10 +44,16 @@ class _HomeState extends State<Home> {
   int _currentPageIndex = 0;
 
   @override
+  void initState() {
+    super.initState();
+    _retrieveUser();
+  }
+
+  @override
   Widget build(BuildContext context) {
     DateTime now = DateTime.now();
     String formattedDate = DateFormat('EEEE, MMM d, yyyy').format(now);
-    String balanceFormated = _formatNumber(_balance);
+    String balanceFormated = _formatNumber(userBalance);
 
     final List<Widget> pages = [
       home(context, balanceFormated, formattedDate),
@@ -109,7 +126,10 @@ class _HomeState extends State<Home> {
                       backgroundColor: Theme.of(context).primaryColorDark,
                       child: const Icon(Icons.person, color: Colors.white,),
                     ),
-                    title: const Text("Tsizehena", style: TextStyle(fontWeight: FontWeight.bold),),
+                    title: Text(
+                      userName,
+                      style: const TextStyle(fontWeight: FontWeight.bold),
+                    ),
                     subtitle: const Text("Welcome to GestIA"),
                     trailing: const Badge(
                       child: CircleAvatar(
@@ -131,7 +151,7 @@ class _HomeState extends State<Home> {
                           style: TextStyle(fontSize: 20),
                         ),
                         Text(
-                          _isShow ? balanceFormated : "* *** ***",
+                          _isShow ? balanceFormated : "*** ***",
                           style: TextStyle(
                             color: Theme.of(context).primaryColor,
                             fontSize: 30,

@@ -1,5 +1,6 @@
 import 'package:device_preview/device_preview.dart';
 import 'package:flutter/material.dart';
+import 'package:gestia/utils/shared_preferences_util.dart';
 import 'package:gestia/view/pages/accueil.dart';
 import 'package:gestia/view/pages/home.dart';
 
@@ -42,18 +43,35 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  final int _pageIndex = 0;
+  String? _userName;
+  int? _userBalance;
 
   static final List<Widget> _pages = <Widget>[
     const Accueil(),
     const Home(),
   ];
 
+  Future<void> _retrieveUser() async {
+    String? userName = await SharedPreferencesUtil.retrieveUserName();
+    int? userBalance = await SharedPreferencesUtil.retrieveBalance();
+
+    setState(() {
+      _userName = userName;
+      _userBalance = userBalance;
+    });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _retrieveUser();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: IndexedStack(
-        index: _pageIndex,
+        index: (_userName == null || _userBalance == null) ? 0 : 1,
         children: _pages,
       ),
       backgroundColor: Theme.of(context).primaryColor,
