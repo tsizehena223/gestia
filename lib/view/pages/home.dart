@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:gestia/model/transaction.dart';
 import 'package:gestia/utils/shared_preferences_util.dart';
+import 'package:gestia/view/pages/transaction_list.dart';
 import 'package:intl/intl.dart';
 
 class Home extends StatefulWidget {
@@ -22,11 +24,11 @@ class _HomeState extends State<Home> {
     });
   }
 
-  final List<Map<String, dynamic>> _activities =  [
-    {"title": "Food", "category": "expense", "amount": 12000, "icon": Icons.fastfood_rounded},
-    {"title": "Transport", "category": "expense", "amount": 200, "icon": Icons.train},
-    {"title": "Gift", "category": "income", "amount": 50000, "icon": Icons.card_giftcard},
-    {"title": "Food", "category": "expense", "amount": 2000, "icon": Icons.fastfood},
+  final List<Transaction> _recentTransactions =  [
+    Transaction(title: "Food", amount: 1200, category: "expense", icon: Icons.food_bank, date: DateTime(2024, 12, 10)),
+    Transaction(title: "Salary", amount: 2000000, category: "income", icon: Icons.monetization_on, date: DateTime(2024, 10, 10)),
+    Transaction(title: "Transport", amount: 200, category: "expense", icon: Icons.train, date: DateTime(2024, 2, 20)),
+    Transaction(title: "Gift", amount: 20000, category: "income", icon: Icons.card_giftcard, date: DateTime(2024, 7, 1)),
   ];
 
   bool _isShow = false;
@@ -58,7 +60,7 @@ class _HomeState extends State<Home> {
     final List<Widget> pages = [
       home(context, balanceFormated, formattedDate),
       const Center(child: Text("Reports", style: TextStyle(color: Colors.white),),),
-      const Center(child: Text("Transactions", style: TextStyle(color: Colors.white),),),
+      const TransactionList(),
     ];
 
     return Scaffold(
@@ -105,6 +107,9 @@ class _HomeState extends State<Home> {
   }
 
   SafeArea home(BuildContext context, String balanceFormated, String formattedDate) {
+    // Tri transacations
+    _recentTransactions.sort((a, b) => b.date.compareTo(a.date));
+
     return SafeArea(
       child: SingleChildScrollView(
         child: Column(
@@ -218,60 +223,47 @@ class _HomeState extends State<Home> {
               margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 0),
               child: Column(
                 children: [
-                  Row(
-                    mainAxisSize: MainAxisSize.max,
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      const Padding(
-                        padding: EdgeInsets.only(left: 30, top: 20),
-                        child: Text(
-                          "Recents",
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 25,
-                          ),
+                  Center(
+                    child: Container(
+                      margin: const EdgeInsets.only(top: 20),
+                      child: Text(
+                        "Recents",
+                        style: TextStyle(
+                          color: Theme.of(context).primaryColorLight,
+                          fontSize: 25,
                         ),
                       ),
-                      Padding(
-                        padding: const EdgeInsets.only(right: 30, top: 20),
-                        child: Text(
-                          "View all",
-                          style: TextStyle(
-                            color: Theme.of(context).primaryColorLight,
-                            fontSize: 20,
-                          ),
-                        ),
-                      ),
-                    ],
+                    ),
                   ),
                   const SizedBox(height: 20),
                   Expanded(
                     child: ListView.builder(
                       itemCount: 3,
                       itemBuilder: (context, index) {
+                        final transaction = _recentTransactions[index];
                         return ListTile(
                           leading: CircleAvatar(
-                            backgroundColor: (_activities[index]['category'] == 'expense') ? Colors.red : Colors.green,
-                            child: Icon(_activities[index]["icon"], color: const Color.fromARGB(255, 224, 187, 187),),
+                            backgroundColor: (transaction.category == 'expense') ? Colors.red : Colors.green,
+                            child: Icon(transaction.icon, color: const Color.fromARGB(255, 224, 187, 187),),
                           ),
                           title: Text(
-                            _activities[index]["title"]!,
+                            transaction.title,
                             style: const TextStyle(
                               color: Colors.white,
                               fontSize: 20,
                             ),
                           ),
                           subtitle: Text(
-                            _activities[index]["category"]!,
+                            transaction.category,
                             style: TextStyle(
                               color: Theme.of(context).focusColor,
                               fontSize: 15,
                             ),
                           ),
                           trailing: Text(
-                            _formatNumber(_activities[index]['amount']),
+                            _formatNumber(transaction.amount),
                             style: TextStyle(
-                              color: (_activities[index]['category'] == 'expense') ? Colors.red : Colors.green,
+                              color: (transaction.category == 'expense') ? Colors.red : Colors.green,
                               fontSize: 20,
                             ),
                           ),
