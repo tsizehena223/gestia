@@ -22,6 +22,13 @@ class _TransactionListState extends State<TransactionList> {
   Widget build(BuildContext context) {
     // Tri par date
     _transactions.sort((a, b) => b.date.compareTo(a.date));
+    int totalExpense = _transactions
+      .where((transaction) => transaction.category == "expense")
+      .fold(0, (sum, transaction) => sum + transaction.amount);
+
+    int totalIncome = _transactions
+      .where((transaction) => transaction.category == "income")
+      .fold(0, (sum, transaction) => sum + transaction.amount);
 
     return SafeArea(
       child: Column(
@@ -48,42 +55,39 @@ class _TransactionListState extends State<TransactionList> {
                 ),
                 Container(
                   margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 20),
-                  child: Row(
+                  child: Column(
                     children: [
-                      Expanded(
-                        child: Card(
-                          color: Theme.of(context).disabledColor,
-                          child: ListTile(
-                            title: const Text("Total Expense", style: TextStyle(color: Colors.white),),
-                            subtitle: Row(
-                              children: [
-                                const Text("Ar  ", style: TextStyle(color: Colors.white),),
-                                Text(
-                                  FormatData.formatNumber(20000),
-                                  style: const TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 25,
-                                  ),
+                      Card(
+                        color: Theme.of(context).disabledColor,
+                        child: ListTile(
+                          title: const Text("Total Expense", style: TextStyle(color: Colors.white),),
+                          subtitle: Row(
+                            children: [
+                              const Text("Ar  ", style: TextStyle(color: Colors.white),),
+                              Text(
+                                FormatData.formatNumber(totalExpense),
+                                style: const TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 25,
                                 ),
-                              ]
-                            ),
+                              ),
+                            ]
                           ),
                         ),
                       ),
-                      Expanded(
-                        child: Card(
-                          color: Theme.of(context).primaryColorDark,
-                          child: ListTile(
-                            title: const Text("Total Income", style: TextStyle(color: Colors.white),),
-                            subtitle: Row(
-                              children: [
-                                const Text("Ar  ", style: TextStyle(color: Colors.white),),
-                                Text(
-                                  FormatData.formatNumber(15000000),
-                                  style: const TextStyle(color: Colors.white, fontSize: 25),
-                                ),
-                              ]
-                            ),
+                      const SizedBox(height: 10),
+                      Card(
+                        color: Theme.of(context).primaryColorDark,
+                        child: ListTile(
+                          title: const Text("Total Income", style: TextStyle(color: Colors.white),),
+                          subtitle: Row(
+                            children: [
+                              const Text("Ar  ", style: TextStyle(color: Colors.white),),
+                              Text(
+                                FormatData.formatNumber(totalIncome),
+                                style: const TextStyle(color: Colors.white, fontSize: 25),
+                              ),
+                            ]
                           ),
                         ),
                       ),
@@ -112,7 +116,7 @@ class _TransactionListState extends State<TransactionList> {
                     ),
                   ),
                   subtitle: Text(
-                    FormatData.formatNumber(transaction.amount),
+                    "Ar ${FormatData.formatNumber(transaction.amount)}",
                     style: TextStyle(
                       color: Theme.of(context).focusColor,
                       fontSize: 15,

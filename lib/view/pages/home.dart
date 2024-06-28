@@ -251,17 +251,17 @@ class _HomeState extends State<Home> {
                             ),
                           ),
                           subtitle: Text(
-                            transaction.category,
+                            "Ar ${FormatData.formatNumber(transaction.amount)}",
                             style: TextStyle(
                               color: Theme.of(context).focusColor,
                               fontSize: 15,
                             ),
                           ),
                           trailing: Text(
-                            FormatData.formatNumber(transaction.amount),
+                            DateFormat('yyyy-MM-dd').format(transaction.date),
                             style: TextStyle(
                               color: (transaction.category == 'expense') ? Colors.red : Colors.green,
-                              fontSize: 20,
+                              fontSize: 15,
                             ),
                           ),
                         );
