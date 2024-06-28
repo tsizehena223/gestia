@@ -110,7 +110,7 @@ class _HomeState extends State<Home> {
                       child: const Icon(Icons.person, color: Colors.white,),
                     ),
                     title: const Text("Tsizehena", style: TextStyle(fontWeight: FontWeight.bold),),
-                    subtitle: const Text("Sarobidi"),
+                    subtitle: const Text("Welcome to GestIA"),
                     trailing: const Badge(
                       child: CircleAvatar(
                         backgroundColor: Color.fromARGB(255, 217, 236, 39),

@@ -18,9 +18,9 @@ class _AccueilState extends State<Accueil> {
         children: <Widget>[
           Container(
             margin: const EdgeInsets.only(bottom: 1),
-            color: Colors.white,
+            color: Theme.of(context).primaryColor,
             child: SvgPicture.asset(
-              "assets/images/welcome.svg",
+              "assets/images/logo.svg",
               height: 250,
             ),
           ),
@@ -29,7 +29,7 @@ class _AccueilState extends State<Accueil> {
             child: Text(
               "With GestIA",
               style: TextStyle(
-                color: Theme.of(context).primaryColorDark,
+                color: Theme.of(context).primaryColorLight,
                 fontSize: 40,
                 fontWeight: FontWeight.bold,
               ),
@@ -39,7 +39,7 @@ class _AccueilState extends State<Accueil> {
             "Take control of your finances\nwith IA's optimization",
             textAlign: TextAlign.center,
             style: TextStyle(
-              color: Colors.black,
+              color: Colors.white,
               fontSize: 23,
               fontWeight: FontWeight.w100,
             ),
