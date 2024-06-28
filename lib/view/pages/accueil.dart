@@ -10,6 +10,9 @@ class Accueil extends StatefulWidget {
 }
 
 class _AccueilState extends State<Accueil> {
+  bool _isInputNameValid = false;
+  bool _isInputNumberValid = false;
+
   @override
   Widget build(BuildContext context) {
     return Center(
@@ -21,18 +24,8 @@ class _AccueilState extends State<Accueil> {
             color: Theme.of(context).primaryColor,
             child: SvgPicture.asset(
               "assets/images/logo.svg",
+              colorFilter: ColorFilter.mode(Theme.of(context).primaryColorLight, BlendMode.srcIn),
               height: 250,
-            ),
-          ),
-          Container(
-            margin: const EdgeInsets.symmetric(vertical: 20),
-            child: Text(
-              "With GestIA",
-              style: TextStyle(
-                color: Theme.of(context).primaryColorLight,
-                fontSize: 40,
-                fontWeight: FontWeight.bold,
-              ),
             ),
           ),
           const Text(
@@ -44,27 +37,103 @@ class _AccueilState extends State<Accueil> {
               fontWeight: FontWeight.w100,
             ),
           ),
+          // Input
           Container(
-            margin: const EdgeInsets.only(top: 50),
-            child: ElevatedButton(
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => const Home()),
-                );
-              },
-              style: ElevatedButton.styleFrom(
-                padding: const EdgeInsets.symmetric(
-                  vertical: 10,
-                  horizontal: 70,
+            margin: const EdgeInsets.symmetric(horizontal: 30, vertical: 30),
+            child: TextField(
+              keyboardType: TextInputType.text,
+              style: const TextStyle(color: Colors.white),
+              decoration: InputDecoration(
+                enabledBorder: OutlineInputBorder(
+                  borderSide: BorderSide(
+                    color: Theme.of(context).primaryColorDark,
+                  ),
+                  borderRadius: const BorderRadius.all(Radius.circular(20)),
                 ),
-                backgroundColor: Theme.of(context).primaryColorDark,
+                focusColor: Colors.white,
+                labelText: "Type your name",
+                labelStyle: TextStyle(color: Theme.of(context).focusColor),
+                border: const OutlineInputBorder(
+                  borderRadius: BorderRadius.all(Radius.circular(20)),
+                ),
               ),
-              child: const Text(
-                "Start",
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 25,
+              onSubmitted: (value) => {},
+              onChanged: (String? value) => {
+                if (value != null) {
+                  setState(
+                    () {
+                      _isInputNameValid = true;
+                    }
+                  )
+                } else {
+                  setState(() {
+                    _isInputNameValid = false;
+                  })
+                },
+              },
+            ),
+          ),
+          Container(
+            margin: const EdgeInsets.symmetric(horizontal: 30),
+            child: TextField(
+              keyboardType: TextInputType.number,
+              style: const TextStyle(color: Colors.white),
+              decoration: InputDecoration(
+                enabledBorder: OutlineInputBorder(
+                  borderSide: BorderSide(
+                    color: Theme.of(context).primaryColorDark,
+                  ),
+                  borderRadius: const BorderRadius.all(Radius.circular(20)),
+                ),
+                fillColor: Colors.white,
+                labelText: "Type your current balance",
+                labelStyle: TextStyle(color: Theme.of(context).focusColor),
+                border: const OutlineInputBorder(
+                  borderRadius: BorderRadius.all(Radius.circular(20)),
+                ),
+              ),
+              onSubmitted: (value) => {},
+              onChanged: (String? value) => {
+                if (value != null) {
+                  setState(
+                    () {
+                    _isInputNumberValid = true;
+                    }
+                  )
+                } else {
+                  setState(() {
+                    _isInputNumberValid = false;
+                  })
+                },
+              },
+            ),
+          ),
+          // End Input
+          Visibility(
+            visible: (_isInputNameValid && _isInputNumberValid) ? true : false,
+            child: Container(
+              margin: const EdgeInsets.only(top: 50),
+              child: ElevatedButton(
+                onPressed: !(_isInputNameValid && _isInputNumberValid) ? null : () {
+                  // Enregistrer-na
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => const Home()),
+                  );
+                },
+                style: ElevatedButton.styleFrom(
+                  padding: const EdgeInsets.symmetric(
+                    vertical: 10,
+                    horizontal: 70,
+                  ),
+                  backgroundColor: Theme.of(context).primaryColorDark,
+                ),
+                child: const Text(
+                  "Start",
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 25,
+                  ),
                 ),
               ),
             ),
