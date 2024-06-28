@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:gestia/model/transaction.dart';
 import 'package:gestia/utils/format_data.dart';
 import 'package:gestia/utils/shared_preferences_util.dart';
+import 'package:gestia/view/pages/add_transaction.dart';
 import 'package:gestia/view/pages/transaction_list.dart';
 import 'package:intl/intl.dart';
 
@@ -100,6 +101,17 @@ class _HomeState extends State<Home> {
         ),
       ),
       backgroundColor: Theme.of(context).primaryColor,
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => const AddTransaction()),
+          );
+        },
+        backgroundColor: Theme.of(context).primaryColorDark,
+        shape: const CircleBorder(),
+        child: const Icon(Icons.add, color: Colors.white),
+      ),
     );
   }
 
@@ -270,7 +282,7 @@ class _HomeState extends State<Home> {
                   ),
                 ],
               ),
-            )
+            ),
           ],
         ),
       ),
