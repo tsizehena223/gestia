@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:gestia/utils/shared_preferences_util.dart';
+import 'package:gestia/view/pages/home.dart';
 
 class AddTransaction extends StatefulWidget {
   const AddTransaction({super.key});
@@ -39,9 +40,29 @@ class _AddTransactionState extends State<AddTransaction> {
     if (picked != null && picked != _selectedDate) {
       setState(() {
         _selectedDate = picked;
-        dateController.text = "${picked.toLocal()}".split(' ')[0]; // format date as needed
+        dateController.text = "${picked.toLocal()}".split(' ')[0];
       });
     }
+  }
+
+  void _showSuccessMessage(BuildContext context) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        duration: const Duration(seconds: 3),
+        backgroundColor: Colors.transparent,
+        content: Container(
+          decoration: BoxDecoration(
+            color: Theme.of(context).primaryColorDark,
+            borderRadius: BorderRadius.circular(20),
+          ),
+          padding: const EdgeInsets.all(10),
+          child: const Text(
+            'Transaction added successfully',
+            style: TextStyle(color: Colors.white, fontSize: 16),
+          ),
+        ),
+      ),
+    );
   }
 
   @override
@@ -137,12 +158,30 @@ class _AddTransactionState extends State<AddTransaction> {
             ),
             const SizedBox(height: 20),
             Visibility(
-              visible: (_isInputTitleValid && _isInputAmountValid) ? true : false,
+              visible: (_isInputTitleValid && _isInputAmountValid && _selectedCategory != null && _selectedDate != null) ? true : false,
               child: Container(
                 margin: const EdgeInsets.only(top: 50),
                 child: ElevatedButton(
                   onPressed: !(_isInputTitleValid && _isInputAmountValid) ? null : () async {
-                    await SharedPreferencesUtil.storeBalance(0);
+                    int currentBalance = await SharedPreferencesUtil.retrieveBalance() ?? 0;
+                    int amount;
+
+                    if (_selectedCategory == "expense") {
+                      amount = - int.parse(amountController.text);
+                    } else {
+                      amount = int.parse(amountController.text);
+                    }
+
+                    await SharedPreferencesUtil.storeBalance(currentBalance + amount);
+
+                    // ignore: use_build_context_synchronously
+                    _showSuccessMessage(context);
+
+                    Navigator.push(
+                      // ignore: use_build_context_synchronously
+                      context,
+                      MaterialPageRoute(builder: (context) => const Home()),
+                    );
                   },
                   style: ElevatedButton.styleFrom(
                     padding: const EdgeInsets.symmetric(
