@@ -56,9 +56,11 @@ class _AddTransactionState extends State<AddTransaction> {
             borderRadius: BorderRadius.circular(20),
           ),
           padding: const EdgeInsets.all(10),
-          child: const Text(
-            'Transaction added successfully',
-            style: TextStyle(color: Colors.white, fontSize: 16),
+          child: const Center(
+            child: Text(
+              'Transaction added successfully',
+              style: TextStyle(color: Colors.white, fontSize: 16),
+            ),
           ),
         ),
       ),
@@ -72,136 +74,148 @@ class _AddTransactionState extends State<AddTransaction> {
         title: const Text('Add Transaction'),
         backgroundColor: Theme.of(context).primaryColorLight,
       ),
-      body: Form(
-        key: _formKey,
-        child: Column(
-          children: [
-            Container(
-              margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 30),
-              child: SvgPicture.asset("assets/images/welcome.svg", height: 200, width: 200,),
+      body: Column(
+        children: [
+          Container(
+            margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
+            child: SvgPicture.asset(
+              "assets/images/logo.svg",
+              colorFilter: ColorFilter.mode(Theme.of(context).primaryColorDark, BlendMode.srcIn),
+              height: 250,
             ),
-            TextField(
-              keyboardType: TextInputType.text,
-              controller: titleController,
-              decoration: const InputDecoration(
-                labelText: 'Title',
-                labelStyle: TextStyle(color: Colors.white),
-              ),
-              style: TextStyle(color: Theme.of(context).primaryColorLight),
-              onChanged: (String? value) => {
-                if (value == null || value == "") {
-                  setState(
-                    () {
-                      _isInputTitleValid = false;
-                    }
-                  )
-                } else {
-                  setState(() {
-                    _isInputTitleValid = true;
-                  })
-                },
-              },
+          ),
+          Container(
+            margin: const EdgeInsets.symmetric(horizontal: 30),
+            padding: const EdgeInsets.all(20),
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(25),
+              color: Theme.of(context).disabledColor,
             ),
-            TextField(
-              keyboardType: TextInputType.number,
-              controller: amountController,
-              decoration: const InputDecoration(
-                labelText: 'Amount',
-                labelStyle: TextStyle(color: Colors.white),
-              ),
-              style: TextStyle(color: Theme.of(context).primaryColorLight),
-              onChanged: (String? value) => {
-                if (value == null || value == "" || int.tryParse(value) == null) {
-                  setState(
-                    () {
-                    _isInputAmountValid = false;
-                    }
-                  )
-                } else {
-                  setState(() {
-                    _isInputAmountValid = true;
-                  })
-                },
-              },
-            ),
-            DropdownButtonFormField<String>(
-              style: TextStyle(color: Theme.of(context).primaryColorLight),
-              decoration: const InputDecoration(
-                labelText: 'Category',
-                labelStyle: TextStyle(color: Colors.white),
-              ),
-              value: _selectedCategory,
-              onChanged: (String? newValue) {
-                setState(() {
-                  _selectedCategory = newValue;
-                });
-              },
-              items: _categories.map<DropdownMenuItem<String>>((String value) {
-                return DropdownMenuItem<String>(
-                  value: value,
-                  child: Text(value),
-                );
-              }).toList(),
-            ),
-            TextFormField(
-              controller: dateController,
-              style: TextStyle(color: Theme.of(context).primaryColorLight),
-              decoration: const InputDecoration(
-                labelText: 'Date',
-                labelStyle: TextStyle(color: Colors.white),
-                suffixIcon: Icon(Icons.calendar_today),
-              ),
-              readOnly: true,
-              onTap: () {
-                _selectDate(context);
-              },
-            ),
-            const SizedBox(height: 20),
-            Visibility(
-              visible: (_isInputTitleValid && _isInputAmountValid && _selectedCategory != null && _selectedDate != null) ? true : false,
-              child: Container(
-                margin: const EdgeInsets.only(top: 50),
-                child: ElevatedButton(
-                  onPressed: !(_isInputTitleValid && _isInputAmountValid) ? null : () async {
-                    int currentBalance = await SharedPreferencesUtil.retrieveBalance() ?? 0;
-                    int amount;
-
-                    if (_selectedCategory == "expense") {
-                      amount = - int.parse(amountController.text);
-                    } else {
-                      amount = int.parse(amountController.text);
-                    }
-
-                    await SharedPreferencesUtil.storeBalance(currentBalance + amount);
-
-                    // ignore: use_build_context_synchronously
-                    _showSuccessMessage(context);
-
-                    Navigator.push(
-                      // ignore: use_build_context_synchronously
-                      context,
-                      MaterialPageRoute(builder: (context) => const Home()),
-                    );
-                  },
-                  style: ElevatedButton.styleFrom(
-                    padding: const EdgeInsets.symmetric(
-                      vertical: 10,
-                      horizontal: 70,
+            child: Form(
+              key: _formKey,
+              child: Column(
+                children: [
+                  TextField(
+                    keyboardType: TextInputType.text,
+                    controller: titleController,
+                    decoration: const InputDecoration(
+                      labelText: 'Title',
+                      labelStyle: TextStyle(color: Colors.white),
                     ),
-                    backgroundColor: Theme.of(context).primaryColorDark,
+                    style: TextStyle(color: Theme.of(context).primaryColorLight),
+                    onChanged: (String? value) => {
+                      if (value == null || value == "") {
+                        setState(
+                          () {
+                            _isInputTitleValid = false;
+                          }
+                        )
+                      } else {
+                        setState(() {
+                          _isInputTitleValid = true;
+                        })
+                      },
+                    },
                   ),
-                  child: const Text(
-                    "Save Transaction",
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 20,
+                  TextField(
+                    keyboardType: TextInputType.number,
+                    controller: amountController,
+                    decoration: const InputDecoration(
+                      labelText: 'Amount',
+                      labelStyle: TextStyle(color: Colors.white),
+                    ),
+                    style: TextStyle(color: Theme.of(context).primaryColorLight),
+                    onChanged: (String? value) => {
+                      if (value == null || value == "" || int.tryParse(value) == null) {
+                        setState(
+                          () {
+                          _isInputAmountValid = false;
+                          }
+                        )
+                      } else {
+                        setState(() {
+                          _isInputAmountValid = true;
+                        })
+                      },
+                    },
+                  ),
+                  DropdownButtonFormField<String>(
+                    style: TextStyle(color: Theme.of(context).primaryColorLight),
+                    decoration: const InputDecoration(
+                      labelText: 'Category',
+                      labelStyle: TextStyle(color: Colors.white),
+                    ),
+                    value: _selectedCategory,
+                    onChanged: (String? newValue) {
+                      setState(() {
+                        _selectedCategory = newValue;
+                      });
+                    },
+                    items: _categories.map<DropdownMenuItem<String>>((String value) {
+                      return DropdownMenuItem<String>(
+                        value: value,
+                        child: Text(value),
+                      );
+                    }).toList(),
+                  ),
+                  TextFormField(
+                    controller: dateController,
+                    style: TextStyle(color: Theme.of(context).primaryColorLight),
+                    decoration: const InputDecoration(
+                      labelText: 'Date',
+                      labelStyle: TextStyle(color: Colors.white),
+                      suffixIcon: Icon(Icons.calendar_today),
+                    ),
+                    readOnly: true,
+                    onTap: () {
+                      _selectDate(context);
+                    },
+                  ),
+                  const SizedBox(height: 10),
+                  Visibility(
+                    visible: (_isInputTitleValid && _isInputAmountValid && _selectedCategory != null && _selectedDate != null) ? true : false,
+                    child: Container(
+                      margin: const EdgeInsets.only(top: 50),
+                      child: ElevatedButton(
+                        onPressed: !(_isInputTitleValid && _isInputAmountValid) ? null : () async {
+                          int currentBalance = await SharedPreferencesUtil.retrieveBalance() ?? 0;
+                          int amount;
+                          if (_selectedCategory == "expense") {
+                            amount = - int.parse(amountController.text);
+                          } else {
+                            amount = int.parse(amountController.text);
+                          }
+                          await SharedPreferencesUtil.storeBalance(currentBalance + amount);
+                          // ignore: use_build_context_synchronously
+                          _showSuccessMessage(context);
+                          Navigator.push(
+                            // ignore: use_build_context_synchronously
+                            context,
+                            MaterialPageRoute(builder: (context) => const Home()),
+                          );
+                        },
+                        style: ElevatedButton.styleFrom(
+                          padding: const EdgeInsets.symmetric(
+                            vertical: 10,
+                            horizontal: 70,
+                          ),
+                          backgroundColor: Theme.of(context).primaryColorDark,
+                        ),
+                        child: const Text(
+                          "Save",
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 20,
+                          ),
+                        ),
+                      ),
                     ),
                   ),
-                ),
+                ],
               ),
             ),
-          ],
-        ),
+          ),
+        ],
       ),
       backgroundColor: Theme.of(context).primaryColor,
     );
