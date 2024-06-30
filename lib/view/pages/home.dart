@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:gestia/model/transaction.dart';
+import 'package:gestia/service/transaction_service.dart';
 import 'package:gestia/utils/format_data.dart';
 import 'package:gestia/utils/shared_preferences_util.dart';
 import 'package:gestia/view/pages/add_transaction.dart';
 import 'package:gestia/view/pages/transaction_list.dart';
+import 'package:hive_flutter/adapters.dart';
 import 'package:intl/intl.dart';
 
 class Home extends StatefulWidget {
@@ -25,13 +27,6 @@ class _HomeState extends State<Home> {
       userBalance = value ?? 0;
     });
   }
-
-  final List<Transaction> _recentTransactions =  [
-    Transaction(title: "Food", amount: 1200, category: "expense", iconCode: Icons.food_bank.codePoint, date: DateTime(2024, 12, 10)),
-    Transaction(title: "Salary", amount: 2000000, category: "income", iconCode: Icons.monetization_on.codePoint, date: DateTime(2024, 10, 10)),
-    Transaction(title: "Transport", amount: 200, category: "expense", iconCode: Icons.train.codePoint, date: DateTime(2024, 2, 20)),
-    Transaction(title: "Gift", amount: 20000, category: "income", iconCode: Icons.card_giftcard.codePoint, date: DateTime(2024, 7, 1)),
-  ];
 
   bool _isShow = false;
 
@@ -116,8 +111,9 @@ class _HomeState extends State<Home> {
   }
 
   SafeArea home(BuildContext context, String balanceFormated, String formattedDate) {
-    // Tri transacations
-    _recentTransactions.sort((a, b) => b.date.compareTo(a.date));
+    final transactionBox = Hive.box<Transaction>(TransactionService.boxName);
+    List<Transaction> recentTransactions = transactionBox.values.toList();
+    FormatData.sortWithDate(recentTransactions);
 
     return SafeArea(
       child: SingleChildScrollView(
@@ -249,7 +245,7 @@ class _HomeState extends State<Home> {
                     child: ListView.builder(
                       itemCount: 3,
                       itemBuilder: (context, index) {
-                        final transaction = _recentTransactions[index];
+                        final transaction = recentTransactions[index];
                         return ListTile(
                           leading: CircleAvatar(
                             backgroundColor: (transaction.category == 'expense') ? Colors.red : Colors.green,

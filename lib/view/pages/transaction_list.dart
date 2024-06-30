@@ -33,9 +33,7 @@ class _TransactionListState extends State<TransactionList> {
   Widget build(BuildContext context) {
     final transactionBox = Hive.box<Transaction>(TransactionService.boxName);
     List<Transaction> transactions = transactionBox.values.toList();
-
-    // Tri par date
-    transactions.sort((a, b) => b.date.compareTo(a.date));
+    FormatData.sortWithDate(transactions);
 
     int totalExpense = transactions
       .where((transaction) => transaction.category == "expense")
@@ -153,7 +151,6 @@ class _TransactionListState extends State<TransactionList> {
                       child: Text('No transactions added yet', style: TextStyle(color: Colors.white)),
                     );
                   }
-              
                   return ListView.builder(
                     itemCount: transactions.length,
                     itemBuilder: (context, index) {
