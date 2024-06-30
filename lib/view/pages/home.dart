@@ -3,6 +3,7 @@ import 'package:gestia/model/transaction.dart';
 import 'package:gestia/service/transaction_service.dart';
 import 'package:gestia/utils/format_data.dart';
 import 'package:gestia/utils/shared_preferences_util.dart';
+import 'package:gestia/view/components/list_transaction_widget.dart';
 import 'package:gestia/view/pages/add_transaction.dart';
 import 'package:gestia/view/pages/transaction_list.dart';
 import 'package:hive_flutter/adapters.dart';
@@ -228,52 +229,44 @@ class _HomeState extends State<Home> {
               margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 0),
               child: Column(
                 children: [
-                  Center(
-                    child: Container(
-                      margin: const EdgeInsets.only(top: 20),
-                      child: Text(
-                        "Recents",
-                        style: TextStyle(
-                          color: Theme.of(context).primaryColorLight,
-                          fontSize: 25,
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Container(
+                        margin: const EdgeInsets.only(top: 20, left: 30),
+                        child: const Text(
+                          "Recents",
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 25,
+                          ),
                         ),
                       ),
-                    ),
+                      Container(
+                        margin: const EdgeInsets.only(top: 20, right: 30),
+                        child: GestureDetector(
+                          onTap: () {
+                            setState(() {
+                              _currentPageIndex = 2;
+                            });
+                          },
+                          child: Text(
+                            "View all",
+                            style: TextStyle(
+                              color: Theme.of(context).primaryColorLight,
+                              fontSize: 12,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
                   const SizedBox(height: 20),
                   Expanded(
-                    child: ListView.builder(
-                      itemCount: 3,
-                      itemBuilder: (context, index) {
-                        final transaction = recentTransactions[index];
-                        return ListTile(
-                          leading: CircleAvatar(
-                            backgroundColor: (transaction.category == 'expense') ? Colors.red : Colors.green,
-                            child: Icon(transaction.iconData, color: const Color.fromARGB(255, 224, 187, 187),),
-                          ),
-                          title: Text(
-                            transaction.title,
-                            style: const TextStyle(
-                              color: Colors.white,
-                              fontSize: 20,
-                            ),
-                          ),
-                          subtitle: Text(
-                            "Ar ${FormatData.formatNumber(transaction.amount)}",
-                            style: TextStyle(
-                              color: Theme.of(context).focusColor,
-                              fontSize: 15,
-                            ),
-                          ),
-                          trailing: Text(
-                            DateFormat('yyyy-MM-dd').format(transaction.date),
-                            style: TextStyle(
-                              color: (transaction.category == 'expense') ? Colors.red : Colors.green,
-                              fontSize: 15,
-                            ),
-                          ),
-                        );
-                      },
+                    child: ListTransactionWidget(
+                      transactionBox: transactionBox,
+                      transactions: recentTransactions,
+                      lengthTransaction: 3,
                     ),
                   ),
                 ],
