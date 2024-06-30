@@ -266,7 +266,7 @@ class _HomeState extends State<Home> {
                     child: ListTransactionWidget(
                       transactionBox: transactionBox,
                       transactions: recentTransactions,
-                      lengthTransaction: 3,
+                      lengthTransaction: (recentTransactions.length < 3) ? recentTransactions.length : 3,
                     ),
                   ),
                 ],
