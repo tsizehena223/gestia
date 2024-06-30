@@ -27,10 +27,10 @@ class _HomeState extends State<Home> {
   }
 
   final List<Transaction> _recentTransactions =  [
-    Transaction(title: "Food", amount: 1200, category: "expense", icon: Icons.food_bank, date: DateTime(2024, 12, 10)),
-    Transaction(title: "Salary", amount: 2000000, category: "income", icon: Icons.monetization_on, date: DateTime(2024, 10, 10)),
-    Transaction(title: "Transport", amount: 200, category: "expense", icon: Icons.train, date: DateTime(2024, 2, 20)),
-    Transaction(title: "Gift", amount: 20000, category: "income", icon: Icons.card_giftcard, date: DateTime(2024, 7, 1)),
+    Transaction(title: "Food", amount: 1200, category: "expense", iconCode: Icons.food_bank.codePoint, date: DateTime(2024, 12, 10)),
+    Transaction(title: "Salary", amount: 2000000, category: "income", iconCode: Icons.monetization_on.codePoint, date: DateTime(2024, 10, 10)),
+    Transaction(title: "Transport", amount: 200, category: "expense", iconCode: Icons.train.codePoint, date: DateTime(2024, 2, 20)),
+    Transaction(title: "Gift", amount: 20000, category: "income", iconCode: Icons.card_giftcard.codePoint, date: DateTime(2024, 7, 1)),
   ];
 
   bool _isShow = false;
@@ -253,7 +253,7 @@ class _HomeState extends State<Home> {
                         return ListTile(
                           leading: CircleAvatar(
                             backgroundColor: (transaction.category == 'expense') ? Colors.red : Colors.green,
-                            child: Icon(transaction.icon, color: const Color.fromARGB(255, 224, 187, 187),),
+                            child: Icon(transaction.iconData, color: const Color.fromARGB(255, 224, 187, 187),),
                           ),
                           title: Text(
                             transaction.title,

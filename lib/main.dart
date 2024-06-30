@@ -1,15 +1,24 @@
 import 'package:device_preview/device_preview.dart';
 import 'package:flutter/material.dart';
+import 'package:gestia/model/transaction.dart';
+import 'package:gestia/service/transaction_adapter.dart';
+import 'package:gestia/service/transaction_service.dart';
 import 'package:gestia/utils/shared_preferences_util.dart';
 import 'package:gestia/view/pages/accueil.dart';
 import 'package:gestia/view/pages/home.dart';
+import 'package:hive/hive.dart';
+import 'package:path_provider/path_provider.dart' as path_provider;
 
-void main() {
-  runApp(
-    DevicePreview(
-      builder: (context) => const MyApp(),
-    ),
-  );
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  var appDocumentDir = await path_provider.getApplicationDocumentsDirectory();
+
+  Hive
+    ..init(appDocumentDir.path)
+    ..registerAdapter(TransactionAdapter());
+  await Hive.openBox<Transaction>(TransactionService.boxName);
+
+  runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {

@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:gestia/model/transaction.dart';
+import 'package:gestia/service/transaction_service.dart';
 import 'package:gestia/utils/format_data.dart';
+import 'package:gestia/utils/shared_preferences_util.dart';
+import 'package:hive_flutter/adapters.dart';
 import 'package:intl/intl.dart';
 
 class TransactionList extends StatefulWidget {
@@ -11,24 +14,39 @@ class TransactionList extends StatefulWidget {
 }
 
 class _TransactionListState extends State<TransactionList> {
-  final List<Transaction> _transactions =  [
-    Transaction(title: "Food", amount: 1200, category: "expense", icon: Icons.food_bank, date: DateTime(2024, 12, 10)),
-    Transaction(title: "Salary", amount: 2000000, category: "income", icon: Icons.monetization_on, date: DateTime(2024, 10, 10)),
-    Transaction(title: "Transport", amount: 200, category: "expense", icon: Icons.train, date: DateTime(2024, 2, 20)),
-    Transaction(title: "Gift", amount: 20000, category: "income", icon: Icons.card_giftcard, date: DateTime(2024, 7, 1)),
-  ];
+  Future<int> _getCurrentBalance() async {
+    int currentBalance = await SharedPreferencesUtil.retrieveBalance() ?? 0;
+    return currentBalance;
+  }
+
+  Future<void> _updateBalance(int amount) async {
+    await SharedPreferencesUtil.storeBalance(amount);
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _getCurrentBalance();
+  }
 
   @override
   Widget build(BuildContext context) {
+    final transactionBox = Hive.box<Transaction>(TransactionService.boxName);
+    List<Transaction> transactions = transactionBox.values.toList();
+
     // Tri par date
-    _transactions.sort((a, b) => b.date.compareTo(a.date));
-    int totalExpense = _transactions
+    transactions.sort((a, b) => b.date.compareTo(a.date));
+
+    int totalExpense = transactions
       .where((transaction) => transaction.category == "expense")
       .fold(0, (sum, transaction) => sum + transaction.amount);
 
-    int totalIncome = _transactions
+    int totalIncome = transactions
       .where((transaction) => transaction.category == "income")
       .fold(0, (sum, transaction) => sum + transaction.amount);
+
+    // Update balance
+    _updateBalance(totalIncome - totalExpense);
 
     return SafeArea(
       child: Column(
@@ -42,8 +60,9 @@ class _TransactionListState extends State<TransactionList> {
             child: Column(
               children: [
                 ListTile(
+                  minVerticalPadding: 20,
                   leading: CircleAvatar(
-                    backgroundColor: Theme.of(context).primaryColor,
+                    backgroundColor: Theme.of(context).primaryColorDark,
                     child: Icon(Icons.compare_arrows, color: Theme.of(context).primaryColorLight),
                   ),
                   title: const Text(
@@ -54,40 +73,61 @@ class _TransactionListState extends State<TransactionList> {
                   ),
                 ),
                 Container(
-                  margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 20),
-                  child: Column(
+                  margin: const EdgeInsets.only(left: 10, right: 10, top: 10, bottom: 20),
+                  child: Row(
                     children: [
-                      Card(
-                        color: Theme.of(context).disabledColor,
-                        child: ListTile(
-                          title: const Text("Total Expense", style: TextStyle(color: Colors.white),),
-                          subtitle: Row(
-                            children: [
-                              const Text("Ar  ", style: TextStyle(color: Colors.white),),
-                              Text(
-                                FormatData.formatNumber(totalExpense),
-                                style: const TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 25,
+                      Expanded(
+                        child: Card(
+                          color: Theme.of(context).disabledColor,
+                          child: Container(
+                            padding: const EdgeInsets.symmetric(vertical: 10),
+                            child: ListTile(
+                              title: Text(
+                                "Total Expense",
+                                style: TextStyle(
+                                  color: Theme.of(context).primaryColorLight,
+                                  fontSize: 15,
                                 ),
                               ),
-                            ]
+                              subtitle: Row(
+                                children: [
+                                  const Text("Ar  ", style: TextStyle(color: Colors.white),),
+                                  Text(
+                                    FormatData.formatNumber(totalExpense),
+                                    style: const TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 20,
+                                    ),
+                                  ),
+                                ]
+                              ),
+                            ),
                           ),
                         ),
                       ),
-                      const SizedBox(height: 10),
-                      Card(
-                        color: Theme.of(context).primaryColorDark,
-                        child: ListTile(
-                          title: const Text("Total Income", style: TextStyle(color: Colors.white),),
-                          subtitle: Row(
-                            children: [
-                              const Text("Ar  ", style: TextStyle(color: Colors.white),),
-                              Text(
-                                FormatData.formatNumber(totalIncome),
-                                style: const TextStyle(color: Colors.white, fontSize: 25),
+                      Expanded(
+                        child: Card(
+                          color: Theme.of(context).primaryColorDark,
+                          child: Container(
+                            padding: const EdgeInsets.symmetric(vertical: 10),
+                            child: ListTile(
+                              title: Text(
+                                "Total Income",
+                                style: TextStyle(
+                                  color: Theme.of(context).primaryColorLight,
+                                  fontSize: 15,
+                                ),
                               ),
-                            ]
+                              subtitle: Row(
+                                children: [
+                                  const Text("Ar  ", style: TextStyle(color: Colors.white),),
+                                  Text(
+                                    FormatData.formatNumber(totalIncome),
+                                    style: const TextStyle(color: Colors.white, fontSize: 20),
+                                  ),
+                                ]
+                              ),
+                            ),
                           ),
                         ),
                       ),
@@ -99,38 +139,56 @@ class _TransactionListState extends State<TransactionList> {
           ),
 
           Expanded(
-            child: ListView.builder(
-              itemCount: _transactions.length,
-              itemBuilder: (context, index) {
-                final transaction = _transactions[index];
-                return ListTile(
-                  leading: CircleAvatar(
-                    backgroundColor: (transaction.category == 'expense') ? Colors.red : Colors.green,
-                    child: Icon(transaction.icon, color: const Color.fromARGB(255, 224, 187, 187),),
-                  ),
-                  title: Text(
-                    transaction.title,
-                    style: const TextStyle(
-                      color: Colors.white,
-                      fontSize: 20,
-                    ),
-                  ),
-                  subtitle: Text(
-                    "Ar ${FormatData.formatNumber(transaction.amount)}",
-                    style: TextStyle(
-                      color: Theme.of(context).focusColor,
-                      fontSize: 15,
-                    ),
-                  ),
-                  trailing: Text(
-                    DateFormat('yyyy-MM-dd').format(transaction.date),
-                    style: TextStyle(
-                      color: (transaction.category == 'expense') ? Colors.red : Colors.green,
-                      fontSize: 15,
-                    ),
-                  ),
-                );
-              },
+            child: Container(
+              margin: const EdgeInsets.symmetric(horizontal: 20),
+              decoration: BoxDecoration(
+                color: Theme.of(context).disabledColor,
+                borderRadius: BorderRadius.circular(25),
+              ),
+              child: ValueListenableBuilder(
+                valueListenable: transactionBox.listenable(),
+                builder: (context, _, __) {
+                  if (transactions.isEmpty) {
+                    return const Center(
+                      child: Text('No transactions added yet', style: TextStyle(color: Colors.white)),
+                    );
+                  }
+              
+                  return ListView.builder(
+                    itemCount: transactions.length,
+                    itemBuilder: (context, index) {
+                      final transaction = transactions[index];
+                      return ListTile(
+                        leading: CircleAvatar(
+                          backgroundColor: (transaction.category == 'expense') ? Colors.red : Colors.green,
+                          child: Icon(transaction.iconData, color: const Color.fromARGB(255, 224, 187, 187),),
+                        ),
+                        title: Text(
+                          transaction.title,
+                          style: const TextStyle(
+                            color: Colors.white,
+                            fontSize: 20,
+                          ),
+                        ),
+                        subtitle: Text(
+                          "Ar ${FormatData.formatNumber(transaction.amount)}",
+                          style: TextStyle(
+                            color: Theme.of(context).focusColor,
+                            fontSize: 15,
+                          ),
+                        ),
+                        trailing: Text(
+                          DateFormat('yyyy-MM-dd').format(transaction.date),
+                          style: TextStyle(
+                            color: (transaction.category == 'expense') ? Colors.red : Colors.green,
+                            fontSize: 15,
+                          ),
+                        ),
+                      );
+                    },
+                  );
+                },
+              ),
             ),
           ),
         ],

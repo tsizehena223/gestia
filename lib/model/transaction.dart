@@ -1,17 +1,26 @@
 import 'package:flutter/material.dart';
+import 'package:hive/hive.dart';
 
+@HiveType(typeId: 0)
 class Transaction {
-  final int amount;
-  final String title;
-  final String category;
-  final IconData icon;
-  final DateTime date;
+  @HiveField(0)
+  int amount;
+  @HiveField(1)
+  String title;
+  @HiveField(2)
+  String category;
+  @HiveField(3)
+  int iconCode;
+  @HiveField(4)
+  DateTime date;
 
   Transaction({
     required this.title,
     required this.amount,
     required this.category,
-    required this.icon,
+    required this.iconCode,
     required this.date,
   });
+
+  IconData get iconData => IconData(iconCode, fontFamily: 'MaterialIcons');
 }
