@@ -55,6 +55,7 @@ class _HomeState extends State<Home> {
       home(context, balanceFormated, formattedDate),
       const Center(child: Text("Reports", style: TextStyle(color: Colors.white),),),
       const TransactionList(),
+      const AddTransaction(),
     ];
 
     return Scaffold(
@@ -76,7 +77,7 @@ class _HomeState extends State<Home> {
             mainAxisSize: MainAxisSize.max,
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: List.generate(
-              3,
+              4,
               (index) => Container(
                 height: 40,
                 width: 40,
@@ -86,7 +87,7 @@ class _HomeState extends State<Home> {
                 ),
                 child: IconButton(
                   icon: Icon(
-                    (index == 0) ? Icons.home_filled : (index == 1) ? Icons.leaderboard : Icons.compare_arrows,
+                    (index == 0) ? Icons.home_filled : (index == 1) ? Icons.leaderboard : (index == 2) ? Icons.compare_arrows : Icons.add,
                     color: (index == _currentPageIndex) ? Theme.of(context).primaryColorLight : Theme.of(context).focusColor,
                   ),
                   onPressed: () => setState(() => _currentPageIndex = index),
@@ -97,17 +98,6 @@ class _HomeState extends State<Home> {
         ),
       ),
       backgroundColor: Theme.of(context).primaryColor,
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => const AddTransaction()),
-          );
-        },
-        backgroundColor: Theme.of(context).primaryColorDark,
-        shape: const CircleBorder(),
-        child: const Icon(Icons.add, color: Colors.white),
-      ),
     );
   }
 
