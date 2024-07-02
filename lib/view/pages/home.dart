@@ -5,6 +5,7 @@ import 'package:gestia/utils/format_data.dart';
 import 'package:gestia/utils/shared_preferences_util.dart';
 import 'package:gestia/view/components/list_transaction_widget.dart';
 import 'package:gestia/view/pages/add_transaction.dart';
+import 'package:gestia/view/pages/report.dart';
 import 'package:gestia/view/pages/transaction_list.dart';
 import 'package:hive_flutter/adapters.dart';
 import 'package:intl/intl.dart';
@@ -53,7 +54,7 @@ class _HomeState extends State<Home> {
 
     final List<Widget> pages = [
       home(context, balanceFormated, formattedDate),
-      const Center(child: Text("Reports", style: TextStyle(color: Colors.white),),),
+      const ReportPage(),
       const TransactionList(),
       const AddTransaction(),
     ];

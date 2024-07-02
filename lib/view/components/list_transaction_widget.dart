@@ -32,8 +32,7 @@ class ListTransactionWidget extends StatelessWidget {
             final transaction = transactions[index];
             return ListTile(
               leading: CircleAvatar(
-                backgroundColor: (transaction.category == 'expense') ? Colors.red : Colors.green,
-                child: Icon(transaction.iconData, color: const Color.fromARGB(255, 224, 187, 187),),
+                child: Icon(transaction.iconData),
               ),
               title: Text(
                 transaction.title,
@@ -42,17 +41,17 @@ class ListTransactionWidget extends StatelessWidget {
                   fontSize: 20,
                 ),
               ),
-              subtitle: Text(
+              trailing: Text(
                 "Ar ${FormatData.formatNumber(transaction.amount)}",
                 style: TextStyle(
-                  color: Theme.of(context).focusColor,
+                  color: (transaction.category == "expense") ? Colors.red.withOpacity(.8) : Colors.green.withOpacity(.8),
                   fontSize: 15,
                 ),
               ),
-              trailing: Text(
+              subtitle: Text(
                 DateFormat('yyyy-MM-dd').format(transaction.date),
                 style: TextStyle(
-                  color: (transaction.category == 'expense') ? Colors.red : Colors.green,
+                  color: Theme.of(context).focusColor,
                   fontSize: 15,
                 ),
               ),
