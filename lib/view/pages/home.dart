@@ -183,8 +183,8 @@ class _HomeState extends State<Home> {
                       ),
                       child: const ListTile(
                         leading: CircleAvatar(
-                          backgroundColor: Color.fromARGB(255, 56, 56, 56),
-                          child: Icon(Icons.arrow_back_rounded, color: Colors.red,),
+                          backgroundColor: Color.fromARGB(255, 54, 54, 54),
+                          child: Icon(Icons.arrow_back_rounded, color: Colors.white,),
                         ),
                         title: Text("Expense", style: TextStyle(color: Colors.white,),),
                       ),
@@ -199,8 +199,8 @@ class _HomeState extends State<Home> {
                       ),
                       child: const ListTile(
                         leading: CircleAvatar(
-                          backgroundColor: Color.fromARGB(255, 101, 165, 218),
-                          child: Icon(Icons.arrow_forward_rounded, color: Color.fromARGB(255, 1, 59, 10),),
+                          backgroundColor: Color.fromARGB(255, 12, 141, 247),
+                          child: Icon(Icons.arrow_forward_rounded, color: Colors.white,),
                         ),
                         title: Text("Income", style: TextStyle(color: Colors.white,),),
                       ),
