@@ -47,106 +47,110 @@ class _TransactionListState extends State<TransactionList> {
     _updateBalance(totalIncome - totalExpense);
 
     return SafeArea(
-      child: Column(
-        children: [
-          Container(
-            margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(20),
-              color: Theme.of(context).primaryColorLight,
-            ),
-            child: Column(
-              children: [
-                ListTile(
-                  minVerticalPadding: 20,
-                  leading: CircleAvatar(
-                    backgroundColor: Theme.of(context).primaryColorDark,
-                    child: Icon(Icons.compare_arrows, color: Theme.of(context).primaryColorLight),
-                  ),
-                  title: const Text(
-                    "Transactions",
-                    style: TextStyle(
-                      fontSize: 20,
+      child: SizedBox(
+        width: MediaQuery.sizeOf(context).width,
+        height: MediaQuery.sizeOf(context).height,
+        child: Column(
+          children: [
+            Container(
+              margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(20),
+                color: Theme.of(context).primaryColorLight,
+              ),
+              child: Column(
+                children: [
+                  ListTile(
+                    minVerticalPadding: 20,
+                    leading: CircleAvatar(
+                      backgroundColor: Theme.of(context).primaryColorDark,
+                      child: Icon(Icons.compare_arrows, color: Theme.of(context).primaryColorLight),
+                    ),
+                    title: const Text(
+                      "Transactions",
+                      style: TextStyle(
+                        fontSize: 20,
+                      ),
                     ),
                   ),
-                ),
-                Container(
-                  margin: const EdgeInsets.only(left: 10, right: 10, top: 10, bottom: 20),
-                  child: Row(
-                    children: [
-                      Expanded(
-                        child: Card(
-                          color: Theme.of(context).disabledColor,
-                          child: Container(
-                            padding: const EdgeInsets.symmetric(vertical: 10),
-                            child: ListTile(
-                              title: Text(
-                                "Total Expense",
-                                style: TextStyle(
-                                  color: Theme.of(context).primaryColorLight,
-                                  fontSize: 15,
+                  Container(
+                    margin: const EdgeInsets.only(left: 10, right: 10, top: 10, bottom: 20),
+                    child: Row(
+                      children: [
+                        Expanded(
+                          child: Card(
+                            color: Theme.of(context).disabledColor,
+                            child: Container(
+                              padding: const EdgeInsets.symmetric(vertical: 10),
+                              child: ListTile(
+                                title: Text(
+                                  "Total Expense",
+                                  style: TextStyle(
+                                    color: Theme.of(context).primaryColorLight,
+                                    fontSize: 15,
+                                  ),
                                 ),
-                              ),
-                              subtitle: Row(
-                                children: [
-                                  const Text("Ar  ", style: TextStyle(color: Colors.white),),
-                                  Text(
-                                    FormatData.formatNumber(totalExpense),
-                                    style: const TextStyle(
-                                      color: Colors.white,
-                                      fontSize: 20,
+                                subtitle: Row(
+                                  children: [
+                                    const Text("Ar  ", style: TextStyle(color: Colors.white),),
+                                    Text(
+                                      FormatData.formatNumber(totalExpense),
+                                      style: const TextStyle(
+                                        color: Colors.white,
+                                        fontSize: 20,
+                                      ),
                                     ),
-                                  ),
-                                ]
-                              ),
-                            ),
-                          ),
-                        ),
-                      ),
-                      Expanded(
-                        child: Card(
-                          color: Theme.of(context).primaryColorDark,
-                          child: Container(
-                            padding: const EdgeInsets.symmetric(vertical: 10),
-                            child: ListTile(
-                              title: Text(
-                                "Total Income",
-                                style: TextStyle(
-                                  color: Theme.of(context).primaryColorLight,
-                                  fontSize: 15,
+                                  ]
                                 ),
                               ),
-                              subtitle: Row(
-                                children: [
-                                  const Text("Ar  ", style: TextStyle(color: Colors.white),),
-                                  Text(
-                                    FormatData.formatNumber(totalIncome),
-                                    style: const TextStyle(color: Colors.white, fontSize: 20),
+                            ),
+                          ),
+                        ),
+                        Expanded(
+                          child: Card(
+                            color: Theme.of(context).primaryColorDark,
+                            child: Container(
+                              padding: const EdgeInsets.symmetric(vertical: 10),
+                              child: ListTile(
+                                title: Text(
+                                  "Total Income",
+                                  style: TextStyle(
+                                    color: Theme.of(context).primaryColorLight,
+                                    fontSize: 15,
                                   ),
-                                ]
+                                ),
+                                subtitle: Row(
+                                  children: [
+                                    const Text("Ar  ", style: TextStyle(color: Colors.white),),
+                                    Text(
+                                      FormatData.formatNumber(totalIncome),
+                                      style: const TextStyle(color: Colors.white, fontSize: 20),
+                                    ),
+                                  ]
+                                ),
                               ),
                             ),
                           ),
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
-                ),
-              ],
-            ),
-          ),
-
-          Expanded(
-            child: Container(
-              margin: const EdgeInsets.symmetric(horizontal: 20),
-              decoration: BoxDecoration(
-                color: Theme.of(context).disabledColor,
-                borderRadius: BorderRadius.circular(25),
+                ],
               ),
-              child: ListTransactionWidget(transactionBox: transactionBox, transactions: transactions, lengthTransaction: transactions.length,),
             ),
-          ),
-        ],
+        
+            Expanded(
+              child: Container(
+                margin: const EdgeInsets.symmetric(horizontal: 20),
+                decoration: BoxDecoration(
+                  color: Theme.of(context).disabledColor,
+                  borderRadius: BorderRadius.circular(25),
+                ),
+                child: ListTransactionWidget(transactionBox: transactionBox, transactions: transactions, lengthTransaction: transactions.length,),
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

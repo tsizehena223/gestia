@@ -244,7 +244,7 @@ class _HomeState extends State<Home> {
                             "View all",
                             style: TextStyle(
                               color: Theme.of(context).primaryColorLight,
-                              fontSize: 12,
+                              fontSize: 15,
                             ),
                           ),
                         ),
