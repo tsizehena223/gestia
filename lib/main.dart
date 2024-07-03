@@ -34,7 +34,7 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
         primaryColorLight: const Color.fromARGB(255, 202, 202, 202),
-        primaryColorDark: Colors.red,
+        primaryColorDark: const Color.fromARGB(255, 17, 141, 21),
         disabledColor: const Color(0xFF242425),
         primaryColor: const Color.fromARGB(255, 3, 3, 3),
         focusColor: const Color(0xFF868686),

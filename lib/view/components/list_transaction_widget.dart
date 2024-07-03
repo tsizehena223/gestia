@@ -32,7 +32,8 @@ class ListTransactionWidget extends StatelessWidget {
             final transaction = transactions[index];
             return ListTile(
               leading: CircleAvatar(
-                child: Icon(transaction.iconData),
+                backgroundColor: Theme.of(context).primaryColorLight,
+                child: Icon(transaction.iconData, color: Theme.of(context).primaryColor,),
               ),
               title: Text(
                 transaction.title,

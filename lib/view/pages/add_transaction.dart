@@ -89,7 +89,7 @@ class _AddTransactionState extends State<AddTransaction> {
                 margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 0),
                 child: SvgPicture.asset(
                   "assets/images/logo.svg",
-                  colorFilter: ColorFilter.mode(Theme.of(context).primaryColorDark, BlendMode.srcIn),
+                  colorFilter: ColorFilter.mode(Theme.of(context).focusColor, BlendMode.srcIn),
                   height: 200,
                 ),
               ),

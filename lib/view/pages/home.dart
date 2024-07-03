@@ -126,7 +126,7 @@ class _HomeState extends State<Home> {
                   FutureBuilder(
                     future: SharedPreferencesUtil.retrieveUserName(),
                     builder: (context, snapshot) {
-                      String data = snapshot.data ?? "username";
+                      String data = snapshot.data ?? "UserName";
                       return ListTile(
                         leading: CircleAvatar(
                           backgroundColor: Theme.of(context).primaryColorDark,
