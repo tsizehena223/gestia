@@ -22,39 +22,49 @@ class _AccueilState extends State<Accueil> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
+            Image.asset(
+              "assets/images/ispm.png",
+              height: 100,
+            ),
+            const SizedBox(height: 30),
             Container(
               margin: const EdgeInsets.only(bottom: 1),
               color: Theme.of(context).primaryColor,
               child: SvgPicture.asset(
                 "assets/images/logo.svg",
-                colorFilter: ColorFilter.mode(Theme.of(context).primaryColorLight, BlendMode.srcIn),
+                colorFilter: const ColorFilter.mode(Colors.white, BlendMode.srcIn),
                 height: 250,
               ),
             ),
-            const Text(
+            Text(
               "Take control of your finances\nwith IA's optimization",
               textAlign: TextAlign.center,
               style: TextStyle(
-                color: Colors.white,
+                color: Theme.of(context).focusColor,
                 fontSize: 23,
                 fontWeight: FontWeight.w100,
               ),
             ),
             // Input
             Container(
-              margin: const EdgeInsets.symmetric(horizontal: 30, vertical: 30),
+              margin: const EdgeInsets.symmetric(horizontal: 50, vertical: 30),
               child: TextField(
                 keyboardType: TextInputType.text,
                 controller: userNameController,
                 style: const TextStyle(color: Colors.white),
                 decoration: InputDecoration(
-                  enabledBorder: OutlineInputBorder(
+                  enabledBorder: const OutlineInputBorder(
                     borderSide: BorderSide(
-                      color: Theme.of(context).primaryColorDark,
+                      color: Color.fromARGB(255, 17, 141, 21),
                     ),
-                    borderRadius: const BorderRadius.all(Radius.circular(20)),
+                    borderRadius: BorderRadius.all(Radius.circular(20)),
                   ),
                   focusColor: Colors.white,
+                  focusedBorder: const OutlineInputBorder(
+                    borderSide: BorderSide(
+                      color: Color.fromARGB(255, 17, 141, 21),
+                    )
+                  ),
                   labelText: "Type your name",
                   labelStyle: TextStyle(color: Theme.of(context).focusColor),
                   border: const OutlineInputBorder(
@@ -95,7 +105,7 @@ class _AccueilState extends State<Accueil> {
                       vertical: 15,
                       horizontal: 70,
                     ),
-                    backgroundColor: Theme.of(context).primaryColorDark.withOpacity(.5),
+                    backgroundColor: const Color.fromARGB(255, 25, 184, 30).withOpacity(.5),
                   ),
                   child: const Text(
                     "Start",

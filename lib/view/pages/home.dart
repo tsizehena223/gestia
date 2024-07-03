@@ -89,7 +89,7 @@ class _HomeState extends State<Home> {
                 child: IconButton(
                   icon: Icon(
                     (index == 0) ? Icons.home_filled : (index == 1) ? Icons.leaderboard : (index == 2) ? Icons.compare_arrows : Icons.add,
-                    color: (index == _currentPageIndex) ? Theme.of(context).primaryColorLight : Theme.of(context).focusColor,
+                    color: (index == _currentPageIndex) ? Theme.of(context).primaryColorDark : Theme.of(context).focusColor,
                   ),
                   onPressed: () => setState(() => _currentPageIndex = index),
                 ),
@@ -197,12 +197,12 @@ class _HomeState extends State<Home> {
                         color: Theme.of(context).primaryColorDark,
                         borderRadius: BorderRadius.circular(30),
                       ),
-                      child: const ListTile(
+                      child: ListTile(
                         leading: CircleAvatar(
-                          backgroundColor: Color.fromARGB(255, 12, 141, 247),
-                          child: Icon(Icons.arrow_forward_rounded, color: Colors.white,),
+                          backgroundColor: Theme.of(context).disabledColor.withOpacity(0.5),
+                          child: const Icon(Icons.arrow_forward_rounded, color: Colors.white,),
                         ),
-                        title: Text("Income", style: TextStyle(color: Colors.white,),),
+                        title: const Text("Income", style: TextStyle(color: Colors.white,),),
                       ),
                     )
                   )

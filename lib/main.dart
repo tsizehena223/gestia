@@ -33,10 +33,10 @@ class MyApp extends StatelessWidget {
       home: const MyHomePage(),
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
-        primaryColorLight: const Color(0xFFC6FE1E),
-        primaryColorDark: const Color(0xFF1364FF),
+        primaryColorLight: const Color.fromARGB(255, 202, 202, 202),
+        primaryColorDark: Colors.red,
         disabledColor: const Color(0xFF242425),
-        primaryColor: const Color(0xFF0D0D0D),
+        primaryColor: const Color.fromARGB(255, 3, 3, 3),
         focusColor: const Color(0xFF868686),
         fontFamily: "Roboto",
       ),
