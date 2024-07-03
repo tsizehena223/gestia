@@ -63,7 +63,8 @@ class _AccueilState extends State<Accueil> {
                   focusedBorder: const OutlineInputBorder(
                     borderSide: BorderSide(
                       color: Color.fromARGB(255, 17, 141, 21),
-                    )
+                    ),
+                    borderRadius: BorderRadius.all(Radius.circular(20)),
                   ),
                   labelText: "Type your name",
                   labelStyle: TextStyle(color: Theme.of(context).focusColor),

@@ -4,7 +4,7 @@ import 'package:intl/intl.dart';
 class FormatData {
   static String formatNumber(int number) {
     if (number >= 100000000) {
-      return '${(number / 10000000).toStringAsFixed(1)}M';
+      return '${(number / 10000000).toStringAsFixed(1)} M';
     } else  {
       return NumberFormat("#,###").format(number).replaceAll(",", " ");
     }

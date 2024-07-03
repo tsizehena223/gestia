@@ -22,7 +22,6 @@ class _AddTransactionState extends State<AddTransaction> {
   TextEditingController categoryController = TextEditingController();
   TextEditingController dateController = TextEditingController();
 
-  final _formKey = GlobalKey<FormState>();
   final List<String> _categories = ["expense", "income"];
   String? _selectedCategory;
   DateTime? _selectedDate;
@@ -75,18 +74,14 @@ class _AddTransactionState extends State<AddTransaction> {
     final transcationBox = Hive.box<Transaction>(TransactionService.boxName);
 
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Add Transaction'),
-        backgroundColor: Theme.of(context).primaryColorLight,
-      ),
-      body: SizedBox(
+        body: SizedBox(
         width: MediaQuery.sizeOf(context).width,
         height: MediaQuery.sizeOf(context).height,
         child: SingleChildScrollView(
           child: Column(
             children: [
               Container(
-                margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 0),
+                margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
                 child: SvgPicture.asset(
                   "assets/images/logo.svg",
                   colorFilter: ColorFilter.mode(Theme.of(context).focusColor, BlendMode.srcIn),
@@ -94,96 +89,164 @@ class _AddTransactionState extends State<AddTransaction> {
                 ),
               ),
               Container(
-                margin: const EdgeInsets.symmetric(horizontal: 30),
-                padding: const EdgeInsets.all(20),
-                height: 250,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(25),
-                  color: Theme.of(context).disabledColor,
-                ),
-                child: Form(
-                  key: _formKey,
-                  child: Column(
-                    children: [
-                      TextField(
-                        keyboardType: TextInputType.text,
-                        controller: titleController,
-                        decoration: const InputDecoration(
-                          labelText: 'Title',
-                          labelStyle: TextStyle(color: Colors.white),
-                        ),
-                        style: TextStyle(color: Theme.of(context).primaryColorLight),
-                        onChanged: (String? value) => {
-                          if (value == null || value == "") {
-                            setState(
-                              () {
-                                _isInputTitleValid = false;
-                              }
-                            )
-                          } else {
-                            setState(() {
-                              _isInputTitleValid = true;
-                            })
-                          },
-                        },
-                      ),
-                      TextField(
-                        keyboardType: TextInputType.number,
-                        controller: amountController,
-                        decoration: const InputDecoration(
-                          labelText: 'Amount',
-                          labelStyle: TextStyle(color: Colors.white),
-                        ),
-                        style: TextStyle(color: Theme.of(context).primaryColorLight),
-                        onChanged: (String? value) => {
-                          if (value == null || value == "" || int.tryParse(value) == null) {
-                            setState(
-                              () {
-                              _isInputAmountValid = false;
-                              }
-                            )
-                          } else {
-                            setState(() {
-                              _isInputAmountValid = true;
-                            })
-                          },
-                        },
-                      ),
-                      DropdownButtonFormField<String>(
-                        style: TextStyle(color: Theme.of(context).primaryColorLight),
-                        decoration: const InputDecoration(
-                          labelText: 'Category',
-                          labelStyle: TextStyle(color: Colors.white),
-                        ),
-                        value: _selectedCategory,
-                        onChanged: (String? newValue) {
-                          setState(() {
-                            _selectedCategory = newValue;
-                          });
-                        },
-                        items: _categories.map<DropdownMenuItem<String>>((String value) {
-                          return DropdownMenuItem<String>(
-                            value: value,
-                            child: Text(value),
-                          );
-                        }).toList(),
-                      ),
-                      TextFormField(
-                        controller: dateController,
-                        style: TextStyle(color: Theme.of(context).primaryColorLight),
-                        decoration: const InputDecoration(
-                          labelText: 'Date',
-                          labelStyle: TextStyle(color: Colors.white),
-                          suffixIcon: Icon(Icons.calendar_today),
-                        ),
-                        readOnly: true,
-                        onTap: () {
-                          _selectDate(context);
-                        },
-                      ),
-                      const SizedBox(height: 10),
-                    ],
+                margin: const EdgeInsets.only(bottom: 30),
+                child: Text(
+                  "Add Transaction",
+                  style: TextStyle(
+                    color: Theme.of(context).focusColor,
+                    fontSize: 25,
+                    fontFamily: "Monospace",
                   ),
+                ),
+              ),
+              Container(
+                margin: const EdgeInsets.symmetric(horizontal: 40,),
+                child: Column(
+                  children: [
+                    TextField(
+                      keyboardType: TextInputType.text,
+                      controller: titleController,
+                      style: const TextStyle(color: Colors.white),
+                      decoration: InputDecoration(
+                        enabledBorder: const OutlineInputBorder(
+                          borderSide: BorderSide(
+                            color: Color.fromARGB(255, 17, 141, 21),
+                          ),
+                          borderRadius: BorderRadius.all(Radius.circular(20)),
+                        ),
+                        focusColor: Colors.white,
+                        focusedBorder: const OutlineInputBorder(
+                          borderSide: BorderSide(
+                            color: Color.fromARGB(255, 17, 141, 21),
+                          ),
+                          borderRadius: BorderRadius.all(Radius.circular(20)),
+                        ),
+                        labelText: "Title",
+                        labelStyle: TextStyle(color: Theme.of(context).focusColor),
+                        border: const OutlineInputBorder(
+                          borderRadius: BorderRadius.all(Radius.circular(20)),
+                        ),
+                      ),
+                      onChanged: (String? value) => {
+                        if (value == null || value == "") {
+                          setState(
+                            () {
+                              _isInputTitleValid = false;
+                            }
+                          )
+                        } else {
+                          setState(() {
+                            _isInputTitleValid = true;
+                          })
+                        },
+                      },
+                    ),
+                    const SizedBox(height: 20,),
+                    TextField(
+                      keyboardType: TextInputType.number,
+                      controller: amountController,
+                      style: const TextStyle(color: Colors.white),
+                      decoration: InputDecoration(
+                        enabledBorder: const OutlineInputBorder(
+                          borderSide: BorderSide(
+                            color: Color.fromARGB(255, 17, 141, 21),
+                          ),
+                          borderRadius: BorderRadius.all(Radius.circular(20)),
+                        ),
+                        focusColor: Colors.white,
+                        focusedBorder: const OutlineInputBorder(
+                          borderSide: BorderSide(
+                            color: Color.fromARGB(255, 17, 141, 21),
+                          ),
+                          borderRadius: BorderRadius.all(Radius.circular(20)),
+                        ),
+                        labelText: "Amount",
+                        labelStyle: TextStyle(color: Theme.of(context).focusColor),
+                        border: const OutlineInputBorder(
+                          borderRadius: BorderRadius.all(Radius.circular(20)),
+                        ),
+                      ),
+                      onChanged: (String? value) => {
+                        if (value == null || value == "") {
+                          setState(
+                            () {
+                              _isInputAmountValid = false;
+                            }
+                          )
+                        } else {
+                          setState(() {
+                            _isInputAmountValid = true;
+                          })
+                        },
+                      },
+                    ),
+                    const SizedBox(height: 20,),
+                    DropdownButtonFormField<String>(
+                      style: const TextStyle(color: Colors.white),
+                      decoration: InputDecoration(
+                        enabledBorder: const OutlineInputBorder(
+                          borderSide: BorderSide(
+                            color: Color.fromARGB(255, 17, 141, 21),
+                          ),
+                          borderRadius: BorderRadius.all(Radius.circular(20)),
+                        ),
+                        focusColor: Colors.white,
+                        focusedBorder: const OutlineInputBorder(
+                          borderSide: BorderSide(
+                            color: Color.fromARGB(255, 17, 141, 21),
+                          ),
+                          borderRadius: BorderRadius.all(Radius.circular(20)),
+                        ),
+                        labelText: "Category",
+                        labelStyle: TextStyle(color: Theme.of(context).focusColor),
+                        border: const OutlineInputBorder(
+                          borderRadius: BorderRadius.all(Radius.circular(20)),
+                        ),
+                      ),
+                      value: _selectedCategory,
+                      onChanged: (String? newValue) {
+                        setState(() {
+                          _selectedCategory = newValue;
+                        });
+                      },
+                      items: _categories.map<DropdownMenuItem<String>>((String value) {
+                        return DropdownMenuItem<String>(
+                          value: value,
+                          child: Text(value),
+                        );
+                      }).toList(),
+                    ),
+                    const SizedBox(height: 20,),
+                    TextFormField(
+                      controller: dateController,
+                      style: const TextStyle(color: Colors.white),
+                      decoration: InputDecoration(
+                        enabledBorder: const OutlineInputBorder(
+                          borderSide: BorderSide(
+                            color: Color.fromARGB(255, 17, 141, 21),
+                          ),
+                          borderRadius: BorderRadius.all(Radius.circular(20)),
+                        ),
+                        focusColor: Colors.white,
+                        focusedBorder: const OutlineInputBorder(
+                          borderSide: BorderSide(
+                            color: Color.fromARGB(255, 17, 141, 21),
+                          ),
+                          borderRadius: BorderRadius.all(Radius.circular(20)),
+                        ),
+                        labelText: "Date",
+                        suffixIcon: const Icon(Icons.calendar_month),
+                        labelStyle: TextStyle(color: Theme.of(context).focusColor),
+                        border: const OutlineInputBorder(
+                          borderRadius: BorderRadius.all(Radius.circular(20)),
+                        ),
+                      ),
+                      readOnly: true,
+                      onTap: () {
+                        _selectDate(context);
+                      },
+                    ),
+                  ],
                 ),
               ),
               Visibility(
@@ -247,3 +310,43 @@ class _AddTransactionState extends State<AddTransaction> {
     );
   }
 }
+
+/*
+child: Column(
+children: [
+  DropdownButtonFormField<String>(
+    style: TextStyle(color: Theme.of(context).primaryColorLight),
+    decoration: const InputDecoration(
+      labelText: 'Category',
+      labelStyle: TextStyle(color: Colors.white),
+    ),
+    value: _selectedCategory,
+    onChanged: (String? newValue) {
+      setState(() {
+        _selectedCategory = newValue;
+      });
+    },
+    items: _categories.map<DropdownMenuItem<String>>((String value) {
+      return DropdownMenuItem<String>(
+        value: value,
+        child: Text(value),
+      );
+    }).toList(),
+  ),
+  TextFormField(
+    controller: dateController,
+    style: TextStyle(color: Theme.of(context).primaryColorLight),
+    decoration: const InputDecoration(
+      labelText: 'Date',
+      labelStyle: TextStyle(color: Colors.white),
+      suffixIcon: Icon(Icons.calendar_today),
+    ),
+    readOnly: true,
+    onTap: () {
+      _selectDate(context);
+    },
+  ),
+  const SizedBox(height: 10),
+  ],
+),
+*/
