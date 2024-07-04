@@ -3,6 +3,7 @@ import 'package:gestia/model/transaction.dart';
 import 'package:gestia/service/transaction_service.dart';
 import 'package:gestia/utils/format_data.dart';
 import 'package:gestia/utils/shared_preferences_util.dart';
+import 'package:gestia/view/components/header.dart';
 import 'package:gestia/view/components/list_transaction_widget.dart';
 import 'package:gestia/view/pages/add_transaction.dart';
 import 'package:gestia/view/pages/report.dart';
@@ -112,6 +113,7 @@ class _HomeState extends State<Home> {
         child: Column(
           mainAxisSize: MainAxisSize.max,
           children: [
+            const Header(),
             // Begin
             Container(
               margin: const EdgeInsets.only(top: 10, right: 20, left: 20,),
@@ -119,29 +121,11 @@ class _HomeState extends State<Home> {
               width: MediaQuery.of(context).size.width,
               decoration: BoxDecoration(
                 color: Theme.of(context).primaryColorLight,
-                borderRadius: BorderRadius.circular(35),
+                borderRadius: BorderRadius.circular(30),
               ),
               child: Column(
                 children: [
-                  FutureBuilder(
-                    future: SharedPreferencesUtil.retrieveUserName(),
-                    builder: (context, snapshot) {
-                      String data = snapshot.data ?? "UserName";
-                      return ListTile(
-                        leading: CircleAvatar(
-                          backgroundColor: Theme.of(context).primaryColorDark,
-                          child: const Icon(Icons.person, color: Colors.white,),
-                        ),
-                        title: Text(
-                          data,
-                          style: const TextStyle(fontWeight: FontWeight.bold),
-                        ),
-                        subtitle: const Text("Welcome to GestIA"),
-                      );
-                    }
-                  ),
                   ListTile(
-                    minVerticalPadding: 20,
                     title: const Text(
                       "Total Balance",
                       style: TextStyle(fontSize: 20),

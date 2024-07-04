@@ -3,6 +3,7 @@ import 'package:gestia/model/transaction.dart';
 import 'package:gestia/service/transaction_service.dart';
 import 'package:gestia/utils/format_data.dart';
 import 'package:gestia/utils/shared_preferences_util.dart';
+import 'package:gestia/view/components/header_transaction.dart';
 import 'package:gestia/view/components/list_transaction_widget.dart';
 import 'package:hive_flutter/adapters.dart';
 
@@ -52,29 +53,17 @@ class _TransactionListState extends State<TransactionList> {
         height: MediaQuery.sizeOf(context).height,
         child: Column(
           children: [
+            const HeaderTransaction(),
             Container(
               margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
               decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(20),
+                borderRadius: BorderRadius.circular(25),
                 color: Theme.of(context).primaryColorLight,
               ),
               child: Column(
                 children: [
-                  ListTile(
-                    minVerticalPadding: 20,
-                    leading: CircleAvatar(
-                      backgroundColor: Theme.of(context).primaryColorDark,
-                      child: Icon(Icons.compare_arrows, color: Theme.of(context).primaryColorLight),
-                    ),
-                    title: const Text(
-                      "Transactions",
-                      style: TextStyle(
-                        fontSize: 20,
-                      ),
-                    ),
-                  ),
                   Container(
-                    margin: const EdgeInsets.only(left: 10, right: 10, top: 10, bottom: 20),
+                    margin: const EdgeInsets.only(left: 10, right: 10, top: 20, bottom: 20),
                     child: Row(
                       children: [
                         Expanded(
