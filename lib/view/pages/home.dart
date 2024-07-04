@@ -160,33 +160,47 @@ class _HomeState extends State<Home> {
               child: Row(
                 children: [
                   Expanded(
-                    child: Container(
-                      decoration: BoxDecoration(
-                        color: Theme.of(context).disabledColor,
-                        borderRadius: BorderRadius.circular(30),
-                      ),
-                      child: const ListTile(
-                        leading: CircleAvatar(
-                          backgroundColor: Color.fromARGB(255, 54, 54, 54),
-                          child: Icon(Icons.arrow_back_rounded, color: Colors.white,),
+                    child: GestureDetector(
+                      onTap: () {
+                        setState(() {
+                        _currentPageIndex = 3;
+                        });
+                      },
+                      child: Container(
+                        decoration: BoxDecoration(
+                          color: Theme.of(context).disabledColor,
+                          borderRadius: BorderRadius.circular(30),
                         ),
-                        title: Text("Expense", style: TextStyle(color: Colors.white,),),
+                        child: const ListTile(
+                          leading: CircleAvatar(
+                            backgroundColor: Color.fromARGB(255, 54, 54, 54),
+                            child: Icon(Icons.remove, color: Colors.white,),
+                          ),
+                          title: Text("Expense", style: TextStyle(color: Colors.white,),),
+                        ),
                       ),
                     )
                   ),
                   const SizedBox(width: 10,),
                   Expanded(
-                    child: Container(
-                      decoration: BoxDecoration(
-                        color: Theme.of(context).primaryColorDark,
-                        borderRadius: BorderRadius.circular(30),
-                      ),
-                      child: ListTile(
-                        leading: CircleAvatar(
-                          backgroundColor: Theme.of(context).disabledColor.withOpacity(0.5),
-                          child: const Icon(Icons.arrow_forward_rounded, color: Colors.white,),
+                    child: GestureDetector(
+                      onTap: () {
+                        setState(() {
+                        _currentPageIndex = 3;
+                        });
+                      },
+                      child: Container(
+                        decoration: BoxDecoration(
+                          color: Theme.of(context).primaryColorDark,
+                          borderRadius: BorderRadius.circular(30),
                         ),
-                        title: const Text("Income", style: TextStyle(color: Colors.white,),),
+                        child: ListTile(
+                          leading: CircleAvatar(
+                            backgroundColor: Theme.of(context).disabledColor.withOpacity(0.5),
+                            child: const Icon(Icons.add, color: Colors.white,),
+                          ),
+                          title: const Text("Income", style: TextStyle(color: Colors.white,),),
+                        ),
                       ),
                     )
                   )
@@ -198,7 +212,8 @@ class _HomeState extends State<Home> {
               width: MediaQuery.sizeOf(context).width,
               height: 320,
               decoration: BoxDecoration(
-                color: Theme.of(context).disabledColor,
+                color: Theme.of(context).primaryColor,
+                border: Border.all(color: Theme.of(context).primaryColorLight),
                 borderRadius: BorderRadius.circular(35),
               ),
               margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 0),

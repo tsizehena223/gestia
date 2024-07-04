@@ -132,7 +132,10 @@ class _TransactionListState extends State<TransactionList> {
               child: Container(
                 margin: const EdgeInsets.symmetric(horizontal: 20),
                 decoration: BoxDecoration(
-                  color: Theme.of(context).disabledColor,
+                  color: Theme.of(context).primaryColor,
+                  border: Border.all(
+                    color: Theme.of(context).primaryColorLight,
+                  ),
                   borderRadius: BorderRadius.circular(25),
                 ),
                 child: ListTransactionWidget(transactionBox: transactionBox, transactions: transactions, lengthTransaction: transactions.length,),

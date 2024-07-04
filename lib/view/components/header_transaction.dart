@@ -12,23 +12,23 @@ class HeaderTransaction extends StatelessWidget {
       padding: const EdgeInsets.symmetric(horizontal: 5),
       width: MediaQuery.of(context).size.width,
       decoration: BoxDecoration(
-        color: Theme.of(context).primaryColorDark,
+        color: Theme.of(context).primaryColorLight,
         borderRadius: BorderRadius.circular(26),
       ),
       child: ListTile(
         trailing: CircleAvatar(
-          backgroundColor: Theme.of(context).primaryColorLight,
-          child: Icon(Icons.compare_arrows, color: Theme.of(context).primaryColorDark,),
+          backgroundColor: Theme.of(context).disabledColor,
+          child: Icon(Icons.compare_arrows, color: Theme.of(context).primaryColorLight,),
         ),
         title: const Text(
           "Transactions",
           style: TextStyle(
-            color: Colors.white,
+            color: Colors.black,
           ),
         ),
         subtitle: Text(
           "List of your transactions",
-          style: TextStyle(color: Theme.of(context).primaryColorLight),
+          style: TextStyle(color: Theme.of(context).disabledColor),
         ),
       ),
     );

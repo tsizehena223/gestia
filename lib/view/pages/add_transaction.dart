@@ -81,7 +81,7 @@ class _AddTransactionState extends State<AddTransaction> {
           child: Column(
             children: [
               Container(
-                margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
+                margin: const EdgeInsets.symmetric(horizontal: 20),
                 child: SvgPicture.asset(
                   "assets/images/logo.svg",
                   colorFilter: ColorFilter.mode(Theme.of(context).focusColor, BlendMode.srcIn),
@@ -89,164 +89,172 @@ class _AddTransactionState extends State<AddTransaction> {
                 ),
               ),
               Container(
-                margin: const EdgeInsets.only(bottom: 30),
-                child: Text(
-                  "Add Transaction",
-                  style: TextStyle(
-                    color: Theme.of(context).focusColor,
-                    fontSize: 25,
-                    fontFamily: "Monospace",
-                  ),
-                ),
-              ),
-              Container(
                 margin: const EdgeInsets.symmetric(horizontal: 40,),
-                child: Column(
-                  children: [
-                    TextField(
-                      keyboardType: TextInputType.text,
-                      controller: titleController,
-                      style: const TextStyle(color: Colors.white),
-                      decoration: InputDecoration(
-                        enabledBorder: const OutlineInputBorder(
-                          borderSide: BorderSide(
-                            color: Color.fromARGB(255, 17, 141, 21),
+                child: Container(
+                  padding: const EdgeInsets.all(20),
+                  decoration: BoxDecoration(
+                    border: Border.all(color: Theme.of(context).primaryColorLight),
+                    borderRadius: BorderRadius.circular(20),
+                  ),
+                  child: Column(
+                    children: [
+                      Container(
+                        margin: const EdgeInsets.only(bottom: 30),
+                        child: Text(
+                          "Add Transaction",
+                          style: TextStyle(
+                            color: Theme.of(context).focusColor,
+                            fontSize: 25,
+                            fontFamily: "Monospace",
                           ),
-                          borderRadius: BorderRadius.all(Radius.circular(20)),
-                        ),
-                        focusColor: Colors.white,
-                        focusedBorder: const OutlineInputBorder(
-                          borderSide: BorderSide(
-                            color: Color.fromARGB(255, 17, 141, 21),
-                          ),
-                          borderRadius: BorderRadius.all(Radius.circular(20)),
-                        ),
-                        labelText: "Title",
-                        labelStyle: TextStyle(color: Theme.of(context).focusColor),
-                        border: const OutlineInputBorder(
-                          borderRadius: BorderRadius.all(Radius.circular(20)),
                         ),
                       ),
-                      onChanged: (String? value) => {
-                        if (value == null || value == "") {
-                          setState(
-                            () {
-                              _isInputTitleValid = false;
-                            }
-                          )
-                        } else {
-                          setState(() {
-                            _isInputTitleValid = true;
-                          })
+                      TextField(
+                        keyboardType: TextInputType.text,
+                        controller: titleController,
+                        style: const TextStyle(color: Colors.white),
+                        decoration: InputDecoration(
+                          enabledBorder: const OutlineInputBorder(
+                            borderSide: BorderSide(
+                              color: Color.fromARGB(255, 17, 141, 21),
+                            ),
+                            borderRadius: BorderRadius.all(Radius.circular(20)),
+                          ),
+                          focusColor: Colors.white,
+                          focusedBorder: const OutlineInputBorder(
+                            borderSide: BorderSide(
+                              color: Color.fromARGB(255, 17, 141, 21),
+                            ),
+                            borderRadius: BorderRadius.all(Radius.circular(20)),
+                          ),
+                          labelText: "Title",
+                          labelStyle: TextStyle(color: Theme.of(context).focusColor),
+                          border: const OutlineInputBorder(
+                            borderRadius: BorderRadius.all(Radius.circular(20)),
+                          ),
+                        ),
+                        onChanged: (String? value) => {
+                          if (value == null || value == "") {
+                            setState(
+                              () {
+                                _isInputTitleValid = false;
+                              }
+                            )
+                          } else {
+                            setState(() {
+                              _isInputTitleValid = true;
+                            })
+                          },
                         },
-                      },
-                    ),
-                    const SizedBox(height: 20,),
-                    TextField(
-                      keyboardType: TextInputType.number,
-                      controller: amountController,
-                      style: const TextStyle(color: Colors.white),
-                      decoration: InputDecoration(
-                        enabledBorder: const OutlineInputBorder(
-                          borderSide: BorderSide(
-                            color: Color.fromARGB(255, 17, 141, 21),
-                          ),
-                          borderRadius: BorderRadius.all(Radius.circular(20)),
-                        ),
-                        focusColor: Colors.white,
-                        focusedBorder: const OutlineInputBorder(
-                          borderSide: BorderSide(
-                            color: Color.fromARGB(255, 17, 141, 21),
-                          ),
-                          borderRadius: BorderRadius.all(Radius.circular(20)),
-                        ),
-                        labelText: "Amount",
-                        labelStyle: TextStyle(color: Theme.of(context).focusColor),
-                        border: const OutlineInputBorder(
-                          borderRadius: BorderRadius.all(Radius.circular(20)),
-                        ),
                       ),
-                      onChanged: (String? value) => {
-                        if (value == null || value == "") {
-                          setState(
-                            () {
-                              _isInputAmountValid = false;
-                            }
-                          )
-                        } else {
-                          setState(() {
-                            _isInputAmountValid = true;
-                          })
+                      const SizedBox(height: 20,),
+                      TextField(
+                        keyboardType: TextInputType.number,
+                        controller: amountController,
+                        style: const TextStyle(color: Colors.white),
+                        decoration: InputDecoration(
+                          enabledBorder: const OutlineInputBorder(
+                            borderSide: BorderSide(
+                              color: Color.fromARGB(255, 17, 141, 21),
+                            ),
+                            borderRadius: BorderRadius.all(Radius.circular(20)),
+                          ),
+                          focusColor: Colors.white,
+                          focusedBorder: const OutlineInputBorder(
+                            borderSide: BorderSide(
+                              color: Color.fromARGB(255, 17, 141, 21),
+                            ),
+                            borderRadius: BorderRadius.all(Radius.circular(20)),
+                          ),
+                          labelText: "Amount",
+                          labelStyle: TextStyle(color: Theme.of(context).focusColor),
+                          border: const OutlineInputBorder(
+                            borderRadius: BorderRadius.all(Radius.circular(20)),
+                          ),
+                        ),
+                        onChanged: (String? value) => {
+                          if (value == null || value == "" || int.tryParse(value) == null) {
+                            setState(
+                              () {
+                                _isInputAmountValid = false;
+                              }
+                            )
+                          } else {
+                            setState(() {
+                              _isInputAmountValid = true;
+                            })
+                          },
                         },
-                      },
-                    ),
-                    const SizedBox(height: 20,),
-                    DropdownButtonFormField<String>(
-                      style: const TextStyle(color: Colors.white),
-                      decoration: InputDecoration(
-                        enabledBorder: const OutlineInputBorder(
-                          borderSide: BorderSide(
-                            color: Color.fromARGB(255, 17, 141, 21),
-                          ),
-                          borderRadius: BorderRadius.all(Radius.circular(20)),
-                        ),
-                        focusColor: Colors.white,
-                        focusedBorder: const OutlineInputBorder(
-                          borderSide: BorderSide(
-                            color: Color.fromARGB(255, 17, 141, 21),
-                          ),
-                          borderRadius: BorderRadius.all(Radius.circular(20)),
-                        ),
-                        labelText: "Category",
-                        labelStyle: TextStyle(color: Theme.of(context).focusColor),
-                        border: const OutlineInputBorder(
-                          borderRadius: BorderRadius.all(Radius.circular(20)),
-                        ),
                       ),
-                      value: _selectedCategory,
-                      onChanged: (String? newValue) {
-                        setState(() {
-                          _selectedCategory = newValue;
-                        });
-                      },
-                      items: _categories.map<DropdownMenuItem<String>>((String value) {
-                        return DropdownMenuItem<String>(
-                          value: value,
-                          child: Text(value),
-                        );
-                      }).toList(),
-                    ),
-                    const SizedBox(height: 20,),
-                    TextFormField(
-                      controller: dateController,
-                      style: const TextStyle(color: Colors.white),
-                      decoration: InputDecoration(
-                        enabledBorder: const OutlineInputBorder(
-                          borderSide: BorderSide(
-                            color: Color.fromARGB(255, 17, 141, 21),
+                      const SizedBox(height: 20,),
+                      DropdownButtonFormField<String>(
+                        style: TextStyle(color: Theme.of(context).primaryColorLight),
+                        dropdownColor: Theme.of(context).primaryColor,
+                        decoration: InputDecoration(
+                          enabledBorder: OutlineInputBorder(
+                            borderSide: BorderSide(
+                              color: Theme.of(context).primaryColorDark,
+                            ),
+                            borderRadius: const BorderRadius.all(Radius.circular(20)),
                           ),
-                          borderRadius: BorderRadius.all(Radius.circular(20)),
-                        ),
-                        focusColor: Colors.white,
-                        focusedBorder: const OutlineInputBorder(
-                          borderSide: BorderSide(
-                            color: Color.fromARGB(255, 17, 141, 21),
+                          focusColor: Theme.of(context).primaryColor,
+                          focusedBorder: OutlineInputBorder(
+                            borderSide: BorderSide(
+                              color: Theme.of(context).primaryColorDark,
+                            ),
+                            borderRadius: const BorderRadius.all(Radius.circular(20)),
                           ),
-                          borderRadius: BorderRadius.all(Radius.circular(20)),
+                          labelText: "Category",
+                          labelStyle: TextStyle(color: Theme.of(context).focusColor),
+                          border: const OutlineInputBorder(
+                            borderRadius: BorderRadius.all(Radius.circular(20)),
+                          ),
                         ),
-                        labelText: "Date",
-                        suffixIcon: const Icon(Icons.calendar_month),
-                        labelStyle: TextStyle(color: Theme.of(context).focusColor),
-                        border: const OutlineInputBorder(
-                          borderRadius: BorderRadius.all(Radius.circular(20)),
-                        ),
+                        value: _selectedCategory,
+                        onChanged: (String? newValue) {
+                          setState(() {
+                            _selectedCategory = newValue;
+                          });
+                        },
+                        items: _categories.map<DropdownMenuItem<String>>((String value) {
+                          return DropdownMenuItem<String>(
+                            value: value,
+                            child: Text(value),
+                          );
+                        }).toList(),
                       ),
-                      readOnly: true,
-                      onTap: () {
-                        _selectDate(context);
-                      },
-                    ),
-                  ],
+                      const SizedBox(height: 20,),
+                      TextFormField(
+                        controller: dateController,
+                        style: const TextStyle(color: Colors.white),
+                        decoration: InputDecoration(
+                          enabledBorder: const OutlineInputBorder(
+                            borderSide: BorderSide(
+                              color: Color.fromARGB(255, 17, 141, 21),
+                            ),
+                            borderRadius: BorderRadius.all(Radius.circular(20)),
+                          ),
+                          focusColor: Colors.white,
+                          focusedBorder: const OutlineInputBorder(
+                            borderSide: BorderSide(
+                              color: Color.fromARGB(255, 17, 141, 21),
+                            ),
+                            borderRadius: BorderRadius.all(Radius.circular(20)),
+                          ),
+                          labelText: "Date",
+                          suffixIcon: const Icon(Icons.calendar_month),
+                          labelStyle: TextStyle(color: Theme.of(context).focusColor),
+                          border: const OutlineInputBorder(
+                            borderRadius: BorderRadius.all(Radius.circular(20)),
+                          ),
+                        ),
+                        readOnly: true,
+                        onTap: () {
+                          _selectDate(context);
+                        },
+                      ),
+                    ],
+                  ),
                 ),
               ),
               Visibility(
