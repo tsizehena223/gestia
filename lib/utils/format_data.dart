@@ -2,9 +2,16 @@ import 'package:gestia/model/transaction.dart';
 import 'package:intl/intl.dart';
 
 class FormatData {
+  static String formatTotalNumber(int number) {
+    if (number >= 1000000) {
+      return '${(number / 1000000).toStringAsFixed(1)} K';
+    }
+    return NumberFormat("#,###").format(number).replaceAll(",", " ");
+  }
+
   static String formatNumber(int number) {
-    if (number >= 100000000) {
-      return '${(number / 10000000).toStringAsFixed(1)} M';
+    if (number >= 1000000000) {
+      return '${(number / 1000000000).toStringAsFixed(1)} M';
     } else  {
       return NumberFormat("#,###").format(number).replaceAll(",", " ");
     }

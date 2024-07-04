@@ -94,7 +94,7 @@ class _TransactionListState extends State<TransactionList> {
                                   children: [
                                     const Text("Ar  ", style: TextStyle(color: Colors.white),),
                                     Text(
-                                      FormatData.formatNumber(totalExpense),
+                                      FormatData.formatTotalNumber(totalExpense),
                                       style: const TextStyle(
                                         color: Colors.white,
                                         fontSize: 20,
@@ -123,7 +123,7 @@ class _TransactionListState extends State<TransactionList> {
                                   children: [
                                     const Text("Ar  ", style: TextStyle(color: Colors.white),),
                                     Text(
-                                      FormatData.formatNumber(totalIncome),
+                                      FormatData.formatTotalNumber(totalIncome),
                                       style: const TextStyle(color: Colors.white, fontSize: 20),
                                     ),
                                   ]
@@ -138,7 +138,7 @@ class _TransactionListState extends State<TransactionList> {
                 ],
               ),
             ),
-        
+
             Expanded(
               child: Container(
                 margin: const EdgeInsets.symmetric(horizontal: 20),
