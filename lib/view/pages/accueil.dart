@@ -95,7 +95,7 @@ class _AccueilState extends State<Accueil> {
                 child: ElevatedButton(
                   onPressed: !(_isInputNameValid) ? null : () async {
                     await SharedPreferencesUtil.storeUserName(userNameController.text);
-                    Navigator.push(
+                    Navigator.pushReplacement(
                       // ignore: use_build_context_synchronously
                       context,
                       MaterialPageRoute(builder: (context) => const Home()),
