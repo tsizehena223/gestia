@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-class HeaderTransaction extends StatelessWidget {
-  const HeaderTransaction({
+class HeaderReport extends StatelessWidget {
+  const HeaderReport({
     super.key,
   });
 
@@ -18,16 +18,16 @@ class HeaderTransaction extends StatelessWidget {
       child: ListTile(
         trailing: CircleAvatar(
           backgroundColor: Theme.of(context).focusColor,
-          child: Icon(Icons.compare_arrows, color: Theme.of(context).primaryColorLight,),
+          child: Icon(Icons.leaderboard, color: Theme.of(context).primaryColorLight,),
         ),
         title: const Text(
-          "Transactions",
+          "Report",
           style: TextStyle(
             color: Colors.white,
           ),
         ),
         subtitle: Text(
-          "List of your transactions",
+          "Report of your transactions",
           style: TextStyle(color: Theme.of(context).focusColor,),
         ),
       ),

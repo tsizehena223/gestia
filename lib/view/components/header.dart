@@ -12,7 +12,7 @@ class Header extends StatelessWidget {
       margin: const EdgeInsets.only(top: 20, right: 20, left: 20,),
       width: MediaQuery.of(context).size.width,
       decoration: BoxDecoration(
-        color: Theme.of(context).primaryColorLight,
+        color: Theme.of(context).disabledColor,
         borderRadius: BorderRadius.circular(26),
       ),
       child: FutureBuilder(
@@ -21,18 +21,18 @@ class Header extends StatelessWidget {
           String data = snapshot.data ?? "UserName";
           return ListTile(
             trailing: CircleAvatar(
-              backgroundColor: Theme.of(context).disabledColor,
+              backgroundColor: Theme.of(context).focusColor,
               child: Icon(Icons.person, color: Theme.of(context).primaryColorLight,),
             ),
             title: Text(
               data,
               style: const TextStyle(
-                color: Colors.black,
+                color: Colors.white,
               ),
             ),
             subtitle: Text(
               "Welcome to GestIA",
-              style: TextStyle(color: Theme.of(context).disabledColor),
+              style: TextStyle(color: Theme.of(context).focusColor),
             ),
           );
         }
