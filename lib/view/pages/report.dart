@@ -13,8 +13,7 @@ class ReportPage extends StatefulWidget {
 
 class ReportPageState extends State<ReportPage> {
 
-  late List<BarChartGroupData> rawBarGroups;
-  late List<BarChartGroupData> showingBarGroups;
+  List<BarChartGroupData> showingBarGroups = [];
 
   double _sumAmount(int month, int year, String category) {
     var box = Hive.box<Transaction>('transactions');
@@ -31,17 +30,24 @@ class ReportPageState extends State<ReportPage> {
     return total.toDouble() / 10000;
   }
 
+  int selectedYear = DateTime.now().year;
+  List<int> years = List<int>.generate(100, (int index) => (2000 + index));
+
+  void changeGraph(int year) {
+    showingBarGroups.clear();
+    for (int i = 0; i < 12; i++) {
+      double income = _sumAmount(i + 1, year, "income");
+      double expense = _sumAmount(i + 1, year, "expense");
+      showingBarGroups.add(makeGroupData(i, income, expense));
+      selectedYear = year;
+      setState(() {});
+    }
+  }
+
   @override
   void initState() {
     super.initState();
-
-    showingBarGroups = [];
-
-    for (int i = 0; i < 12; i++) {
-      double income = _sumAmount(i + 1, 2024, "income");
-      double expense = _sumAmount(i + 1, 2024, "expense");
-      showingBarGroups.add(makeGroupData(i, income, expense));
-    }
+    changeGraph(selectedYear);
   }
 
   @override
@@ -50,8 +56,17 @@ class ReportPageState extends State<ReportPage> {
       children: [
         const HeaderReport(),
         Container(
+          child: yearDropDown(),
+        ),
+        Container(
           height: 350,
           margin: const EdgeInsets.all(20),
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(20),
+            border: Border.all(
+              color: Theme.of(context).primaryColorLight,
+            ),
+          ),
           child: Column(
             children: <Widget>[
               const SizedBox(
@@ -154,14 +169,41 @@ class ReportPageState extends State<ReportPage> {
         BarChartRodData(
           toY: y1,
           color: Colors.green,
-          width: 4,
+          width: 5,
         ),
         BarChartRodData(
           toY: y2,
           color: Colors.red,
-          width: 4,
+          width: 5,
         ),
       ],
+    );
+  }
+
+  Center yearDropDown() {
+    return Center(
+      child: Container(
+        margin: const EdgeInsets.symmetric(vertical: 20),
+        child: DropdownButton<int>(
+          focusColor: Theme.of(context).primaryColor,
+          value: selectedYear,
+          hint: const Text('Select Year'),
+          items: years.map((int year) {
+            return DropdownMenuItem<int>(
+              value: year,
+              child: Text(
+                year.toString(),
+                style: TextStyle(
+                  color: Theme.of(context).focusColor,
+                ),
+              ),
+            );
+          }).toList(),
+          onChanged: (int? newValue) {
+            changeGraph(newValue ?? DateTime.now().year);
+          },
+        ),
+      ),
     );
   }
 }
