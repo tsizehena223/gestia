@@ -3,7 +3,7 @@ import 'package:gestia/model/transaction.dart';
 import 'package:gestia/service/transaction_service.dart';
 import 'package:gestia/utils/format_data.dart';
 import 'package:gestia/utils/shared_preferences_util.dart';
-import 'package:gestia/view/components/header_transaction.dart';
+import 'package:gestia/view/components/header_widget.dart';
 import 'package:gestia/view/components/list_transaction_widget.dart';
 import 'package:hive_flutter/adapters.dart';
 
@@ -53,11 +53,15 @@ class _TransactionListState extends State<TransactionList> {
         height: MediaQuery.sizeOf(context).height,
         child: Column(
           children: [
-            const HeaderTransaction(),
+            const HeaderWidget(
+              title: 'Transactions',
+              subtitle: 'List of your transactions',
+              icon: Icons.compare_arrows,
+            ),
             Container(
-              margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
+              margin: const EdgeInsets.symmetric(horizontal: 10),
               decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(25),
+                borderRadius: BorderRadius.circular(30),
                 color: Theme.of(context).primaryColorLight,
               ),
               child: Column(
@@ -68,7 +72,7 @@ class _TransactionListState extends State<TransactionList> {
                       children: [
                         Expanded(
                           child: Card(
-                            color: Theme.of(context).disabledColor,
+                            color: Theme.of(context).disabledColor.withOpacity(.4),
                             child: Container(
                               padding: const EdgeInsets.symmetric(vertical: 10),
                               child: ListTile(
@@ -97,7 +101,7 @@ class _TransactionListState extends State<TransactionList> {
                         ),
                         Expanded(
                           child: Card(
-                            color: Theme.of(context).primaryColorDark,
+                            color: Theme.of(context).primaryColorDark.withOpacity(.8),
                             child: Container(
                               padding: const EdgeInsets.symmetric(vertical: 10),
                               child: ListTile(
@@ -130,13 +134,10 @@ class _TransactionListState extends State<TransactionList> {
 
             Expanded(
               child: Container(
-                margin: const EdgeInsets.symmetric(horizontal: 20),
+                margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
                 decoration: BoxDecoration(
-                  color: Theme.of(context).primaryColor,
-                  border: Border.all(
-                    color: Theme.of(context).primaryColorLight,
-                  ),
-                  borderRadius: BorderRadius.circular(25),
+                  color: Theme.of(context).disabledColor,
+                  borderRadius: BorderRadius.circular(30),
                 ),
                 child: ListTransactionWidget(transactionBox: transactionBox, transactions: transactions, lengthTransaction: transactions.length,),
               ),

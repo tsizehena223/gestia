@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:gestia/model/transaction.dart';
 import 'package:gestia/service/transaction_service.dart';
 import 'package:gestia/utils/shared_preferences_util.dart';
+import 'package:gestia/view/components/header_widget.dart';
 import 'package:gestia/view/pages/home.dart';
 import 'package:hive/hive.dart';
 
@@ -96,27 +97,21 @@ class _AddTransactionState extends State<AddTransaction> {
         child: SingleChildScrollView(
           child: Column(
             children: [
+              const HeaderWidget(
+                title: 'Add transaction',
+                subtitle: 'Insert new transaction',
+                icon: Icons.add,
+              ),
               Container(
-                margin: const EdgeInsets.symmetric(horizontal: 40,),
+                margin: const EdgeInsets.symmetric(horizontal: 10),
                 child: Container(
                   padding: const EdgeInsets.all(20),
                   decoration: BoxDecoration(
-                    border: Border.all(color: Theme.of(context).primaryColorLight),
+                    color: Theme.of(context).disabledColor,
                     borderRadius: BorderRadius.circular(20),
                   ),
                   child: Column(
                     children: [
-                      Container(
-                        margin: const EdgeInsets.only(bottom: 30),
-                        child: Text(
-                          "Add Transaction",
-                          style: TextStyle(
-                            color: Theme.of(context).focusColor,
-                            fontSize: 25,
-                            fontFamily: "Monospace",
-                          ),
-                        ),
-                      ),
                       TextField(
                         keyboardType: TextInputType.text,
                         controller: titleController,

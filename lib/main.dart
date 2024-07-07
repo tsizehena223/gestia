@@ -36,7 +36,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primaryColorLight: const Color.fromARGB(255, 202, 202, 202),
         primaryColorDark: const Color.fromARGB(255, 17, 141, 21),
-        disabledColor: const Color(0xFF242425),
+        disabledColor: const Color(0xFF242425).withOpacity(.5),
         primaryColor: const Color.fromARGB(255, 3, 3, 3),
         focusColor: const Color(0xFF868686),
         fontFamily: "Roboto",

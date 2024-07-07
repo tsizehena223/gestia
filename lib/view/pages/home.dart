@@ -70,7 +70,7 @@ class _HomeState extends State<Home> {
         height: 80,
         width: MediaQuery.sizeOf(context).width,
         child: Container(
-          margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+          margin: const EdgeInsets.all(10),
           decoration: BoxDecoration(
             color:Theme.of(context).disabledColor,
             borderRadius: BorderRadius.circular(25),
@@ -116,7 +116,7 @@ class _HomeState extends State<Home> {
             const Header(),
             // Begin
             Container(
-              margin: const EdgeInsets.only(top: 10, right: 20, left: 20,),
+              margin: const EdgeInsets.symmetric(horizontal: 10),
               padding: const EdgeInsets.symmetric(vertical: 10),
               width: MediaQuery.of(context).size.width,
               decoration: BoxDecoration(
@@ -156,7 +156,7 @@ class _HomeState extends State<Home> {
             ),
             // End
             Container(
-              margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
+              margin: const EdgeInsets.all(10),
               child: Row(
                 children: [
                   Expanded(
@@ -171,12 +171,12 @@ class _HomeState extends State<Home> {
                           color: Theme.of(context).disabledColor,
                           borderRadius: BorderRadius.circular(30),
                         ),
-                        child: const ListTile(
+                        child: ListTile(
                           leading: CircleAvatar(
-                            backgroundColor: Color.fromARGB(255, 54, 54, 54),
-                            child: Icon(Icons.remove, color: Colors.white,),
+                            backgroundColor: Theme.of(context).disabledColor,
+                            child: const Icon(Icons.remove, color: Colors.white,),
                           ),
-                          title: Text("Expense", style: TextStyle(color: Colors.white,),),
+                          title: const Text("Expense", style: TextStyle(color: Colors.white,),),
                         ),
                       ),
                     )
@@ -196,7 +196,7 @@ class _HomeState extends State<Home> {
                         ),
                         child: ListTile(
                           leading: CircleAvatar(
-                            backgroundColor: Theme.of(context).disabledColor.withOpacity(0.5),
+                            backgroundColor: Theme.of(context).disabledColor.withOpacity(0.3),
                             child: const Icon(Icons.add, color: Colors.white,),
                           ),
                           title: const Text("Income", style: TextStyle(color: Colors.white,),),
@@ -212,11 +212,10 @@ class _HomeState extends State<Home> {
               width: MediaQuery.sizeOf(context).width,
               height: 300,
               decoration: BoxDecoration(
-                color: Theme.of(context).primaryColor,
-                border: Border.all(color: Theme.of(context).primaryColorLight),
+                color: Theme.of(context).disabledColor,
                 borderRadius: BorderRadius.circular(35),
               ),
-              margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 0),
+              margin: const EdgeInsets.symmetric(horizontal: 10),
               child: Column(
                 children: [
                   Row(

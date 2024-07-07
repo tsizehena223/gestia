@@ -1,7 +1,7 @@
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:gestia/model/transaction.dart';
-import 'package:gestia/view/components/header_report.dart';
+import 'package:gestia/view/components/header_widget.dart';
 import 'package:hive/hive.dart';
 
 class ReportPage extends StatefulWidget {
@@ -56,7 +56,11 @@ class ReportPageState extends State<ReportPage> {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        const HeaderReport(),
+        const HeaderWidget(
+          title: 'Report',
+          subtitle: 'Report of your transactions',
+          icon: Icons.leaderboard,
+        ),
         Container(
           child: yearDropDown(),
         ),
