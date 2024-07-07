@@ -60,62 +60,60 @@ class ReportPageState extends State<ReportPage> {
         Container(
           child: yearDropDown(),
         ),
-        SingleChildScrollView(
-          child: Container(
-            height: 350,
-            margin: const EdgeInsets.all(20),
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(20),
-              border: Border.all(
-                color: Theme.of(context).primaryColorLight,
-              ),
+        Container(
+          height: 350,
+          margin: const EdgeInsets.all(20),
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(20),
+            border: Border.all(
+              color: Theme.of(context).primaryColorLight,
             ),
-            child: Column(
-              children: <Widget>[
-                const SizedBox(
-                  height: 30,
-                ),
-                Expanded(
-                  child: BarChart(
-                    BarChartData(
-                      maxY: 101,
-                      titlesData: FlTitlesData(
-                        show: true,
-                        rightTitles: const AxisTitles(
-                          sideTitles: SideTitles(showTitles: false),
-                        ),
-                        topTitles: const AxisTitles(
-                          sideTitles: SideTitles(showTitles: false),
-                        ),
-                        bottomTitles: AxisTitles(
-                          sideTitles: SideTitles(
-                            showTitles: true,
-                            getTitlesWidget: bottomTitles,
-                            reservedSize: 42,
-                          ),
-                        ),
-                        leftTitles: AxisTitles(
-                          sideTitles: SideTitles(
-                            showTitles: false,
-                            reservedSize: 28,
-                            interval: 1,
-                            getTitlesWidget: leftTitles,
-                          ),
+          ),
+          child: Column(
+            children: <Widget>[
+              const SizedBox(
+                height: 30,
+              ),
+              Expanded(
+                child: BarChart(
+                  BarChartData(
+                    maxY: 101,
+                    titlesData: FlTitlesData(
+                      show: true,
+                      rightTitles: const AxisTitles(
+                        sideTitles: SideTitles(showTitles: false),
+                      ),
+                      topTitles: const AxisTitles(
+                        sideTitles: SideTitles(showTitles: false),
+                      ),
+                      bottomTitles: AxisTitles(
+                        sideTitles: SideTitles(
+                          showTitles: true,
+                          getTitlesWidget: bottomTitles,
+                          reservedSize: 42,
                         ),
                       ),
-                      borderData: FlBorderData(
-                        show: false,
+                      leftTitles: AxisTitles(
+                        sideTitles: SideTitles(
+                          showTitles: false,
+                          reservedSize: 28,
+                          interval: 1,
+                          getTitlesWidget: leftTitles,
+                        ),
                       ),
-                      barGroups: showingBarGroups,
-                      gridData: const FlGridData(show: true),
                     ),
+                    borderData: FlBorderData(
+                      show: false,
+                    ),
+                    barGroups: showingBarGroups,
+                    gridData: const FlGridData(show: true),
                   ),
                 ),
-                const SizedBox(
-                  height: 12,
-                ),
-              ],
-            ),
+              ),
+              const SizedBox(
+                height: 12,
+              ),
+            ],
           ),
         ),
       ],
