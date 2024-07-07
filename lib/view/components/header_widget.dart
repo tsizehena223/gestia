@@ -37,6 +37,10 @@ class HeaderWidget extends StatelessWidget {
           subtitle,
           style: TextStyle(color: Theme.of(context).focusColor, fontSize: 12),
         ),
+        trailing: CircleAvatar(
+              backgroundColor: Theme.of(context).disabledColor,
+              child: Icon(Icons.person_2_rounded, color: Theme.of(context).primaryColorDark,),
+            ),
       ),
     );
   }

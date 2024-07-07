@@ -22,7 +22,7 @@ class Header extends StatelessWidget {
           return ListTile(
             leading: CircleAvatar(
               backgroundColor: Theme.of(context).disabledColor,
-              child: Icon(Icons.person, color: Theme.of(context).primaryColorDark,),
+              child: Icon(Icons.home_filled, color: Theme.of(context).focusColor,),
             ),
             title: Text(
               data,
@@ -34,6 +34,10 @@ class Header extends StatelessWidget {
             subtitle: Text(
               "Welcome to GestIA",
               style: TextStyle(color: Theme.of(context).focusColor, fontSize: 12),
+            ),
+            trailing: CircleAvatar(
+              backgroundColor: Theme.of(context).disabledColor,
+              child: Icon(Icons.person, color: Theme.of(context).primaryColorDark,),
             ),
           );
         }

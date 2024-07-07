@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:gestia/model/transaction.dart';
 import 'package:gestia/service/transaction_service.dart';
 import 'package:gestia/utils/shared_preferences_util.dart';
@@ -102,12 +103,28 @@ class _AddTransactionState extends State<AddTransaction> {
                 subtitle: 'Insert new transaction',
                 icon: Icons.add,
               ),
+              Visibility(
+                visible: true,
+                child: Container(
+                  alignment: Alignment.center,
+                  decoration: BoxDecoration(
+                    color: Theme.of(context).primaryColorLight.withOpacity(.7),
+                    borderRadius: BorderRadius.circular(30),
+                  ),
+                  margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+                  height: 150,
+                  child:  SvgPicture.asset(
+                    "assets/images/logo.svg",
+                    colorFilter: const ColorFilter.mode(Color.fromARGB(255, 2, 77, 5), BlendMode.srcIn),
+                  ),
+                ),
+              ),
               Container(
-                margin: const EdgeInsets.symmetric(horizontal: 10),
+                margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
                 child: Container(
                   padding: const EdgeInsets.all(20),
                   decoration: BoxDecoration(
-                    color: Theme.of(context).disabledColor,
+                    color: Theme.of(context).disabledColor.withOpacity(.3),
                     borderRadius: BorderRadius.circular(20),
                   ),
                   child: Column(
@@ -283,7 +300,7 @@ class _AddTransactionState extends State<AddTransaction> {
                         vertical: 10,
                         horizontal: 70,
                       ),
-                      backgroundColor: Theme.of(context).primaryColorDark,
+                      backgroundColor: Theme.of(context).primaryColorDark.withOpacity(.4),
                     ),
                     child: const Text(
                       "Save",
@@ -306,18 +323,18 @@ class _AddTransactionState extends State<AddTransaction> {
 
   InputDecoration inputDecoration(BuildContext context, String label) {
     return InputDecoration(
-      enabledBorder: const OutlineInputBorder(
+      enabledBorder: OutlineInputBorder(
         borderSide: BorderSide(
-          color: Color.fromARGB(255, 17, 141, 21),
+          color: Theme.of(context).focusColor,
         ),
-        borderRadius: BorderRadius.all(Radius.circular(20)),
+        borderRadius: const BorderRadius.all(Radius.circular(20)),
       ),
       focusColor: Colors.white,
-      focusedBorder: const OutlineInputBorder(
+      focusedBorder: OutlineInputBorder(
         borderSide: BorderSide(
-          color: Color.fromARGB(255, 17, 141, 21),
+          color: Theme.of(context).focusColor,
         ),
-        borderRadius: BorderRadius.all(Radius.circular(20)),
+        borderRadius: const BorderRadius.all(Radius.circular(20)),
       ),
       labelText: label,
       labelStyle: TextStyle(color: Theme.of(context).focusColor),
