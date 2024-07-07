@@ -98,6 +98,7 @@ class _AddTransactionState extends State<AddTransaction> {
         child: SingleChildScrollView(
           child: Column(
             children: [
+              const SizedBox(height: 30),
               const HeaderWidget(
                 title: 'Add transaction',
                 subtitle: 'Insert new transaction',

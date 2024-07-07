@@ -75,6 +75,7 @@ class ReportPageState extends State<ReportPage> {
 
     return Column(
       children: [
+        const SizedBox(height: 30),
         const HeaderWidget(
           title: 'Report',
           subtitle: 'Report of your transactions',
