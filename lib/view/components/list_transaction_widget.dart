@@ -43,9 +43,9 @@ class ListTransactionWidget extends StatelessWidget {
                 ),
               ),
               trailing: Text(
-                "Ar ${FormatData.formatNumber(transaction.amount)}",
+                "${(transaction.category == "expense") ? '-' : ''} ${FormatData.formatNumber(transaction.amount)} Ar",
                 style: TextStyle(
-                  color: (transaction.category == "expense") ? Colors.red.withOpacity(.8) : Colors.green.withOpacity(.8),
+                  color: Theme.of(context).focusColor,
                   fontSize: 15,
                 ),
               ),
