@@ -90,7 +90,7 @@ class _AddTransactionState extends State<AddTransaction> {
     final transcationBox = Hive.box<Transaction>(TransactionService.boxName);
 
     return Scaffold(
-        body: SizedBox(
+      body: SizedBox(
         width: MediaQuery.sizeOf(context).width,
         height: MediaQuery.sizeOf(context).height,
         child: SingleChildScrollView(

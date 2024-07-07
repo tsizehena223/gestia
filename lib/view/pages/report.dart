@@ -27,6 +27,8 @@ class ReportPageState extends State<ReportPage> {
       .where((transaction) => transaction.category == category)
       .fold(0, (sum, item) => sum + item.amount);
 
+    if (total >= 1000000) return 100;
+
     return total.toDouble() / 10000;
   }
 
@@ -58,60 +60,62 @@ class ReportPageState extends State<ReportPage> {
         Container(
           child: yearDropDown(),
         ),
-        Container(
-          height: 350,
-          margin: const EdgeInsets.all(20),
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(20),
-            border: Border.all(
-              color: Theme.of(context).primaryColorLight,
-            ),
-          ),
-          child: Column(
-            children: <Widget>[
-              const SizedBox(
-                height: 30,
+        SingleChildScrollView(
+          child: Container(
+            height: 350,
+            margin: const EdgeInsets.all(20),
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(20),
+              border: Border.all(
+                color: Theme.of(context).primaryColorLight,
               ),
-              Expanded(
-                child: BarChart(
-                  BarChartData(
-                    maxY: 101,
-                    titlesData: FlTitlesData(
-                      show: true,
-                      rightTitles: const AxisTitles(
-                        sideTitles: SideTitles(showTitles: false),
-                      ),
-                      topTitles: const AxisTitles(
-                        sideTitles: SideTitles(showTitles: false),
-                      ),
-                      bottomTitles: AxisTitles(
-                        sideTitles: SideTitles(
-                          showTitles: true,
-                          getTitlesWidget: bottomTitles,
-                          reservedSize: 42,
+            ),
+            child: Column(
+              children: <Widget>[
+                const SizedBox(
+                  height: 30,
+                ),
+                Expanded(
+                  child: BarChart(
+                    BarChartData(
+                      maxY: 101,
+                      titlesData: FlTitlesData(
+                        show: true,
+                        rightTitles: const AxisTitles(
+                          sideTitles: SideTitles(showTitles: false),
+                        ),
+                        topTitles: const AxisTitles(
+                          sideTitles: SideTitles(showTitles: false),
+                        ),
+                        bottomTitles: AxisTitles(
+                          sideTitles: SideTitles(
+                            showTitles: true,
+                            getTitlesWidget: bottomTitles,
+                            reservedSize: 42,
+                          ),
+                        ),
+                        leftTitles: AxisTitles(
+                          sideTitles: SideTitles(
+                            showTitles: false,
+                            reservedSize: 28,
+                            interval: 1,
+                            getTitlesWidget: leftTitles,
+                          ),
                         ),
                       ),
-                      leftTitles: AxisTitles(
-                        sideTitles: SideTitles(
-                          showTitles: true,
-                          reservedSize: 28,
-                          interval: 1,
-                          getTitlesWidget: leftTitles,
-                        ),
+                      borderData: FlBorderData(
+                        show: false,
                       ),
+                      barGroups: showingBarGroups,
+                      gridData: const FlGridData(show: true),
                     ),
-                    borderData: FlBorderData(
-                      show: false,
-                    ),
-                    barGroups: showingBarGroups,
-                    gridData: const FlGridData(show: true),
                   ),
                 ),
-              ),
-              const SizedBox(
-                height: 12,
-              ),
-            ],
+                const SizedBox(
+                  height: 12,
+                ),
+              ],
+            ),
           ),
         ),
       ],
