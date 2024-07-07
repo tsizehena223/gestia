@@ -111,7 +111,7 @@ class _AddTransactionState extends State<AddTransaction> {
                     color: Theme.of(context).primaryColorLight.withOpacity(.7),
                     borderRadius: BorderRadius.circular(30),
                   ),
-                  margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+                  margin: const EdgeInsets.symmetric(horizontal: 15, vertical: 0),
                   height: 150,
                   child:  SvgPicture.asset(
                     "assets/images/logo.svg",
