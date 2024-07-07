@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:gestia/model/transaction.dart';
 import 'package:gestia/service/transaction_service.dart';
 import 'package:gestia/utils/shared_preferences_util.dart';
@@ -19,12 +18,29 @@ class _AddTransactionState extends State<AddTransaction> {
 
   TextEditingController titleController = TextEditingController();
   TextEditingController amountController = TextEditingController();
-  TextEditingController categoryController = TextEditingController();
   TextEditingController dateController = TextEditingController();
-
   final List<String> _categories = ["expense", "income"];
+  final List<IconData> _icons = [
+    Icons.fastfood,
+    Icons.local_hospital,
+    Icons.card_giftcard,
+    Icons.monetization_on,
+    Icons.school,
+    Icons.train,
+  ];
+  final List<Color> _colors = [
+    Colors.red,
+    Colors.green,
+    Colors.blue,
+    Colors.yellow,
+    Colors.orange,
+    Colors.purple,
+  ];
+
   String? _selectedCategory;
   DateTime? _selectedDate;
+  IconData? _selectedIcon;
+  Color? _selectedColor;
 
   @override
   void dispose() {
@@ -81,14 +97,6 @@ class _AddTransactionState extends State<AddTransaction> {
           child: Column(
             children: [
               Container(
-                margin: const EdgeInsets.symmetric(horizontal: 20),
-                child: SvgPicture.asset(
-                  "assets/images/logo.svg",
-                  colorFilter: ColorFilter.mode(Theme.of(context).focusColor, BlendMode.srcIn),
-                  height: 200,
-                ),
-              ),
-              Container(
                 margin: const EdgeInsets.symmetric(horizontal: 40,),
                 child: Container(
                   padding: const EdgeInsets.all(20),
@@ -113,26 +121,7 @@ class _AddTransactionState extends State<AddTransaction> {
                         keyboardType: TextInputType.text,
                         controller: titleController,
                         style: const TextStyle(color: Colors.white),
-                        decoration: InputDecoration(
-                          enabledBorder: const OutlineInputBorder(
-                            borderSide: BorderSide(
-                              color: Color.fromARGB(255, 17, 141, 21),
-                            ),
-                            borderRadius: BorderRadius.all(Radius.circular(20)),
-                          ),
-                          focusColor: Colors.white,
-                          focusedBorder: const OutlineInputBorder(
-                            borderSide: BorderSide(
-                              color: Color.fromARGB(255, 17, 141, 21),
-                            ),
-                            borderRadius: BorderRadius.all(Radius.circular(20)),
-                          ),
-                          labelText: "Title",
-                          labelStyle: TextStyle(color: Theme.of(context).focusColor),
-                          border: const OutlineInputBorder(
-                            borderRadius: BorderRadius.all(Radius.circular(20)),
-                          ),
-                        ),
+                        decoration: inputDecoration(context, 'Title'),
                         onChanged: (String? value) => {
                           if (value == null || value == "") {
                             setState(
@@ -152,26 +141,7 @@ class _AddTransactionState extends State<AddTransaction> {
                         keyboardType: TextInputType.number,
                         controller: amountController,
                         style: const TextStyle(color: Colors.white),
-                        decoration: InputDecoration(
-                          enabledBorder: const OutlineInputBorder(
-                            borderSide: BorderSide(
-                              color: Color.fromARGB(255, 17, 141, 21),
-                            ),
-                            borderRadius: BorderRadius.all(Radius.circular(20)),
-                          ),
-                          focusColor: Colors.white,
-                          focusedBorder: const OutlineInputBorder(
-                            borderSide: BorderSide(
-                              color: Color.fromARGB(255, 17, 141, 21),
-                            ),
-                            borderRadius: BorderRadius.all(Radius.circular(20)),
-                          ),
-                          labelText: "Amount",
-                          labelStyle: TextStyle(color: Theme.of(context).focusColor),
-                          border: const OutlineInputBorder(
-                            borderRadius: BorderRadius.all(Radius.circular(20)),
-                          ),
-                        ),
+                        decoration: inputDecoration(context, 'Amount'),
                         onChanged: (String? value) => {
                           if (value == null || value == "" || int.tryParse(value) == null) {
                             setState(
@@ -190,26 +160,7 @@ class _AddTransactionState extends State<AddTransaction> {
                       DropdownButtonFormField<String>(
                         style: TextStyle(color: Theme.of(context).primaryColorLight),
                         dropdownColor: Theme.of(context).primaryColor,
-                        decoration: InputDecoration(
-                          enabledBorder: OutlineInputBorder(
-                            borderSide: BorderSide(
-                              color: Theme.of(context).primaryColorDark,
-                            ),
-                            borderRadius: const BorderRadius.all(Radius.circular(20)),
-                          ),
-                          focusColor: Theme.of(context).primaryColor,
-                          focusedBorder: OutlineInputBorder(
-                            borderSide: BorderSide(
-                              color: Theme.of(context).primaryColorDark,
-                            ),
-                            borderRadius: const BorderRadius.all(Radius.circular(20)),
-                          ),
-                          labelText: "Category",
-                          labelStyle: TextStyle(color: Theme.of(context).focusColor),
-                          border: const OutlineInputBorder(
-                            borderRadius: BorderRadius.all(Radius.circular(20)),
-                          ),
-                        ),
+                        decoration: inputDecoration(context, 'Category'),
                         value: _selectedCategory,
                         onChanged: (String? newValue) {
                           setState(() {
@@ -224,30 +175,62 @@ class _AddTransactionState extends State<AddTransaction> {
                         }).toList(),
                       ),
                       const SizedBox(height: 20,),
+                      // Icon
+                      DropdownButtonFormField<IconData>(
+                        style: TextStyle(color: Theme.of(context).primaryColorLight),
+                        dropdownColor: Theme.of(context).disabledColor,
+                        decoration: inputDecoration(context, 'Icon'),
+                        value: _selectedIcon,
+                        onChanged: (IconData? newIcon) {
+                          setState(() {
+                            _selectedIcon = newIcon;
+                          });
+                        },
+                        items: _icons.map((IconData icon) {
+                          return DropdownMenuItem<IconData>(
+                            alignment: Alignment.center,
+                            value: icon,
+                            child: Row(
+                              children: [
+                                Icon(icon, color: Theme.of(context).primaryColorLight,),
+                                const SizedBox(width: 10),
+                              ],
+                            ),
+                          );
+                        }).toList(),
+                      ),
+                      const SizedBox(height: 20),
+                      // End icon
+                      DropdownButtonFormField<Color>(
+                        value: _selectedColor,
+                        style: TextStyle(color: Theme.of(context).primaryColorLight),
+                        decoration: inputDecoration(context, 'Color'),
+                        onChanged: (Color? newColor) {
+                          setState(() {
+                            _selectedColor = newColor;
+                          });
+                        },
+                        items: _colors.map((Color color) {
+                          return DropdownMenuItem<Color>(
+                            value: color,
+                            child: Row(
+                              children: [
+                                Container(
+                                  width: 20,
+                                  height: 20,
+                                  color: color,
+                                ),
+                                const SizedBox(width: 5),
+                              ],
+                            ),
+                          );
+                        }).toList(),
+                      ),
+                      const SizedBox(height: 20),
                       TextFormField(
                         controller: dateController,
                         style: const TextStyle(color: Colors.white),
-                        decoration: InputDecoration(
-                          enabledBorder: const OutlineInputBorder(
-                            borderSide: BorderSide(
-                              color: Color.fromARGB(255, 17, 141, 21),
-                            ),
-                            borderRadius: BorderRadius.all(Radius.circular(20)),
-                          ),
-                          focusColor: Colors.white,
-                          focusedBorder: const OutlineInputBorder(
-                            borderSide: BorderSide(
-                              color: Color.fromARGB(255, 17, 141, 21),
-                            ),
-                            borderRadius: BorderRadius.all(Radius.circular(20)),
-                          ),
-                          labelText: "Date",
-                          suffixIcon: const Icon(Icons.calendar_month),
-                          labelStyle: TextStyle(color: Theme.of(context).focusColor),
-                          border: const OutlineInputBorder(
-                            borderRadius: BorderRadius.all(Radius.circular(20)),
-                          ),
-                        ),
+                        decoration: inputDecoration(context, 'Date'),
                         readOnly: true,
                         onTap: () {
                           _selectDate(context);
@@ -258,7 +241,14 @@ class _AddTransactionState extends State<AddTransaction> {
                 ),
               ),
               Visibility(
-                visible: (_isInputTitleValid && _isInputAmountValid && _selectedCategory != null && _selectedDate != null) ? true : false,
+                visible: (
+                  _isInputTitleValid &&
+                  _isInputAmountValid &&
+                  _selectedCategory != null &&
+                  _selectedDate != null &&
+                  _selectedColor != null &&
+                  _selectedIcon != null
+                ) ? true : false,
                 child: Container(
                   margin: const EdgeInsets.only(top: 30),
                   height: 50,
@@ -270,7 +260,8 @@ class _AddTransactionState extends State<AddTransaction> {
                         amount: int.parse(amountController.text),
                         category: _selectedCategory ?? "income",
                         date: _selectedDate ?? DateTime.now(),
-                        iconCode: Icons.card_giftcard.codePoint,
+                        iconCode: _selectedIcon?.codePoint ?? Icons.monetization_on.codePoint,
+                        color: _selectedColor ?? Theme.of(context).focusColor,
                       );
                       transcationBox.add(newTransaction);
                       // End store data
@@ -286,7 +277,7 @@ class _AddTransactionState extends State<AddTransaction> {
                       // End update balance
                       // ignore: use_build_context_synchronously
                       _showSuccessMessage(context);
-                      Navigator.push(
+                      Navigator.pushReplacement(
                         // ignore: use_build_context_synchronously
                         context,
                         MaterialPageRoute(builder: (context) => const Home()),
@@ -317,44 +308,27 @@ class _AddTransactionState extends State<AddTransaction> {
       backgroundColor: Theme.of(context).primaryColor,
     );
   }
-}
 
-/*
-child: Column(
-children: [
-  DropdownButtonFormField<String>(
-    style: TextStyle(color: Theme.of(context).primaryColorLight),
-    decoration: const InputDecoration(
-      labelText: 'Category',
-      labelStyle: TextStyle(color: Colors.white),
-    ),
-    value: _selectedCategory,
-    onChanged: (String? newValue) {
-      setState(() {
-        _selectedCategory = newValue;
-      });
-    },
-    items: _categories.map<DropdownMenuItem<String>>((String value) {
-      return DropdownMenuItem<String>(
-        value: value,
-        child: Text(value),
-      );
-    }).toList(),
-  ),
-  TextFormField(
-    controller: dateController,
-    style: TextStyle(color: Theme.of(context).primaryColorLight),
-    decoration: const InputDecoration(
-      labelText: 'Date',
-      labelStyle: TextStyle(color: Colors.white),
-      suffixIcon: Icon(Icons.calendar_today),
-    ),
-    readOnly: true,
-    onTap: () {
-      _selectDate(context);
-    },
-  ),
-  const SizedBox(height: 10),
-  ],
-),
-*/
+  InputDecoration inputDecoration(BuildContext context, String label) {
+    return InputDecoration(
+      enabledBorder: const OutlineInputBorder(
+        borderSide: BorderSide(
+          color: Color.fromARGB(255, 17, 141, 21),
+        ),
+        borderRadius: BorderRadius.all(Radius.circular(20)),
+      ),
+      focusColor: Colors.white,
+      focusedBorder: const OutlineInputBorder(
+        borderSide: BorderSide(
+          color: Color.fromARGB(255, 17, 141, 21),
+        ),
+        borderRadius: BorderRadius.all(Radius.circular(20)),
+      ),
+      labelText: label,
+      labelStyle: TextStyle(color: Theme.of(context).focusColor),
+      border: const OutlineInputBorder(
+        borderRadius: BorderRadius.all(Radius.circular(20)),
+      ),
+    );
+  }
+}

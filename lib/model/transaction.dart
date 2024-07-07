@@ -13,6 +13,8 @@ class Transaction {
   int iconCode;
   @HiveField(4)
   DateTime date;
+  @HiveField(5)
+  Color color;
 
   Transaction({
     required this.title,
@@ -20,6 +22,7 @@ class Transaction {
     required this.category,
     required this.iconCode,
     required this.date,
+    required this.color,
   });
 
   IconData get iconData => IconData(iconCode, fontFamily: 'MaterialIcons');

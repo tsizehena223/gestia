@@ -6,7 +6,7 @@ import 'package:gestia/service/transaction_service.dart';
 import 'package:gestia/utils/shared_preferences_util.dart';
 import 'package:gestia/view/pages/accueil.dart';
 import 'package:gestia/view/pages/home.dart';
-import 'package:hive/hive.dart';
+import 'package:hive_flutter/adapters.dart';
 import 'package:path_provider/path_provider.dart' as path_provider;
 
 void main() async {
@@ -15,7 +15,8 @@ void main() async {
 
   Hive
     ..init(appDocumentDir.path)
-    ..registerAdapter(TransactionAdapter());
+    ..registerAdapter(TransactionAdapter())
+    ..registerAdapter(ColorAdapter());
   await Hive.openBox<Transaction>(TransactionService.boxName);
 
   runApp(const MyApp());
