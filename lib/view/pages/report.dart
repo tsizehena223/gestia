@@ -1,7 +1,10 @@
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:gestia/model/transaction.dart';
+import 'package:gestia/service/transaction_service.dart';
+import 'package:gestia/utils/format_data.dart';
 import 'package:gestia/view/components/header_widget.dart';
+import 'package:gestia/view/components/total_transactions.dart';
 import 'package:hive/hive.dart';
 
 class ReportPage extends StatefulWidget {
@@ -12,8 +15,12 @@ class ReportPage extends StatefulWidget {
 }
 
 class ReportPageState extends State<ReportPage> {
-
   List<BarChartGroupData> showingBarGroups = [];
+
+  void _reloadPage() {
+    setState(() {
+    });
+  }
 
   double _sumAmount(int month, int year, String category) {
     var box = Hive.box<Transaction>('transactions');
@@ -54,6 +61,18 @@ class ReportPageState extends State<ReportPage> {
 
   @override
   Widget build(BuildContext context) {
+      final transactionBox = Hive.box<Transaction>(TransactionService.boxName);
+      List<Transaction> transactions = transactionBox.values.toList();
+      FormatData.sortWithDate(transactions);
+
+      int totalExpense = transactions
+        .where((transaction) => transaction.category == "expense")
+        .fold(0, (sum, transaction) => sum + transaction.amount);
+
+      int totalIncome = transactions
+        .where((transaction) => transaction.category == "income")
+        .fold(0, (sum, transaction) => sum + transaction.amount);
+
     return Column(
       children: [
         const HeaderWidget(
@@ -62,22 +81,36 @@ class ReportPageState extends State<ReportPage> {
           icon: Icons.leaderboard,
         ),
         Container(
-          child: yearDropDown(),
-        ),
-        Container(
           height: 350,
-          margin: const EdgeInsets.all(20),
+          margin: const EdgeInsets.symmetric(horizontal: 10),
+          padding: const EdgeInsets.symmetric(horizontal: 20),
           decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(20),
-            border: Border.all(
-              color: Theme.of(context).primaryColorLight,
-            ),
+            borderRadius: BorderRadius.circular(30),
+            color: Theme.of(context).disabledColor,
           ),
           child: Column(
             children: <Widget>[
-              const SizedBox(
-                height: 30,
+              const SizedBox(height: 10),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    "Analytics",
+                    style: TextStyle(
+                      color: Theme.of(context).primaryColorLight,
+                    ),
+                  ),
+                  yearDropDown(),
+                  IconButton(
+                    onPressed: _reloadPage,
+                    icon: Icon(
+                      Icons.refresh,
+                      color: Theme.of(context).focusColor,
+                    ),
+                  )
+                ],
               ),
+              const SizedBox(height: 30),
               Expanded(
                 child: BarChart(
                   BarChartData(
@@ -114,12 +147,31 @@ class ReportPageState extends State<ReportPage> {
                   ),
                 ),
               ),
-              const SizedBox(
-                height: 12,
-              ),
+              const SizedBox(height: 10),
             ],
           ),
         ),
+        Container(
+          margin: const EdgeInsets.all(10),
+          decoration: BoxDecoration(
+            color: Theme.of(context).primaryColorLight,
+            borderRadius: BorderRadius.circular(30),
+          ),
+          child: const ListTile(
+            leading: CircleAvatar(
+              child: Icon(Icons.check_circle_outline),
+            ),
+            title: Text("Budget"),
+            subtitle: Text("Set your budget goal", style: TextStyle(fontSize: 12),),
+            trailing: CircleAvatar(
+              child: Icon(Icons.add),
+            ),
+          ),
+        ),
+        Container(
+          margin: const EdgeInsets.symmetric(horizontal: 10),
+          child: TotalTransactions(totalExpense: totalExpense, totalIncome: totalIncome),
+        )
       ],
     );
   }
@@ -169,17 +221,17 @@ class ReportPageState extends State<ReportPage> {
 
   BarChartGroupData makeGroupData(int x, double y1, double y2) {
     return BarChartGroupData(
-      barsSpace: 2,
+      barsSpace: 1,
       x: x,
       barRods: [
         BarChartRodData(
           toY: y1,
-          color: Colors.green,
+          color: Colors.green.withOpacity(.7),
           width: 5,
         ),
         BarChartRodData(
           toY: y2,
-          color: Colors.red,
+          color: Colors.red.withOpacity(.7),
           width: 5,
         ),
       ],
@@ -188,27 +240,25 @@ class ReportPageState extends State<ReportPage> {
 
   Center yearDropDown() {
     return Center(
-      child: Container(
-        margin: const EdgeInsets.symmetric(vertical: 20),
-        child: DropdownButton<int>(
-          focusColor: Theme.of(context).primaryColor,
-          value: selectedYear,
-          hint: const Text('Select Year'),
-          items: years.map((int year) {
-            return DropdownMenuItem<int>(
-              value: year,
-              child: Text(
-                year.toString(),
-                style: TextStyle(
-                  color: Theme.of(context).focusColor,
-                ),
+      child: DropdownButton<int>(
+        focusColor: Theme.of(context).primaryColor,
+        value: selectedYear,
+        hint: const Text('Select Year'),
+        items: years.map((int year) {
+          return DropdownMenuItem<int>(
+            value: year,
+            child: Text(
+              year.toString(),
+              style: TextStyle(
+                color: Theme.of(context).focusColor,
+                fontSize: 15,
               ),
-            );
-          }).toList(),
-          onChanged: (int? newValue) {
-            changeGraph(newValue ?? DateTime.now().year);
-          },
-        ),
+            ),
+          );
+        }).toList(),
+        onChanged: (int? newValue) {
+          changeGraph(newValue ?? DateTime.now().year);
+        },
       ),
     );
   }

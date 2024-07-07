@@ -37,7 +37,7 @@ class _AccueilState extends State<Accueil> {
               ),
             ),
             Text(
-              "Take control of your finances\nwith IA's optimization",
+              "Take control of your finances\nwith AI's optimization",
               textAlign: TextAlign.center,
               style: TextStyle(
                 color: Theme.of(context).focusColor,

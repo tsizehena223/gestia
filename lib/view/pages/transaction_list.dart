@@ -5,6 +5,7 @@ import 'package:gestia/utils/format_data.dart';
 import 'package:gestia/utils/shared_preferences_util.dart';
 import 'package:gestia/view/components/header_widget.dart';
 import 'package:gestia/view/components/list_transaction_widget.dart';
+import 'package:gestia/view/components/total_transactions.dart';
 import 'package:hive_flutter/adapters.dart';
 
 class TransactionList extends StatefulWidget {
@@ -68,65 +69,7 @@ class _TransactionListState extends State<TransactionList> {
                 children: [
                   Container(
                     margin: const EdgeInsets.only(left: 10, right: 10, top: 20, bottom: 20),
-                    child: Row(
-                      children: [
-                        Expanded(
-                          child: Card(
-                            color: Theme.of(context).disabledColor.withOpacity(.4),
-                            child: Container(
-                              padding: const EdgeInsets.symmetric(vertical: 10),
-                              child: ListTile(
-                                title: Text(
-                                  "Total Expense",
-                                  style: TextStyle(
-                                    color: Theme.of(context).primaryColorLight,
-                                    fontSize: 15,
-                                  ),
-                                ),
-                                subtitle: Row(
-                                  children: [
-                                    const Text("Ar  ", style: TextStyle(color: Colors.white),),
-                                    Text(
-                                      FormatData.formatTotalNumber(totalExpense),
-                                      style: const TextStyle(
-                                        color: Colors.white,
-                                        fontSize: 20,
-                                      ),
-                                    ),
-                                  ]
-                                ),
-                              ),
-                            ),
-                          ),
-                        ),
-                        Expanded(
-                          child: Card(
-                            color: Theme.of(context).primaryColorDark.withOpacity(.8),
-                            child: Container(
-                              padding: const EdgeInsets.symmetric(vertical: 10),
-                              child: ListTile(
-                                title: Text(
-                                  "Total Income",
-                                  style: TextStyle(
-                                    color: Theme.of(context).primaryColorLight,
-                                    fontSize: 15,
-                                  ),
-                                ),
-                                subtitle: Row(
-                                  children: [
-                                    const Text("Ar  ", style: TextStyle(color: Colors.white),),
-                                    Text(
-                                      FormatData.formatTotalNumber(totalIncome),
-                                      style: const TextStyle(color: Colors.white, fontSize: 20),
-                                    ),
-                                  ]
-                                ),
-                              ),
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
+                    child: TotalTransactions(totalExpense: totalExpense, totalIncome: totalIncome),
                   ),
                 ],
               ),
