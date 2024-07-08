@@ -80,7 +80,7 @@ class _TransactionListState extends State<TransactionList> {
                   color: Theme.of(context).disabledColor,
                   borderRadius: BorderRadius.circular(30),
                 ),
-                child: const ListTransactionWidget(),
+                child: const ListTransactionWidget(isPreview: false,),
               ),
             ),
           ],

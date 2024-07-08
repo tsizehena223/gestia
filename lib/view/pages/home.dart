@@ -246,7 +246,7 @@ class _HomeState extends State<Home> {
                   ),
                   const SizedBox(height: 20),
                   const Expanded(
-                    child: ListTransactionWidget(),
+                    child: ListTransactionWidget(isPreview: true,),
                   ),
                 ],
               ),

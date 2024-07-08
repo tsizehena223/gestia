@@ -9,7 +9,10 @@ import 'package:intl/intl.dart';
 class ListTransactionWidget extends StatefulWidget {
   const ListTransactionWidget({
     super.key,
+    required this.isPreview,
   });
+
+  final bool isPreview;
 
   @override
   State<ListTransactionWidget> createState() => _ListTransactionWidgetState();
@@ -69,9 +72,13 @@ class _ListTransactionWidgetState extends State<ListTransactionWidget> {
         }
         List<Transaction> transactionList = transactions.values.toList();
         return ListView.builder(
+          physics: widget.isPreview ? const NeverScrollableScrollPhysics() : null,
           itemCount: transactionList.length,
           itemBuilder: (context, index) {
             Transaction transaction = transactionList[index];
+            if (widget.isPreview && index > 2) {
+              return const SizedBox.shrink();
+            }
             return Dismissible(
               key: Key(transaction.key),
               background: Container(
@@ -113,7 +120,9 @@ class _ListTransactionWidgetState extends State<ListTransactionWidget> {
                 ),
               ),
             );
-          },
+ 
+         },
+
         );
       },
     );
