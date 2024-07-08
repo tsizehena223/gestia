@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:gestia/model/transaction.dart';
 import 'package:gestia/service/transaction_service.dart';
 import 'package:gestia/utils/shared_preferences_util.dart';
@@ -103,22 +102,6 @@ class _AddTransactionState extends State<AddTransaction> {
                   title: 'Add transaction',
                   subtitle: 'Insert new transaction',
                   icon: Icons.add,
-                ),
-                Visibility(
-                  visible: true,
-                  child: Container(
-                    alignment: Alignment.center,
-                    decoration: BoxDecoration(
-                      color: Theme.of(context).primaryColorLight.withOpacity(.7),
-                      borderRadius: BorderRadius.circular(30),
-                    ),
-                    margin: const EdgeInsets.symmetric(horizontal: 15, vertical: 0),
-                    height: 150,
-                    child:  SvgPicture.asset(
-                      "assets/images/logo.svg",
-                      colorFilter: const ColorFilter.mode(Color.fromARGB(255, 2, 77, 5), BlendMode.srcIn),
-                    ),
-                  ),
                 ),
                 Container(
                   margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),

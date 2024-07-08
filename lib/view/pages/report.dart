@@ -160,7 +160,7 @@ class ReportPageState extends State<ReportPage> {
             ),
             child: const ListTile(
               leading: CircleAvatar(
-                child: Icon(Icons.check_circle_outline),
+                child: Icon(Icons.gps_fixed),
               ),
               title: Text("Budget"),
               subtitle: Text("Set your budget goal", style: TextStyle(fontSize: 12),),

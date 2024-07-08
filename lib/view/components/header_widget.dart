@@ -24,7 +24,7 @@ class HeaderWidget extends StatelessWidget {
       child: ListTile(
         leading: CircleAvatar(
           backgroundColor: Theme.of(context).disabledColor,
-          child: Icon(icon, color: Theme.of(context).primaryColorDark,),
+          child: Icon(icon, color: Theme.of(context).focusColor,),
         ),
         title: Text(
           title,
