@@ -48,28 +48,6 @@ class _ListTransactionWidgetState extends State<ListTransactionWidget> {
     );
   }
 
-  void _showSuccessMessage(BuildContext context, String title) {
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        duration: const Duration(seconds: 3),
-        backgroundColor: Colors.transparent,
-        content: Container(
-          decoration: BoxDecoration(
-            color: Theme.of(context).primaryColorDark.withOpacity(.7),
-            borderRadius: BorderRadius.circular(20),
-          ),
-          padding: const EdgeInsets.all(10),
-          child: Center(
-            child: Text(
-              "$title removed successfully",
-              style: const TextStyle(color: Colors.white, fontSize: 16),
-            ),
-          ),
-        ),
-      ),
-    );
-  }
-
   late Box<Transaction> transactionBox;
 
   @override
@@ -109,7 +87,6 @@ class _ListTransactionWidgetState extends State<ListTransactionWidget> {
                   transactionList.removeAt(index);
                 });
                 _reloadApp(context);
-                _showSuccessMessage(context, "Removed successfully");
               },
               child: ListTile(
                 leading: CircleAvatar(
