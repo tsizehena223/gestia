@@ -5,6 +5,7 @@ import 'package:gestia/utils/shared_preferences_util.dart';
 import 'package:gestia/view/components/header_widget.dart';
 import 'package:gestia/view/pages/home.dart';
 import 'package:hive/hive.dart';
+import 'package:uuid/uuid.dart';
 
 class AddTransaction extends StatefulWidget {
   const AddTransaction({super.key});
@@ -14,6 +15,7 @@ class AddTransaction extends StatefulWidget {
 }
 
 class _AddTransactionState extends State<AddTransaction> {
+  var uuid = const Uuid().v1();
   bool _isInputTitleValid = false;
   bool _isInputAmountValid = false;
 
@@ -71,7 +73,7 @@ class _AddTransactionState extends State<AddTransaction> {
         backgroundColor: Colors.transparent,
         content: Container(
           decoration: BoxDecoration(
-            color: Theme.of(context).primaryColorDark,
+            color: Theme.of(context).primaryColorDark.withOpacity(.7),
             borderRadius: BorderRadius.circular(20),
           ),
           padding: const EdgeInsets.all(10),
@@ -252,6 +254,7 @@ class _AddTransactionState extends State<AddTransaction> {
                       onPressed: !(_isInputTitleValid && _isInputAmountValid) ? null : () async {
                         // Store data
                         Transaction newTransaction = Transaction(
+                          key: uuid,
                           title: titleController.text,
                           amount: int.parse(amountController.text),
                           category: _selectedCategory ?? "income",

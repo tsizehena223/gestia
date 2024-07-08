@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:gestia/model/transaction.dart';
 import 'package:gestia/service/transaction_service.dart';
-import 'package:gestia/utils/format_data.dart';
 import 'package:gestia/utils/shared_preferences_util.dart';
 import 'package:gestia/view/components/header_widget.dart';
 import 'package:gestia/view/components/list_transaction_widget.dart';
@@ -35,7 +34,6 @@ class _TransactionListState extends State<TransactionList> {
   Widget build(BuildContext context) {
     final transactionBox = Hive.box<Transaction>(TransactionService.boxName);
     List<Transaction> transactions = transactionBox.values.toList();
-    FormatData.sortWithDate(transactions);
 
     int totalExpense = transactions
       .where((transaction) => transaction.category == "expense")
@@ -82,7 +80,7 @@ class _TransactionListState extends State<TransactionList> {
                   color: Theme.of(context).disabledColor,
                   borderRadius: BorderRadius.circular(30),
                 ),
-                child: ListTransactionWidget(transactionBox: transactionBox, transactions: transactions, lengthTransaction: transactions.length,),
+                child: const ListTransactionWidget(),
               ),
             ),
           ],

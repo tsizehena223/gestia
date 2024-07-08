@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:gestia/model/transaction.dart';
-import 'package:gestia/service/transaction_service.dart';
 import 'package:gestia/utils/format_data.dart';
 import 'package:gestia/utils/shared_preferences_util.dart';
 import 'package:gestia/view/components/header.dart';
@@ -8,7 +6,6 @@ import 'package:gestia/view/components/list_transaction_widget.dart';
 import 'package:gestia/view/pages/add_transaction.dart';
 import 'package:gestia/view/pages/report.dart';
 import 'package:gestia/view/pages/transaction_list.dart';
-import 'package:hive_flutter/adapters.dart';
 import 'package:intl/intl.dart';
 
 class Home extends StatefulWidget {
@@ -104,9 +101,6 @@ class _HomeState extends State<Home> {
   }
 
   SafeArea home(BuildContext context, String balanceFormated, String formattedDate) {
-    final transactionBox = Hive.box<Transaction>(TransactionService.boxName);
-    List<Transaction> recentTransactions = transactionBox.values.toList();
-    FormatData.sortWithDate(recentTransactions);
 
     return SafeArea(
       child: SingleChildScrollView(
@@ -251,12 +245,8 @@ class _HomeState extends State<Home> {
                     ],
                   ),
                   const SizedBox(height: 20),
-                  Expanded(
-                    child: ListTransactionWidget(
-                      transactionBox: transactionBox,
-                      transactions: recentTransactions,
-                      lengthTransaction: (recentTransactions.length < 3) ? recentTransactions.length : 3,
-                    ),
+                  const Expanded(
+                    child: ListTransactionWidget(),
                   ),
                 ],
               ),

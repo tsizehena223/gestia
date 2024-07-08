@@ -11,6 +11,7 @@ class TransactionAdapter extends TypeAdapter<Transaction> {
       date: reader.read(),
       iconCode: reader.read(),
       color: reader.read(),
+      key: reader.read(),
     );
   }
 
@@ -22,6 +23,7 @@ class TransactionAdapter extends TypeAdapter<Transaction> {
     writer.write(obj.date);
     writer.write(obj.iconCode);
     writer.write(obj.color);
+    writer.write(obj.key);
   }
 
   @override
