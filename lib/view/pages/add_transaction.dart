@@ -91,234 +91,235 @@ class _AddTransactionState extends State<AddTransaction> {
   Widget build(BuildContext context) {
     final transcationBox = Hive.box<Transaction>(TransactionService.boxName);
 
-    return Scaffold(
-      body: SizedBox(
-        width: MediaQuery.sizeOf(context).width,
-        height: MediaQuery.sizeOf(context).height,
-        child: SingleChildScrollView(
-          child: Column(
-            children: [
-              const SizedBox(height: 30),
-              const HeaderWidget(
-                title: 'Add transaction',
-                subtitle: 'Insert new transaction',
-                icon: Icons.add,
-              ),
-              Visibility(
-                visible: true,
-                child: Container(
-                  alignment: Alignment.center,
-                  decoration: BoxDecoration(
-                    color: Theme.of(context).primaryColorLight.withOpacity(.7),
-                    borderRadius: BorderRadius.circular(30),
-                  ),
-                  margin: const EdgeInsets.symmetric(horizontal: 15, vertical: 0),
-                  height: 150,
-                  child:  SvgPicture.asset(
-                    "assets/images/logo.svg",
-                    colorFilter: const ColorFilter.mode(Color.fromARGB(255, 2, 77, 5), BlendMode.srcIn),
+    return SafeArea(
+      child: Scaffold(
+        body: SizedBox(
+          width: MediaQuery.sizeOf(context).width,
+          height: MediaQuery.sizeOf(context).height,
+          child: SingleChildScrollView(
+            child: Column(
+              children: [
+                const HeaderWidget(
+                  title: 'Add transaction',
+                  subtitle: 'Insert new transaction',
+                  icon: Icons.add,
+                ),
+                Visibility(
+                  visible: true,
+                  child: Container(
+                    alignment: Alignment.center,
+                    decoration: BoxDecoration(
+                      color: Theme.of(context).primaryColorLight.withOpacity(.7),
+                      borderRadius: BorderRadius.circular(30),
+                    ),
+                    margin: const EdgeInsets.symmetric(horizontal: 15, vertical: 0),
+                    height: 150,
+                    child:  SvgPicture.asset(
+                      "assets/images/logo.svg",
+                      colorFilter: const ColorFilter.mode(Color.fromARGB(255, 2, 77, 5), BlendMode.srcIn),
+                    ),
                   ),
                 ),
-              ),
-              Container(
-                margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-                child: Container(
-                  padding: const EdgeInsets.all(20),
-                  decoration: BoxDecoration(
-                    color: Theme.of(context).disabledColor.withOpacity(.3),
-                    borderRadius: BorderRadius.circular(20),
-                  ),
-                  child: Column(
-                    children: [
-                      TextField(
-                        keyboardType: TextInputType.text,
-                        controller: titleController,
-                        style: const TextStyle(color: Colors.white),
-                        decoration: inputDecoration(context, 'Title'),
-                        onChanged: (String? value) => {
-                          if (value == null || value == "") {
-                            setState(
-                              () {
-                                _isInputTitleValid = false;
-                              }
-                            )
-                          } else {
-                            setState(() {
-                              _isInputTitleValid = true;
-                            })
+                Container(
+                  margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+                  child: Container(
+                    padding: const EdgeInsets.all(20),
+                    decoration: BoxDecoration(
+                      color: Theme.of(context).disabledColor.withOpacity(.3),
+                      borderRadius: BorderRadius.circular(20),
+                    ),
+                    child: Column(
+                      children: [
+                        TextField(
+                          keyboardType: TextInputType.text,
+                          controller: titleController,
+                          style: const TextStyle(color: Colors.white),
+                          decoration: inputDecoration(context, 'Title'),
+                          onChanged: (String? value) => {
+                            if (value == null || value == "") {
+                              setState(
+                                () {
+                                  _isInputTitleValid = false;
+                                }
+                              )
+                            } else {
+                              setState(() {
+                                _isInputTitleValid = true;
+                              })
+                            },
                           },
-                        },
-                      ),
-                      const SizedBox(height: 20,),
-                      TextField(
-                        keyboardType: TextInputType.number,
-                        controller: amountController,
-                        style: const TextStyle(color: Colors.white),
-                        decoration: inputDecoration(context, 'Amount'),
-                        onChanged: (String? value) => {
-                          if (value == null || value == "" || int.tryParse(value) == null) {
-                            setState(
-                              () {
-                                _isInputAmountValid = false;
-                              }
-                            )
-                          } else {
-                            setState(() {
-                              _isInputAmountValid = true;
-                            })
+                        ),
+                        const SizedBox(height: 20,),
+                        TextField(
+                          keyboardType: TextInputType.number,
+                          controller: amountController,
+                          style: const TextStyle(color: Colors.white),
+                          decoration: inputDecoration(context, 'Amount'),
+                          onChanged: (String? value) => {
+                            if (value == null || value == "" || int.tryParse(value) == null) {
+                              setState(
+                                () {
+                                  _isInputAmountValid = false;
+                                }
+                              )
+                            } else {
+                              setState(() {
+                                _isInputAmountValid = true;
+                              })
+                            },
                           },
-                        },
-                      ),
-                      const SizedBox(height: 20,),
-                      DropdownButtonFormField<String>(
-                        style: TextStyle(color: Theme.of(context).primaryColorLight),
-                        dropdownColor: Theme.of(context).primaryColor,
-                        decoration: inputDecoration(context, 'Category'),
-                        value: _selectedCategory,
-                        onChanged: (String? newValue) {
-                          setState(() {
-                            _selectedCategory = newValue;
-                          });
-                        },
-                        items: _categories.map<DropdownMenuItem<String>>((String value) {
-                          return DropdownMenuItem<String>(
-                            value: value,
-                            child: Text(value),
-                          );
-                        }).toList(),
-                      ),
-                      const SizedBox(height: 20,),
-                      // Icon
-                      DropdownButtonFormField<IconData>(
-                        style: TextStyle(color: Theme.of(context).primaryColorLight),
-                        dropdownColor: Theme.of(context).disabledColor,
-                        decoration: inputDecoration(context, 'Icon'),
-                        value: _selectedIcon,
-                        onChanged: (IconData? newIcon) {
-                          setState(() {
-                            _selectedIcon = newIcon;
-                          });
-                        },
-                        items: _icons.map((IconData icon) {
-                          return DropdownMenuItem<IconData>(
-                            alignment: Alignment.center,
-                            value: icon,
-                            child: Row(
-                              children: [
-                                Icon(icon, color: Theme.of(context).primaryColorLight,),
-                                const SizedBox(width: 10),
-                              ],
-                            ),
-                          );
-                        }).toList(),
-                      ),
-                      const SizedBox(height: 20),
-                      // End icon
-                      DropdownButtonFormField<Color>(
-                        value: _selectedColor,
-                        style: TextStyle(color: Theme.of(context).primaryColorLight),
-                        decoration: inputDecoration(context, 'Color'),
-                        onChanged: (Color? newColor) {
-                          setState(() {
-                            _selectedColor = newColor;
-                          });
-                        },
-                        items: _colors.map((Color color) {
-                          return DropdownMenuItem<Color>(
-                            value: color,
-                            child: Row(
-                              children: [
-                                Container(
-                                  width: 20,
-                                  height: 20,
-                                  color: color,
-                                ),
-                                const SizedBox(width: 5),
-                              ],
-                            ),
-                          );
-                        }).toList(),
-                      ),
-                      const SizedBox(height: 20),
-                      TextFormField(
-                        controller: dateController,
-                        style: const TextStyle(color: Colors.white),
-                        decoration: inputDecoration(context, 'Date'),
-                        readOnly: true,
-                        onTap: () {
-                          _selectDate(context);
-                        },
-                      ),
-                    ],
+                        ),
+                        const SizedBox(height: 20,),
+                        DropdownButtonFormField<String>(
+                          style: TextStyle(color: Theme.of(context).primaryColorLight),
+                          dropdownColor: Theme.of(context).primaryColor,
+                          decoration: inputDecoration(context, 'Category'),
+                          value: _selectedCategory,
+                          onChanged: (String? newValue) {
+                            setState(() {
+                              _selectedCategory = newValue;
+                            });
+                          },
+                          items: _categories.map<DropdownMenuItem<String>>((String value) {
+                            return DropdownMenuItem<String>(
+                              value: value,
+                              child: Text(value),
+                            );
+                          }).toList(),
+                        ),
+                        const SizedBox(height: 20,),
+                        // Icon
+                        DropdownButtonFormField<IconData>(
+                          style: TextStyle(color: Theme.of(context).primaryColorLight),
+                          dropdownColor: Theme.of(context).disabledColor,
+                          decoration: inputDecoration(context, 'Icon'),
+                          value: _selectedIcon,
+                          onChanged: (IconData? newIcon) {
+                            setState(() {
+                              _selectedIcon = newIcon;
+                            });
+                          },
+                          items: _icons.map((IconData icon) {
+                            return DropdownMenuItem<IconData>(
+                              alignment: Alignment.center,
+                              value: icon,
+                              child: Row(
+                                children: [
+                                  Icon(icon, color: Theme.of(context).primaryColorLight,),
+                                  const SizedBox(width: 10),
+                                ],
+                              ),
+                            );
+                          }).toList(),
+                        ),
+                        const SizedBox(height: 20),
+                        // End icon
+                        DropdownButtonFormField<Color>(
+                          value: _selectedColor,
+                          style: TextStyle(color: Theme.of(context).primaryColorLight),
+                          decoration: inputDecoration(context, 'Color'),
+                          onChanged: (Color? newColor) {
+                            setState(() {
+                              _selectedColor = newColor;
+                            });
+                          },
+                          items: _colors.map((Color color) {
+                            return DropdownMenuItem<Color>(
+                              value: color,
+                              child: Row(
+                                children: [
+                                  Container(
+                                    width: 20,
+                                    height: 20,
+                                    color: color,
+                                  ),
+                                  const SizedBox(width: 5),
+                                ],
+                              ),
+                            );
+                          }).toList(),
+                        ),
+                        const SizedBox(height: 20),
+                        TextFormField(
+                          controller: dateController,
+                          style: const TextStyle(color: Colors.white),
+                          decoration: inputDecoration(context, 'Date'),
+                          readOnly: true,
+                          onTap: () {
+                            _selectDate(context);
+                          },
+                        ),
+                      ],
+                    ),
                   ),
                 ),
-              ),
-              Visibility(
-                visible: (
-                  _isInputTitleValid &&
-                  _isInputAmountValid &&
-                  _selectedCategory != null &&
-                  _selectedDate != null &&
-                  _selectedColor != null &&
-                  _selectedIcon != null
-                ) ? true : false,
-                child: Container(
-                  margin: const EdgeInsets.only(top: 30),
-                  height: 50,
-                  child: ElevatedButton(
-                    onPressed: !(_isInputTitleValid && _isInputAmountValid) ? null : () async {
-                      // Store data
-                      Transaction newTransaction = Transaction(
-                        title: titleController.text,
-                        amount: int.parse(amountController.text),
-                        category: _selectedCategory ?? "income",
-                        date: _selectedDate ?? DateTime.now(),
-                        iconCode: _selectedIcon?.codePoint ?? Icons.monetization_on.codePoint,
-                        color: _selectedColor ?? Theme.of(context).focusColor,
-                      );
-                      transcationBox.add(newTransaction);
-                      // End store data
-                      // Update balance
-                      int currentBalance = await SharedPreferencesUtil.retrieveBalance() ?? 0;
-                      int amount;
-                      if (_selectedCategory == "expense") {
-                        amount = - int.parse(amountController.text);
-                      } else {
-                        amount = int.parse(amountController.text);
-                      }
-                      await SharedPreferencesUtil.storeBalance(currentBalance + amount);
-                      // End update balance
-                      // ignore: use_build_context_synchronously
-                      _showSuccessMessage(context);
-                      Navigator.pushReplacement(
+                Visibility(
+                  visible: (
+                    _isInputTitleValid &&
+                    _isInputAmountValid &&
+                    _selectedCategory != null &&
+                    _selectedDate != null &&
+                    _selectedColor != null &&
+                    _selectedIcon != null
+                  ) ? true : false,
+                  child: Container(
+                    margin: const EdgeInsets.only(top: 30),
+                    height: 50,
+                    child: ElevatedButton(
+                      onPressed: !(_isInputTitleValid && _isInputAmountValid) ? null : () async {
+                        // Store data
+                        Transaction newTransaction = Transaction(
+                          title: titleController.text,
+                          amount: int.parse(amountController.text),
+                          category: _selectedCategory ?? "income",
+                          date: _selectedDate ?? DateTime.now(),
+                          iconCode: _selectedIcon?.codePoint ?? Icons.monetization_on.codePoint,
+                          color: _selectedColor ?? Theme.of(context).focusColor,
+                        );
+                        transcationBox.add(newTransaction);
+                        // End store data
+                        // Update balance
+                        int currentBalance = await SharedPreferencesUtil.retrieveBalance() ?? 0;
+                        int amount;
+                        if (_selectedCategory == "expense") {
+                          amount = - int.parse(amountController.text);
+                        } else {
+                          amount = int.parse(amountController.text);
+                        }
+                        await SharedPreferencesUtil.storeBalance(currentBalance + amount);
+                        // End update balance
                         // ignore: use_build_context_synchronously
-                        context,
-                        MaterialPageRoute(builder: (context) => const Home()),
-                      );
-                    },
-                    style: ElevatedButton.styleFrom(
-                      padding: const EdgeInsets.symmetric(
-                        vertical: 10,
-                        horizontal: 70,
+                        _showSuccessMessage(context);
+                        Navigator.pushReplacement(
+                          // ignore: use_build_context_synchronously
+                          context,
+                          MaterialPageRoute(builder: (context) => const Home()),
+                        );
+                      },
+                      style: ElevatedButton.styleFrom(
+                        padding: const EdgeInsets.symmetric(
+                          vertical: 10,
+                          horizontal: 70,
+                        ),
+                        backgroundColor: Theme.of(context).primaryColorDark.withOpacity(.4),
                       ),
-                      backgroundColor: Theme.of(context).primaryColorDark.withOpacity(.4),
-                    ),
-                    child: const Text(
-                      "Save",
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 20,
+                      child: const Text(
+                        "Save",
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 20,
+                        ),
                       ),
                     ),
                   ),
                 ),
-              ),
-              const SizedBox(height: 100,),
-            ],
+                const SizedBox(height: 100,),
+              ],
+            ),
           ),
         ),
+        backgroundColor: Theme.of(context).primaryColor,
       ),
-      backgroundColor: Theme.of(context).primaryColor,
     );
   }
 

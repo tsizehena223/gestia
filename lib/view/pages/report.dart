@@ -73,107 +73,108 @@ class ReportPageState extends State<ReportPage> {
         .where((transaction) => transaction.category == "income")
         .fold(0, (sum, transaction) => sum + transaction.amount);
 
-    return Column(
-      children: [
-        const SizedBox(height: 30),
-        const HeaderWidget(
-          title: 'Report',
-          subtitle: 'Report of your transactions',
-          icon: Icons.leaderboard,
-        ),
-        Container(
-          height: 350,
-          margin: const EdgeInsets.symmetric(horizontal: 10),
-          padding: const EdgeInsets.symmetric(horizontal: 20),
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(30),
-            color: Theme.of(context).disabledColor,
+    return SafeArea(
+      child: Column(
+        children: [
+          const HeaderWidget(
+            title: 'Report',
+            subtitle: 'Report of your transactions',
+            icon: Icons.leaderboard,
           ),
-          child: Column(
-            children: <Widget>[
-              const SizedBox(height: 10),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    "Analytics",
-                    style: TextStyle(
-                      color: Theme.of(context).primaryColorLight,
-                    ),
-                  ),
-                  yearDropDown(),
-                  IconButton(
-                    onPressed: _reloadPage,
-                    icon: Icon(
-                      Icons.refresh,
-                      color: Theme.of(context).focusColor,
-                    ),
-                  )
-                ],
-              ),
-              const SizedBox(height: 30),
-              Expanded(
-                child: BarChart(
-                  BarChartData(
-                    maxY: 101,
-                    titlesData: FlTitlesData(
-                      show: true,
-                      rightTitles: const AxisTitles(
-                        sideTitles: SideTitles(showTitles: false),
+          Container(
+            height: 350,
+            margin: const EdgeInsets.symmetric(horizontal: 10),
+            padding: const EdgeInsets.symmetric(horizontal: 20),
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(30),
+              color: Theme.of(context).disabledColor,
+            ),
+            child: Column(
+              children: <Widget>[
+                const SizedBox(height: 10),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      "Analytics",
+                      style: TextStyle(
+                        color: Theme.of(context).primaryColorLight,
                       ),
-                      topTitles: const AxisTitles(
-                        sideTitles: SideTitles(showTitles: false),
+                    ),
+                    yearDropDown(),
+                    IconButton(
+                      onPressed: _reloadPage,
+                      icon: Icon(
+                        Icons.refresh,
+                        color: Theme.of(context).focusColor,
                       ),
-                      bottomTitles: AxisTitles(
-                        sideTitles: SideTitles(
-                          showTitles: true,
-                          getTitlesWidget: bottomTitles,
-                          reservedSize: 42,
+                    )
+                  ],
+                ),
+                const SizedBox(height: 30),
+                Expanded(
+                  child: BarChart(
+                    BarChartData(
+                      maxY: 101,
+                      titlesData: FlTitlesData(
+                        show: true,
+                        rightTitles: const AxisTitles(
+                          sideTitles: SideTitles(showTitles: false),
+                        ),
+                        topTitles: const AxisTitles(
+                          sideTitles: SideTitles(showTitles: false),
+                        ),
+                        bottomTitles: AxisTitles(
+                          sideTitles: SideTitles(
+                            showTitles: true,
+                            getTitlesWidget: bottomTitles,
+                            reservedSize: 42,
+                          ),
+                        ),
+                        leftTitles: AxisTitles(
+                          sideTitles: SideTitles(
+                            showTitles: false,
+                            reservedSize: 28,
+                            interval: 1,
+                            getTitlesWidget: leftTitles,
+                          ),
                         ),
                       ),
-                      leftTitles: AxisTitles(
-                        sideTitles: SideTitles(
-                          showTitles: false,
-                          reservedSize: 28,
-                          interval: 1,
-                          getTitlesWidget: leftTitles,
-                        ),
+                      borderData: FlBorderData(
+                        show: false,
                       ),
+                      barGroups: showingBarGroups,
+                      gridData: const FlGridData(show: true),
                     ),
-                    borderData: FlBorderData(
-                      show: false,
-                    ),
-                    barGroups: showingBarGroups,
-                    gridData: const FlGridData(show: true),
                   ),
                 ),
+                const SizedBox(height: 10),
+              ],
+            ),
+          ),
+          Container(
+            margin: const EdgeInsets.all(10),
+            decoration: BoxDecoration(
+              color: Theme.of(context).primaryColorLight,
+              borderRadius: BorderRadius.circular(30),
+            ),
+            child: const ListTile(
+              leading: CircleAvatar(
+                child: Icon(Icons.check_circle_outline),
               ),
-              const SizedBox(height: 10),
-            ],
-          ),
-        ),
-        Container(
-          margin: const EdgeInsets.all(10),
-          decoration: BoxDecoration(
-            color: Theme.of(context).primaryColorLight,
-            borderRadius: BorderRadius.circular(30),
-          ),
-          child: const ListTile(
-            leading: CircleAvatar(
-              child: Icon(Icons.check_circle_outline),
-            ),
-            title: Text("Budget"),
-            subtitle: Text("Set your budget goal", style: TextStyle(fontSize: 12),),
-            trailing: CircleAvatar(
-              child: Icon(Icons.add),
+              title: Text("Budget"),
+              subtitle: Text("Set your budget goal", style: TextStyle(fontSize: 12),),
+              trailing: CircleAvatar(
+                child: Icon(Icons.add),
+              ),
             ),
           ),
-        ),
-        Container(
-          margin: const EdgeInsets.symmetric(horizontal: 10),
-          child: TotalTransactions(totalExpense: totalExpense, totalIncome: totalIncome),
-        )
-      ],
+          Container(
+            margin: const EdgeInsets.symmetric(horizontal: 10),
+            child: TotalTransactions(totalExpense: totalExpense, totalIncome: totalIncome),
+          )
+        ],
+      ),
     );
   }
 
