@@ -83,9 +83,6 @@ class _ListTransactionWidgetState extends State<ListTransactionWidget> {
               confirmDismiss: (direction) => _confirmDismiss(context, transaction),
               onDismissed: (direction) {
                 transactions.deleteAt(index);
-                setState(() {
-                  transactionList.removeAt(index);
-                });
                 _reloadApp(context);
               },
               child: ListTile(
