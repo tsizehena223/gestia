@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:gestia/model/transaction.dart';
 import 'package:gestia/service/transaction_service.dart';
 import 'package:gestia/utils/shared_preferences_util.dart';
@@ -22,23 +23,26 @@ class _AddTransactionState extends State<AddTransaction> {
   TextEditingController titleController = TextEditingController();
   TextEditingController amountController = TextEditingController();
   TextEditingController dateController = TextEditingController();
+
   final List<String> _categories = ["expense", "income"];
-  final List<IconData> _icons = [
-    Icons.fastfood,
-    Icons.local_hospital,
-    Icons.card_giftcard,
-    Icons.monetization_on,
-    Icons.school,
-    Icons.train,
-  ];
-  final List<Color> _colors = [
-    Colors.red,
-    Colors.green,
-    Colors.blue,
-    Colors.yellow,
-    Colors.orange,
-    Colors.purple,
-  ];
+
+  final Map<IconData, String> _icons = {
+    Icons.fastfood : 'Food',
+    Icons.local_hospital : 'Health',
+    Icons.card_giftcard : 'Gift',
+    Icons.monetization_on : 'Salary',
+    Icons.school : 'Education',
+    Icons.train : 'Travel',
+  };
+
+  final Map<Color, String> _colors = {
+    Colors.red : 'Red',
+    Colors.purple : 'Purple',
+    Colors.green : 'Green',
+    Colors.orange : 'Orange',
+    Colors.blue : 'Blue',
+    Colors.yellow : 'Yellow',
+  };
 
   String? _selectedCategory;
   DateTime? _selectedDate;
@@ -105,6 +109,7 @@ class _AddTransactionState extends State<AddTransaction> {
                   subtitle: 'Insert new transaction',
                   icon: Icons.add,
                 ),
+                logo(context),
                 Container(
                   margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
                   child: Container(
@@ -176,7 +181,7 @@ class _AddTransactionState extends State<AddTransaction> {
                         // Icon
                         DropdownButtonFormField<IconData>(
                           style: TextStyle(color: Theme.of(context).primaryColorLight),
-                          dropdownColor: Theme.of(context).disabledColor,
+                          dropdownColor: Theme.of(context).primaryColor,
                           decoration: inputDecoration(context, 'Icon'),
                           value: _selectedIcon,
                           onChanged: (IconData? newIcon) {
@@ -184,14 +189,15 @@ class _AddTransactionState extends State<AddTransaction> {
                               _selectedIcon = newIcon;
                             });
                           },
-                          items: _icons.map((IconData icon) {
+                          items: _icons.entries.map((entry) {
                             return DropdownMenuItem<IconData>(
                               alignment: Alignment.center,
-                              value: icon,
+                              value: entry.key,
                               child: Row(
                                 children: [
-                                  Icon(icon, color: Theme.of(context).primaryColorLight,),
+                                  Icon(entry.key, color: Theme.of(context).primaryColorLight,),
                                   const SizedBox(width: 10),
+                                  Text(entry.value),
                                 ],
                               ),
                             );
@@ -201,6 +207,7 @@ class _AddTransactionState extends State<AddTransaction> {
                         // End icon
                         DropdownButtonFormField<Color>(
                           value: _selectedColor,
+                          dropdownColor: Theme.of(context).primaryColor,
                           style: TextStyle(color: Theme.of(context).primaryColorLight),
                           decoration: inputDecoration(context, 'Color'),
                           onChanged: (Color? newColor) {
@@ -208,17 +215,18 @@ class _AddTransactionState extends State<AddTransaction> {
                               _selectedColor = newColor;
                             });
                           },
-                          items: _colors.map((Color color) {
+                          items: _colors.entries.map((MapEntry entry) {
                             return DropdownMenuItem<Color>(
-                              value: color,
+                              value: entry.key,
                               child: Row(
                                 children: [
                                   Container(
                                     width: 20,
                                     height: 20,
-                                    color: color,
+                                    color: entry.key,
                                   ),
                                   const SizedBox(width: 5),
+                                  Text(entry.value),
                                 ],
                               ),
                             );
@@ -309,11 +317,27 @@ class _AddTransactionState extends State<AddTransaction> {
     );
   }
 
+  Container logo(BuildContext context) {
+    return Container(
+      width: MediaQuery.sizeOf(context).width,
+      margin: const EdgeInsets.symmetric(horizontal: 10),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(30),
+        color: Theme.of(context).primaryColorLight,
+      ),
+      child: SvgPicture.asset(
+        "assets/images/logo.svg",
+        colorFilter: ColorFilter.mode(Theme.of(context).primaryColor, BlendMode.srcIn),
+        height: 120,
+      ),
+    );
+  }
+
   InputDecoration inputDecoration(BuildContext context, String label) {
     return InputDecoration(
       enabledBorder: OutlineInputBorder(
         borderSide: BorderSide(
-          color: Theme.of(context).focusColor,
+          color: Theme.of(context).primaryColorDark,
         ),
         borderRadius: const BorderRadius.all(Radius.circular(20)),
       ),
