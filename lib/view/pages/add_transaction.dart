@@ -9,7 +9,12 @@ import 'package:hive/hive.dart';
 import 'package:uuid/uuid.dart';
 
 class AddTransaction extends StatefulWidget {
-  const AddTransaction({super.key});
+  final String? defaultCategory;
+
+  const AddTransaction({
+    super.key,
+    required this.defaultCategory,
+  });
 
   @override
   State<AddTransaction> createState() => _AddTransactionState();
@@ -60,7 +65,7 @@ class _AddTransactionState extends State<AddTransaction> {
       context: context,
       initialDate: DateTime.now(),
       firstDate: DateTime(2000),
-      lastDate: DateTime(2101),
+      lastDate: DateTime.now(),
     );
     if (picked != null && picked != _selectedDate) {
       setState(() {
@@ -161,11 +166,13 @@ class _AddTransactionState extends State<AddTransaction> {
                         ),
                         const SizedBox(height: 20,),
                         DropdownButtonFormField<String>(
-                          style: TextStyle(color: Theme.of(context).primaryColorLight),
+                          style: TextStyle(
+                            color: Theme.of(context).primaryColorLight,
+                          ),
                           dropdownColor: Theme.of(context).primaryColor,
                           decoration: inputDecoration(context, 'Category'),
-                          value: _selectedCategory,
-                          onChanged: (String? newValue) {
+                          value: widget.defaultCategory,
+                          onChanged: (widget.defaultCategory != null) ? null : (String? newValue) {
                             setState(() {
                               _selectedCategory = newValue;
                             });

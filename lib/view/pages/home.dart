@@ -37,6 +37,7 @@ class _HomeState extends State<Home> {
   }
 
   int _currentPageIndex = 0;
+  String? _defaultCategory;
 
   @override
   void initState() {
@@ -50,11 +51,15 @@ class _HomeState extends State<Home> {
     String formattedDate = DateFormat('EEEE, MMM d, yyyy').format(now);
     String balanceFormated = FormatData.formatNumber(userBalance);
 
+    if (_currentPageIndex != 3) {
+      _defaultCategory = null;
+    }
+
     final List<Widget> pages = [
       home(context, balanceFormated, formattedDate),
       const ReportPage(),
       const TransactionList(),
-      const AddTransaction(),
+      AddTransaction(defaultCategory: _defaultCategory,),
     ];
 
     return Scaffold(
@@ -158,6 +163,7 @@ class _HomeState extends State<Home> {
                       onTap: () {
                         setState(() {
                         _currentPageIndex = 3;
+                        _defaultCategory = "expense";
                         });
                       },
                       child: Container(
@@ -181,6 +187,7 @@ class _HomeState extends State<Home> {
                       onTap: () {
                         setState(() {
                         _currentPageIndex = 3;
+                        _defaultCategory = 'income';
                         });
                       },
                       child: Container(
