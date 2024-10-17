@@ -40,19 +40,9 @@ class _AddTransactionState extends State<AddTransaction> {
     Icons.train : 'Travel',
   };
 
-  final Map<Color, String> _colors = {
-    Colors.red : 'Red',
-    Colors.purple : 'Purple',
-    Colors.green : 'Green',
-    Colors.orange : 'Orange',
-    Colors.blue : 'Blue',
-    Colors.yellow : 'Yellow',
-  };
-
   String? _selectedCategory;
   DateTime? _selectedDate;
   IconData? _selectedIcon;
-  Color? _selectedColor;
 
   @override
   void dispose() {
@@ -117,6 +107,25 @@ class _AddTransactionState extends State<AddTransaction> {
         ),
       ),
     );
+  }
+
+  Color _getColorForIcon(IconData ic) {
+    switch (ic) {
+      case Icons.fastfood:
+        return Colors.orange;
+      case Icons.local_hospital:
+        return Colors.green;
+      case Icons.train:
+        return Colors.blue;
+      case Icons.card_giftcard:
+        return Colors.purple;
+      case Icons.monetization_on:
+        return Colors.yellow;
+      case Icons.school:
+        return Colors.red;
+      default:
+        return Colors.red;
+    }
   }
 
   @override
@@ -234,34 +243,6 @@ class _AddTransactionState extends State<AddTransaction> {
                         ),
                         const SizedBox(height: 20),
                         // End icon
-                        DropdownButtonFormField<Color>(
-                          value: _selectedColor,
-                          dropdownColor: Theme.of(context).primaryColor,
-                          style: TextStyle(color: Theme.of(context).disabledColor),
-                          decoration: inputDecoration(context, 'Color'),
-                          onChanged: (Color? newColor) {
-                            setState(() {
-                              _selectedColor = newColor;
-                            });
-                          },
-                          items: _colors.entries.map((MapEntry entry) {
-                            return DropdownMenuItem<Color>(
-                              value: entry.key,
-                              child: Row(
-                                children: [
-                                  Container(
-                                    width: 20,
-                                    height: 20,
-                                    color: entry.key,
-                                  ),
-                                  const SizedBox(width: 5),
-                                  Text(entry.value),
-                                ],
-                              ),
-                            );
-                          }).toList(),
-                        ),
-                        const SizedBox(height: 20),
                         TextFormField(
                           controller: dateController,
                           style: TextStyle(color: Theme.of(context).disabledColor),
@@ -281,7 +262,6 @@ class _AddTransactionState extends State<AddTransaction> {
                     _isInputAmountValid &&
                     _selectedCategory != null &&
                     _selectedDate != null &&
-                    _selectedColor != null &&
                     _selectedIcon != null
                   ) ? true : false,
                   child: Container(
@@ -304,8 +284,8 @@ class _AddTransactionState extends State<AddTransaction> {
                           category: _selectedCategory ?? "income",
                           date: _selectedDate ?? DateTime.now(),
                           iconCode: _selectedIcon?.codePoint ?? Icons.monetization_on.codePoint,
+                          color: _getColorForIcon(_selectedIcon ?? Icons.monetization_on)
                           // ignore: use_build_context_synchronously
-                          color: _selectedColor ?? Theme.of(context).focusColor,
                         );
                         transcationBox.add(newTransaction);
                         // End store data
