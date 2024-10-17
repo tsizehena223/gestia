@@ -29,10 +29,9 @@ class _AccueilState extends State<Accueil> {
             const SizedBox(height: 30),
             Container(
               margin: const EdgeInsets.only(bottom: 1),
-              color: Theme.of(context).primaryColor,
               child: SvgPicture.asset(
                 "assets/images/logo.svg",
-                colorFilter: const ColorFilter.mode(Colors.white, BlendMode.srcIn),
+                colorFilter: const ColorFilter.mode(Color.fromARGB(255, 17, 141, 21), BlendMode.srcIn),
                 height: 250,
               ),
             ),
@@ -51,7 +50,7 @@ class _AccueilState extends State<Accueil> {
               child: TextField(
                 keyboardType: TextInputType.text,
                 controller: userNameController,
-                style: const TextStyle(color: Colors.white),
+                style: const TextStyle(color: Colors.black),
                 decoration: InputDecoration(
                   enabledBorder: const OutlineInputBorder(
                     borderSide: BorderSide(
@@ -113,6 +112,7 @@ class _AccueilState extends State<Accueil> {
                     style: TextStyle(
                       color: Colors.white,
                       fontSize: 25,
+                      fontWeight: FontWeight.bold
                     ),
                   ),
                 ),
