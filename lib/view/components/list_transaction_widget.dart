@@ -61,13 +61,12 @@ class _ListTransactionWidgetState extends State<ListTransactionWidget> {
 
   @override
   Widget build(BuildContext context) {
-
     return ValueListenableBuilder(
       valueListenable: transactionBox.listenable(),
       builder: (context, transactions, _) {
         if (transactions.isEmpty) {
-          return const Center(
-            child: Text('No transactions added yet', style: TextStyle(color: Colors.white)),
+          return Center(
+            child: Text('No transaction added yet', style: TextStyle(color: Theme.of(context).disabledColor)),
           );
         }
         List<Transaction> transactionList = transactions.values.toList();
@@ -81,9 +80,10 @@ class _ListTransactionWidgetState extends State<ListTransactionWidget> {
             }
             return Dismissible(
               key: Key(transaction.key),
+              direction: DismissDirection.endToStart,
               background: Container(
-                color: Colors.red,
-                alignment: Alignment.centerLeft,
+                color: transaction.color.withOpacity(.4),
+                alignment: Alignment.centerRight,
                 padding: const EdgeInsets.symmetric(horizontal: 20),
                 child: const Icon(Icons.delete, color: Colors.white),
               ),
@@ -95,19 +95,19 @@ class _ListTransactionWidgetState extends State<ListTransactionWidget> {
               child: ListTile(
                 leading: CircleAvatar(
                   backgroundColor: transaction.color.withOpacity(.7),
-                  child: Icon(transaction.iconData, color: Theme.of(context).primaryColor,),
+                  child: Icon(transaction.iconData, color: Theme.of(context).primaryColorLight,),
                 ),
                 title: Text(
                   transaction.title,
-                  style: const TextStyle(
-                    color: Colors.white,
+                  style: TextStyle(
+                    color: Theme.of(context).disabledColor.withOpacity(.7),
                     fontSize: 20,
                   ),
                 ),
                 trailing: Text(
                   "${(transaction.category == "expense") ? '-' : ''} ${FormatData.formatNumber(transaction.amount)} Ar",
                   style: TextStyle(
-                    color: Theme.of(context).focusColor,
+                    color: Theme.of(context).disabledColor,
                     fontSize: 15,
                   ),
                 ),
@@ -120,8 +120,7 @@ class _ListTransactionWidgetState extends State<ListTransactionWidget> {
                 ),
               ),
             );
- 
-         },
+          },
 
         );
       },

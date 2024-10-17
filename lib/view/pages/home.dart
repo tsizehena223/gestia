@@ -174,7 +174,7 @@ class _HomeState extends State<Home> {
                       },
                       child: Container(
                         decoration: BoxDecoration(
-                          color: Theme.of(context).disabledColor.withOpacity(.6),
+                          color: Theme.of(context).disabledColor.withOpacity(.4),
                           borderRadius: BorderRadius.circular(10),
                           border: Border.all(
                             color: Theme.of(context).focusColor,

@@ -57,32 +57,28 @@ class _TransactionListState extends State<TransactionList> {
               subtitle: 'List of your transactions',
               icon: Icons.compare_arrows,
             ),
-            Container(
-              margin: const EdgeInsets.symmetric(horizontal: 10),
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(30),
-                color: Theme.of(context).primaryColorLight,
-              ),
-              child: Column(
-                children: [
-                  Container(
-                    margin: const EdgeInsets.only(left: 10, right: 10, top: 20, bottom: 20),
-                    child: TotalTransactions(totalExpense: totalExpense, totalIncome: totalIncome),
-                  ),
-                ],
-              ),
-            ),
 
             Expanded(
               child: Container(
                 margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
                 decoration: BoxDecoration(
-                  color: Theme.of(context).disabledColor,
-                  borderRadius: BorderRadius.circular(30),
+                  color: Theme.of(context).primaryColorLight,
+                  borderRadius: BorderRadius.circular(10),
                 ),
                 child: const ListTransactionWidget(isPreview: false,),
               ),
             ),
+
+            Column(
+              children: [
+                Container(
+                  margin: const EdgeInsets.only(left: 10, right: 10, top: 20, bottom: 20),
+                  child: TotalTransactions(totalExpense: totalExpense, totalIncome: totalIncome),
+                ),
+              ],
+            ),
+
+
           ],
         ),
       ),

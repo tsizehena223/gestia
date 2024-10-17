@@ -17,7 +17,7 @@ class TotalTransactions extends StatelessWidget {
       children: [
         Expanded(
           child: Card(
-            color: Theme.of(context).disabledColor.withOpacity(.6),
+            color: Theme.of(context).disabledColor.withOpacity(.2),
             child: Container(
               padding: const EdgeInsets.symmetric(vertical: 10),
               child: ListTile(
