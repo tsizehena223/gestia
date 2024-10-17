@@ -82,7 +82,7 @@ class _AddTransactionState extends State<AddTransaction> {
         backgroundColor: Colors.transparent,
         content: Container(
           decoration: BoxDecoration(
-            color: Theme.of(context).primaryColorDark.withOpacity(.7),
+          color: const Color.fromARGB(255, 17, 141, 21),
             borderRadius: BorderRadius.circular(20),
           ),
           padding: const EdgeInsets.all(10),
@@ -90,6 +90,28 @@ class _AddTransactionState extends State<AddTransaction> {
             child: Text(
               'Transaction added successfully',
               style: TextStyle(color: Colors.white, fontSize: 16),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  void _showErrorMessage(String text) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        duration: const Duration(seconds: 3),
+        backgroundColor: Colors.transparent,
+        content: Container(
+          decoration: BoxDecoration(
+            color: Theme.of(context).primaryColorDark.withOpacity(.7),
+            borderRadius: BorderRadius.circular(20),
+          ),
+          padding: const EdgeInsets.all(10),
+          child: Center(
+            child: Text(
+              text,
+              style: const TextStyle(color: Colors.white, fontSize: 16),
             ),
           ),
         ),
@@ -267,6 +289,13 @@ class _AddTransactionState extends State<AddTransaction> {
                     height: 50,
                     child: ElevatedButton(
                       onPressed: !(_isInputTitleValid && _isInputAmountValid) ? null : () async {
+                        // check if the amount entered is higher thant the actual balance
+                        int currentBalance = await SharedPreferencesUtil.retrieveBalance() ?? 0;
+                        if ((int.parse(amountController.text) > currentBalance) && (_selectedCategory == "expense")) {
+                          _showErrorMessage("You don't have enough money");
+                          return;
+                        }
+
                         // Store data
                         Transaction newTransaction = Transaction(
                           key: uuid,
@@ -275,12 +304,12 @@ class _AddTransactionState extends State<AddTransaction> {
                           category: _selectedCategory ?? "income",
                           date: _selectedDate ?? DateTime.now(),
                           iconCode: _selectedIcon?.codePoint ?? Icons.monetization_on.codePoint,
+                          // ignore: use_build_context_synchronously
                           color: _selectedColor ?? Theme.of(context).focusColor,
                         );
                         transcationBox.add(newTransaction);
                         // End store data
                         // Update balance
-                        int currentBalance = await SharedPreferencesUtil.retrieveBalance() ?? 0;
                         int amount;
                         if (_selectedCategory == "expense") {
                           amount = - int.parse(amountController.text);
