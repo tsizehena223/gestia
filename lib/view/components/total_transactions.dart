@@ -17,7 +17,7 @@ class TotalTransactions extends StatelessWidget {
       children: [
         Expanded(
           child: Card(
-            color: Theme.of(context).disabledColor.withOpacity(.4),
+            color: Theme.of(context).disabledColor.withOpacity(.6),
             child: Container(
               padding: const EdgeInsets.symmetric(vertical: 10),
               child: ListTile(
@@ -30,14 +30,14 @@ class TotalTransactions extends StatelessWidget {
                 ),
                 subtitle: Row(
                   children: [
-                    const Text("Ar  ", style: TextStyle(color: Colors.white),),
                     Text(
                       FormatData.formatTotalNumber(totalExpense),
-                      style: const TextStyle(
-                        color: Colors.white,
+                      style: TextStyle(
+                        color: Theme.of(context).primaryColorLight,
                         fontSize: 20,
                       ),
                     ),
+                    Text("  Ar", style: TextStyle(color: Theme.of(context).primaryColorLight),),
                   ]
                 ),
               ),
@@ -46,7 +46,7 @@ class TotalTransactions extends StatelessWidget {
         ),
         Expanded(
           child: Card(
-            color: Theme.of(context).primaryColorDark.withOpacity(.8),
+            color: Theme.of(context).primaryColorDark,
             child: Container(
               padding: const EdgeInsets.symmetric(vertical: 10),
               child: ListTile(
@@ -59,11 +59,11 @@ class TotalTransactions extends StatelessWidget {
                 ),
                 subtitle: Row(
                   children: [
-                    const Text("Ar  ", style: TextStyle(color: Colors.white),),
                     Text(
                       FormatData.formatTotalNumber(totalIncome),
                       style: const TextStyle(color: Colors.white, fontSize: 20),
                     ),
+                    const Text("  Ar", style: TextStyle(color: Colors.white),),
                   ]
                 ),
               ),

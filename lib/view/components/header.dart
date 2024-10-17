@@ -12,7 +12,7 @@ class Header extends StatelessWidget {
       margin: const EdgeInsets.all(10),
       width: MediaQuery.of(context).size.width,
       decoration: BoxDecoration(
-        color: Theme.of(context).disabledColor,
+        color: Colors.white,
         borderRadius: BorderRadius.circular(30),
       ),
       child: FutureBuilder(
@@ -21,14 +21,15 @@ class Header extends StatelessWidget {
           String data = snapshot.data ?? "UserName";
           return ListTile(
             leading: CircleAvatar(
-              backgroundColor: Theme.of(context).disabledColor,
+              backgroundColor: Theme.of(context).primaryColor,
               child: Icon(Icons.home_filled, color: Theme.of(context).focusColor,),
             ),
             title: Text(
               data,
               style: const TextStyle(
-                color: Colors.white,
+                color: Colors.black,
                 fontSize: 15,
+                fontWeight: FontWeight.bold,
               ),
             ),
             subtitle: Text(
@@ -36,7 +37,7 @@ class Header extends StatelessWidget {
               style: TextStyle(color: Theme.of(context).focusColor, fontSize: 12),
             ),
             trailing: CircleAvatar(
-              backgroundColor: Theme.of(context).disabledColor,
+              backgroundColor: Theme.of(context).primaryColor,
               child: Icon(Icons.person, color: Theme.of(context).primaryColorDark,),
             ),
           );

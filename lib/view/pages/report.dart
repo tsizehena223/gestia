@@ -82,12 +82,36 @@ class ReportPageState extends State<ReportPage> {
             icon: Icons.leaderboard,
           ),
           Container(
+            margin: const EdgeInsets.all(10),
+            decoration: BoxDecoration(
+              color: Theme.of(context).primaryColorDark,
+              borderRadius: BorderRadius.circular(10),
+            ),
+            child: ListTile(
+              leading: CircleAvatar(
+                backgroundColor: Theme.of(context).primaryColor,
+                child: const Icon(Icons.gps_fixed),
+              ),
+              title: const Text("Budget"),
+              subtitle: const Text(
+                "Set your budget goal with GestIA Bot",
+                style: TextStyle(
+                  fontSize: 12,
+                ),
+              ),
+              trailing: CircleAvatar(
+                backgroundColor: Theme.of(context).primaryColor,
+                child: const Icon(Icons.add),
+              ),
+            ),
+          ),
+          Container(
             height: 350,
-            margin: const EdgeInsets.symmetric(horizontal: 10),
+            margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
             padding: const EdgeInsets.symmetric(horizontal: 20),
             decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(30),
-              color: Theme.of(context).disabledColor,
+              borderRadius: BorderRadius.circular(10),
+              color: Theme.of(context).primaryColorLight,
             ),
             child: Column(
               children: <Widget>[
@@ -98,7 +122,7 @@ class ReportPageState extends State<ReportPage> {
                     Text(
                       "Analytics",
                       style: TextStyle(
-                        color: Theme.of(context).primaryColorLight,
+                        color: Theme.of(context).disabledColor,
                       ),
                     ),
                     yearDropDown(),
@@ -150,23 +174,6 @@ class ReportPageState extends State<ReportPage> {
                 ),
                 const SizedBox(height: 10),
               ],
-            ),
-          ),
-          Container(
-            margin: const EdgeInsets.all(10),
-            decoration: BoxDecoration(
-              color: Theme.of(context).primaryColorLight,
-              borderRadius: BorderRadius.circular(30),
-            ),
-            child: const ListTile(
-              leading: CircleAvatar(
-                child: Icon(Icons.gps_fixed),
-              ),
-              title: Text("Budget"),
-              subtitle: Text("Set your budget goal", style: TextStyle(fontSize: 12),),
-              trailing: CircleAvatar(
-                child: Icon(Icons.add),
-              ),
             ),
           ),
           Container(

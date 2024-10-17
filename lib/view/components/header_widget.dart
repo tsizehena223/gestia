@@ -18,19 +18,20 @@ class HeaderWidget extends StatelessWidget {
       margin: const EdgeInsets.all(10),
       width: MediaQuery.of(context).size.width,
       decoration: BoxDecoration(
-        color: Theme.of(context).disabledColor,
+        color: Theme.of(context).primaryColorLight,
         borderRadius: BorderRadius.circular(30),
       ),
       child: ListTile(
         leading: CircleAvatar(
-          backgroundColor: Theme.of(context).disabledColor,
+          backgroundColor: Theme.of(context).primaryColor,
           child: Icon(icon, color: Theme.of(context).focusColor,),
         ),
         title: Text(
           title,
-          style: const TextStyle(
-            color: Colors.white,
+          style: TextStyle(
+            color: Theme.of(context).disabledColor,
             fontSize: 15,
+            fontWeight: FontWeight.bold,
           ),
         ),
         subtitle: Text(
@@ -38,8 +39,8 @@ class HeaderWidget extends StatelessWidget {
           style: TextStyle(color: Theme.of(context).focusColor, fontSize: 12),
         ),
         trailing: CircleAvatar(
-              backgroundColor: Theme.of(context).disabledColor,
-              child: Icon(Icons.person_2_rounded, color: Theme.of(context).primaryColorDark,),
+              backgroundColor: Theme.of(context).primaryColor,
+              child: Icon(Icons.person, color: Theme.of(context).primaryColorDark,),
             ),
       ),
     );

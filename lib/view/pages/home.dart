@@ -74,7 +74,7 @@ class _HomeState extends State<Home> {
         child: Container(
           margin: const EdgeInsets.all(10),
           decoration: BoxDecoration(
-            color:Theme.of(context).disabledColor,
+            color: Colors.white,
             borderRadius: BorderRadius.circular(25),
           ),
           child: Row(
@@ -107,11 +107,7 @@ class _HomeState extends State<Home> {
 
   SafeArea home(BuildContext context, String balanceFormated, String formattedDate) {
 
-    return SafeArea(
-      child: SingleChildScrollView(
-        child: Column(
-          mainAxisSize: MainAxisSize.max,
-          children: [
+    var children = [
             const Header(),
             // Begin
             Container(
@@ -120,35 +116,45 @@ class _HomeState extends State<Home> {
               width: MediaQuery.of(context).size.width,
               decoration: BoxDecoration(
                 color: Theme.of(context).primaryColorLight,
-                borderRadius: BorderRadius.circular(30),
+                borderRadius: BorderRadius.circular(10),
               ),
               child: Column(
                 children: [
                   ListTile(
-                    title: const Text(
-                      "Total Balance",
-                      style: TextStyle(fontSize: 20),
+                    title: Center(
+                      child: Text(
+                        formattedDate,
+                        style: TextStyle(color: Theme.of(context).focusColor, fontWeight: FontWeight.bold),
+                      ),
                     ),
-                    subtitle: Row(
-                      children: [
-                        const Text(
-                          "Ar  ",
-                          style: TextStyle(fontSize: 20),
+                    subtitle: Center(
+                      child: Text(
+                        'Your balance',
+                        style: TextStyle(
+                          fontWeight: FontWeight.normal,
+                          color: Theme.of(context).focusColor,
                         ),
+                      ),
+                    ),
+                  ),
+                  ListTile(
+                    title: Row(
+                      children: [
                         Text(
                           _isShow ? balanceFormated : "*** ***",
                           style: TextStyle(
-                            color: Theme.of(context).primaryColor,
+                            color: Theme.of(context).primaryColorDark,
                             fontSize: 30,
                             fontWeight: FontWeight.bold,
                           ),
                         ),
+                        const Text(
+                          "  Ariary",
+                          style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                        ),
                       ]
                     ),
                     trailing: IconButton(icon: (_isShow) ? const Icon(Icons.visibility) : const Icon(Icons.visibility_off), onPressed: _toggleShow,)
-                  ),
-                  ListTile(
-                    title: Text(formattedDate, style: TextStyle(color: Theme.of(context).primaryColor),),
                   ),
                 ],
               ),
@@ -168,15 +174,24 @@ class _HomeState extends State<Home> {
                       },
                       child: Container(
                         decoration: BoxDecoration(
-                          color: Theme.of(context).disabledColor,
-                          borderRadius: BorderRadius.circular(30),
+                          color: Theme.of(context).disabledColor.withOpacity(.6),
+                          borderRadius: BorderRadius.circular(10),
+                          border: Border.all(
+                            color: Theme.of(context).focusColor,
+                            width: .5
+                          ),
                         ),
                         child: ListTile(
                           leading: CircleAvatar(
-                            backgroundColor: Theme.of(context).disabledColor,
+                            backgroundColor: Theme.of(context).primaryColor.withOpacity(.2),
                             child: const Icon(Icons.remove, color: Colors.white,),
                           ),
-                          title: const Text("Expense", style: TextStyle(color: Colors.white,),),
+                          title: Text(
+                            "Expense",
+                            style: TextStyle(
+                              color: Theme.of(context).primaryColorLight,
+                            ),
+                          ),
                         ),
                       ),
                     )
@@ -193,7 +208,7 @@ class _HomeState extends State<Home> {
                       child: Container(
                         decoration: BoxDecoration(
                           color: Theme.of(context).primaryColorDark,
-                          borderRadius: BorderRadius.circular(30),
+                          borderRadius: BorderRadius.circular(10),
                         ),
                         child: ListTile(
                           leading: CircleAvatar(
@@ -213,8 +228,8 @@ class _HomeState extends State<Home> {
               width: MediaQuery.sizeOf(context).width,
               height: 300,
               decoration: BoxDecoration(
-                color: Theme.of(context).disabledColor,
-                borderRadius: BorderRadius.circular(35),
+                color: Theme.of(context).primaryColorLight,
+                borderRadius: BorderRadius.circular(10),
               ),
               margin: const EdgeInsets.symmetric(horizontal: 10),
               child: Column(
@@ -224,10 +239,10 @@ class _HomeState extends State<Home> {
                     children: [
                       Container(
                         margin: const EdgeInsets.only(top: 20, left: 30),
-                        child: const Text(
+                        child: Text(
                           "Recents",
                           style: TextStyle(
-                            color: Colors.white,
+                            color: Theme.of(context).focusColor,
                             fontSize: 25,
                           ),
                         ),
@@ -243,7 +258,7 @@ class _HomeState extends State<Home> {
                           child: Text(
                             "View all",
                             style: TextStyle(
-                              color: Theme.of(context).primaryColorLight,
+                              color: Theme.of(context).focusColor,
                               fontSize: 15,
                             ),
                           ),
@@ -258,7 +273,12 @@ class _HomeState extends State<Home> {
                 ],
               ),
             ),
-          ],
+          ];
+    return SafeArea(
+      child: SingleChildScrollView(
+        child: Column(
+          mainAxisSize: MainAxisSize.max,
+          children: children,
         ),
       ),
     );
