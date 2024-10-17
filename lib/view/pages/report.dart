@@ -92,11 +92,17 @@ class ReportPageState extends State<ReportPage> {
                 backgroundColor: Theme.of(context).primaryColor,
                 child: const Icon(Icons.gps_fixed),
               ),
-              title: const Text("Budget"),
-              subtitle: const Text(
+              title: Text(
+                "Budget",
+                style: TextStyle(
+                  color: Theme.of(context).primaryColorLight,
+                ),
+              ),
+              subtitle: Text(
                 "Set your budget goal with GestIA Bot",
                 style: TextStyle(
                   fontSize: 12,
+                  color: Theme.of(context).primaryColorLight,
                 ),
               ),
               trailing: CircleAvatar(
