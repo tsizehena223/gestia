@@ -73,120 +73,122 @@ class ReportPageState extends State<ReportPage> {
         .where((transaction) => transaction.category == "income")
         .fold(0, (sum, transaction) => sum + transaction.amount);
 
-    return SafeArea(
-      child: Column(
-        children: [
-          const HeaderWidget(
-            title: 'Report',
-            subtitle: 'Report of your transactions',
-            icon: Icons.leaderboard,
-          ),
-          Container(
-            margin: const EdgeInsets.all(10),
-            decoration: BoxDecoration(
-              color: Theme.of(context).primaryColorDark,
-              borderRadius: BorderRadius.circular(10),
+    return SingleChildScrollView(
+      child: SafeArea(
+        child: Column(
+          children: [
+            const HeaderWidget(
+              title: 'Report',
+              subtitle: 'Report of your transactions',
+              icon: Icons.leaderboard,
             ),
-            child: ListTile(
-              leading: CircleAvatar(
-                backgroundColor: Theme.of(context).primaryColor,
-                child: const Icon(Icons.gps_fixed),
+            Container(
+              margin: const EdgeInsets.all(10),
+              decoration: BoxDecoration(
+                color: Theme.of(context).primaryColorDark,
+                borderRadius: BorderRadius.circular(10),
               ),
-              title: Text(
-                "Budget",
-                style: TextStyle(
-                  color: Theme.of(context).primaryColorLight,
+              child: ListTile(
+                leading: CircleAvatar(
+                  backgroundColor: Theme.of(context).primaryColor,
+                  child: const Icon(Icons.gps_fixed),
                 ),
-              ),
-              subtitle: Text(
-                "Set your budget goal with GestIA Bot",
-                style: TextStyle(
-                  fontSize: 12,
-                  color: Theme.of(context).primaryColorLight,
-                ),
-              ),
-              trailing: CircleAvatar(
-                backgroundColor: Theme.of(context).primaryColor,
-                child: const Icon(Icons.add),
-              ),
-            ),
-          ),
-          Container(
-            height: 350,
-            margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-            padding: const EdgeInsets.symmetric(horizontal: 20),
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(10),
-              color: Theme.of(context).primaryColorLight,
-            ),
-            child: Column(
-              children: <Widget>[
-                const SizedBox(height: 10),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(
-                      "Analytics",
-                      style: TextStyle(
-                        color: Theme.of(context).disabledColor,
-                      ),
-                    ),
-                    yearDropDown(),
-                    IconButton(
-                      onPressed: _reloadPage,
-                      icon: Icon(
-                        Icons.refresh,
-                        color: Theme.of(context).focusColor,
-                      ),
-                    )
-                  ],
-                ),
-                const SizedBox(height: 30),
-                Expanded(
-                  child: BarChart(
-                    BarChartData(
-                      maxY: 101,
-                      titlesData: FlTitlesData(
-                        show: true,
-                        rightTitles: const AxisTitles(
-                          sideTitles: SideTitles(showTitles: false),
-                        ),
-                        topTitles: const AxisTitles(
-                          sideTitles: SideTitles(showTitles: false),
-                        ),
-                        bottomTitles: AxisTitles(
-                          sideTitles: SideTitles(
-                            showTitles: true,
-                            getTitlesWidget: bottomTitles,
-                            reservedSize: 42,
-                          ),
-                        ),
-                        leftTitles: AxisTitles(
-                          sideTitles: SideTitles(
-                            showTitles: false,
-                            reservedSize: 28,
-                            interval: 1,
-                            getTitlesWidget: leftTitles,
-                          ),
-                        ),
-                      ),
-                      borderData: FlBorderData(
-                        show: false,
-                      ),
-                      barGroups: showingBarGroups,
-                      gridData: const FlGridData(show: true),
-                    ),
+                title: Text(
+                  "Budget",
+                  style: TextStyle(
+                    color: Theme.of(context).primaryColorLight,
                   ),
                 ),
-                const SizedBox(height: 10),
-              ],
+                subtitle: Text(
+                  "Set your budget goal with GestIA Bot",
+                  style: TextStyle(
+                    fontSize: 12,
+                    color: Theme.of(context).primaryColorLight,
+                  ),
+                ),
+                trailing: CircleAvatar(
+                  backgroundColor: Theme.of(context).primaryColor,
+                  child: const Icon(Icons.add),
+                ),
+              ),
             ),
-          ),
-          Container(
-            margin: const EdgeInsets.symmetric(horizontal: 10),
-            child: TotalTransactions(totalExpense: totalExpense, totalIncome: totalIncome),
-          )
-        ],
+            Container(
+              height: 350,
+              margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+              padding: const EdgeInsets.symmetric(horizontal: 20),
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(10),
+                color: Theme.of(context).primaryColorLight,
+              ),
+              child: Column(
+                children: <Widget>[
+                  const SizedBox(height: 10),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        "Analytics",
+                        style: TextStyle(
+                          color: Theme.of(context).disabledColor,
+                        ),
+                      ),
+                      yearDropDown(),
+                      IconButton(
+                        onPressed: _reloadPage,
+                        icon: Icon(
+                          Icons.refresh,
+                          color: Theme.of(context).focusColor,
+                        ),
+                      )
+                    ],
+                  ),
+                  const SizedBox(height: 30),
+                  Expanded(
+                    child: BarChart(
+                      BarChartData(
+                        maxY: 101,
+                        titlesData: FlTitlesData(
+                          show: true,
+                          rightTitles: const AxisTitles(
+                            sideTitles: SideTitles(showTitles: false),
+                          ),
+                          topTitles: const AxisTitles(
+                            sideTitles: SideTitles(showTitles: false),
+                          ),
+                          bottomTitles: AxisTitles(
+                            sideTitles: SideTitles(
+                              showTitles: true,
+                              getTitlesWidget: bottomTitles,
+                              reservedSize: 42,
+                            ),
+                          ),
+                          leftTitles: AxisTitles(
+                            sideTitles: SideTitles(
+                              showTitles: false,
+                              reservedSize: 28,
+                              interval: 1,
+                              getTitlesWidget: leftTitles,
+                            ),
+                          ),
+                        ),
+                        borderData: FlBorderData(
+                          show: false,
+                        ),
+                        barGroups: showingBarGroups,
+                        gridData: const FlGridData(show: true),
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: 10),
+                ],
+              ),
+            ),
+            Container(
+              margin: const EdgeInsets.symmetric(horizontal: 10),
+              child: TotalTransactions(totalExpense: totalExpense, totalIncome: totalIncome),
+            )
+          ],
+        ),
       ),
     );
   }

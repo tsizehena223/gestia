@@ -73,7 +73,7 @@ class _AddTransactionState extends State<AddTransaction> {
         content: Container(
           decoration: BoxDecoration(
           color: const Color.fromARGB(255, 17, 141, 21),
-            borderRadius: BorderRadius.circular(20),
+            borderRadius: BorderRadius.circular(10),
           ),
           padding: const EdgeInsets.all(10),
           child: const Center(
@@ -95,7 +95,7 @@ class _AddTransactionState extends State<AddTransaction> {
         content: Container(
           decoration: BoxDecoration(
             color: Theme.of(context).primaryColorDark.withOpacity(.7),
-            borderRadius: BorderRadius.circular(20),
+            borderRadius: BorderRadius.circular(10),
           ),
           padding: const EdgeInsets.all(10),
           child: Center(
@@ -152,7 +152,7 @@ class _AddTransactionState extends State<AddTransaction> {
                     padding: const EdgeInsets.all(20),
                     decoration: BoxDecoration(
                       color: Theme.of(context).primaryColorLight,
-                      borderRadius: BorderRadius.circular(20),
+                      borderRadius: BorderRadius.circular(10),
                     ),
                     child: Column(
                       children: [
@@ -339,7 +339,7 @@ class _AddTransactionState extends State<AddTransaction> {
       width: MediaQuery.sizeOf(context).width,
       margin: const EdgeInsets.symmetric(horizontal: 10),
       decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(30),
+        borderRadius: BorderRadius.circular(10),
         color: Theme.of(context).primaryColorLight,
       ),
       child: Row(
@@ -365,19 +365,19 @@ class _AddTransactionState extends State<AddTransaction> {
         borderSide: BorderSide(
           color: Theme.of(context).primaryColor,
         ),
-        borderRadius: const BorderRadius.all(Radius.circular(20)),
+        borderRadius: const BorderRadius.all(Radius.circular(10)),
       ),
       focusColor: Colors.white,
       focusedBorder: OutlineInputBorder(
         borderSide: BorderSide(
           color: Theme.of(context).focusColor,
         ),
-        borderRadius: const BorderRadius.all(Radius.circular(20)),
+        borderRadius: const BorderRadius.all(Radius.circular(10)),
       ),
       labelText: label,
       labelStyle: TextStyle(color: Theme.of(context).focusColor),
       border: const OutlineInputBorder(
-        borderRadius: BorderRadius.all(Radius.circular(20)),
+        borderRadius: BorderRadius.all(Radius.circular(10)),
       ),
     );
   }
