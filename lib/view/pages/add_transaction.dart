@@ -260,79 +260,79 @@ class _AddTransactionState extends State<AddTransaction> {
                             _selectDate(context);
                           },
                         ),
+                        Visibility(
+                          visible: (
+                            _isInputTitleValid &&
+                            _isInputAmountValid &&
+                            _selectedCategory != null &&
+                            _selectedDate != null &&
+                            _selectedIcon != null
+                          ) ? true : false,
+                          child: Container(
+                            margin: const EdgeInsets.only(top: 30),
+                            height: 50,
+                            child: ElevatedButton(
+                              onPressed: !(_isInputTitleValid && _isInputAmountValid) ? null : () async {
+                                // check if the amount entered is higher thant the actual balance
+                                int currentBalance = await SharedPreferencesUtil.retrieveBalance() ?? 0;
+                                if ((int.parse(amountController.text) > currentBalance) && (_selectedCategory == "expense")) {
+                                  _showErrorMessage("You don't have enough money");
+                                  return;
+                                }
+
+                                // Store data
+                                Transaction newTransaction = Transaction(
+                                  key: uuid,
+                                  title: titleController.text,
+                                  amount: int.parse(amountController.text),
+                                  category: _selectedCategory ?? "income",
+                                  date: _selectedDate ?? DateTime.now(),
+                                  iconCode: _selectedIcon?.codePoint ?? Icons.monetization_on.codePoint,
+                                  color: _getColorForIcon(_selectedIcon ?? Icons.monetization_on),
+                                  // ignore: use_build_context_synchronously
+                                );
+                                transcationBox.add(newTransaction);
+                                // End store data
+                                // Update balance
+                                int amount;
+                                if (_selectedCategory == "expense") {
+                                  amount = - int.parse(amountController.text);
+                                } else {
+                                  amount = int.parse(amountController.text);
+                                }
+                                await SharedPreferencesUtil.storeBalance(currentBalance + amount);
+                                // End update balance
+                                // ignore: use_build_context_synchronously
+                                _showSuccessMessage(context);
+                                Navigator.pushReplacement(
+                                  // ignore: use_build_context_synchronously
+                                  context,
+                                  MaterialPageRoute(builder: (context) => const Home()),
+                                );
+                              },
+                              style: ElevatedButton.styleFrom(
+                                padding: const EdgeInsets.symmetric(
+                                  vertical: 10,
+                                  horizontal: 70,
+                                ),
+                                backgroundColor: Theme.of(context).primaryColorDark,
+                              ),
+                              child: const Text(
+                                "Save",
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 20,
+                                  fontWeight: FontWeight.bold
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                        const SizedBox(height: 10,)
                       ],
                     ),
                   ),
                 ),
-                Visibility(
-                  visible: (
-                    _isInputTitleValid &&
-                    _isInputAmountValid &&
-                    _selectedCategory != null &&
-                    _selectedDate != null &&
-                    _selectedIcon != null
-                  ) ? true : false,
-                  child: Container(
-                    margin: const EdgeInsets.only(top: 30),
-                    height: 50,
-                    child: ElevatedButton(
-                      onPressed: !(_isInputTitleValid && _isInputAmountValid) ? null : () async {
-                        // check if the amount entered is higher thant the actual balance
-                        int currentBalance = await SharedPreferencesUtil.retrieveBalance() ?? 0;
-                        if ((int.parse(amountController.text) > currentBalance) && (_selectedCategory == "expense")) {
-                          _showErrorMessage("You don't have enough money");
-                          return;
-                        }
-
-                        // Store data
-                        Transaction newTransaction = Transaction(
-                          key: uuid,
-                          title: titleController.text,
-                          amount: int.parse(amountController.text),
-                          category: _selectedCategory ?? "income",
-                          date: _selectedDate ?? DateTime.now(),
-                          iconCode: _selectedIcon?.codePoint ?? Icons.monetization_on.codePoint,
-                          color: _getColorForIcon(_selectedIcon ?? Icons.monetization_on),
-                          // ignore: use_build_context_synchronously
-                        );
-                        transcationBox.add(newTransaction);
-                        // End store data
-                        // Update balance
-                        int amount;
-                        if (_selectedCategory == "expense") {
-                          amount = - int.parse(amountController.text);
-                        } else {
-                          amount = int.parse(amountController.text);
-                        }
-                        await SharedPreferencesUtil.storeBalance(currentBalance + amount);
-                        // End update balance
-                        // ignore: use_build_context_synchronously
-                        _showSuccessMessage(context);
-                        Navigator.pushReplacement(
-                          // ignore: use_build_context_synchronously
-                          context,
-                          MaterialPageRoute(builder: (context) => const Home()),
-                        );
-                      },
-                      style: ElevatedButton.styleFrom(
-                        padding: const EdgeInsets.symmetric(
-                          vertical: 10,
-                          horizontal: 70,
-                        ),
-                        backgroundColor: Theme.of(context).primaryColorDark,
-                      ),
-                      child: const Text(
-                        "Save",
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 20,
-                          fontWeight: FontWeight.bold
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
-                const SizedBox(height: 100,),
               ],
             ),
           ),
