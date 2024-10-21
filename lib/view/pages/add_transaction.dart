@@ -51,6 +51,11 @@ class _AddTransactionState extends State<AddTransaction> {
   }
 
   Future<void> _selectDate(BuildContext context) async {
+    // Set the defaultCategory to valid
+    if (widget.defaultCategory != null) {
+      _selectedCategory = widget.defaultCategory;
+    }
+
     final DateTime? picked = await showDatePicker(
       context: context,
       initialDate: DateTime.now(),
