@@ -3,6 +3,7 @@ import 'package:gestia/main.dart';
 import 'package:gestia/model/transaction.dart';
 import 'package:gestia/service/transaction_service.dart';
 import 'package:gestia/utils/format_data.dart';
+import 'package:gestia/utils/shared_preferences_util.dart';
 import 'package:hive_flutter/adapters.dart';
 import 'package:intl/intl.dart';
 
@@ -20,20 +21,32 @@ class ListTransactionWidget extends StatefulWidget {
 
 class _ListTransactionWidgetState extends State<ListTransactionWidget> {
   Future<bool?> _confirmDismiss(BuildContext context, Transaction transaction) async {
+    // Check if the balance will be negative
+    int currentBalance = await SharedPreferencesUtil.retrieveBalance() ?? 0;
+    bool canBeDeleted = true;
+    String confirmationText = 'Are you sure you want to delete this transaction?';
+    if (transaction.category == "income" && transaction.amount > currentBalance) {
+      canBeDeleted = false;
+      confirmationText = 'This transaction can\'t be deleted';
+    }
+
     return await showDialog(
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
           title: const Text('Confirm'),
-          content: const Text('Are you sure you want to delete this transaction?'),
+          content: Text(confirmationText),
           actions: <Widget>[
             TextButton(
-              onPressed: () => Navigator.of(context).pop(false),
+              onPressed: () => Navigator.of(context).pop(canBeDeleted),
               child: const Text('Cancel'),
             ),
-            TextButton(
-              onPressed: () => Navigator.of(context).pop(true),
-              child: const Text('Delete', style: TextStyle(color: Colors.red),),
+            Visibility(
+              visible: canBeDeleted,
+              child: TextButton(
+                onPressed: () => Navigator.of(context).pop(canBeDeleted),
+                child: const Text('Delete', style: TextStyle(color: Colors.red),),
+              ),
             ),
           ],
         );
