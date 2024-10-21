@@ -38,6 +38,7 @@ class _AddTransactionState extends State<AddTransaction> {
     Icons.monetization_on : 'Salary',
     Icons.school : 'Education',
     Icons.train : 'Travel',
+    Icons.devices_other: 'Other'
   };
 
   String? _selectedCategory;
@@ -119,15 +120,17 @@ class _AddTransactionState extends State<AddTransaction> {
       case Icons.fastfood:
         return Colors.orange;
       case Icons.local_hospital:
-        return Colors.green;
+        return Colors.yellow;
       case Icons.train:
         return Colors.blue;
       case Icons.card_giftcard:
         return Colors.purple;
       case Icons.monetization_on:
-        return Colors.yellow;
+        return Colors.green;
       case Icons.school:
         return Colors.red;
+      case Icons.devices_other:
+        return Colors.grey;
       default:
         return Colors.red;
     }
@@ -289,7 +292,7 @@ class _AddTransactionState extends State<AddTransaction> {
                           category: _selectedCategory ?? "income",
                           date: _selectedDate ?? DateTime.now(),
                           iconCode: _selectedIcon?.codePoint ?? Icons.monetization_on.codePoint,
-                          color: _getColorForIcon(_selectedIcon ?? Icons.monetization_on)
+                          color: _getColorForIcon(_selectedIcon ?? Icons.monetization_on),
                           // ignore: use_build_context_synchronously
                         );
                         transcationBox.add(newTransaction);
