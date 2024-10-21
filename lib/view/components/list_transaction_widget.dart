@@ -31,6 +31,7 @@ class _ListTransactionWidgetState extends State<ListTransactionWidget> {
     }
 
     return await showDialog(
+      // ignore: use_build_context_synchronously
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
@@ -38,7 +39,7 @@ class _ListTransactionWidgetState extends State<ListTransactionWidget> {
           content: Text(confirmationText),
           actions: <Widget>[
             TextButton(
-              onPressed: () => Navigator.of(context).pop(canBeDeleted),
+              onPressed: () => Navigator.of(context).pop(false),
               child: const Text('Cancel'),
             ),
             Visibility(
