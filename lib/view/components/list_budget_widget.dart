@@ -21,6 +21,8 @@ class _ListBudgetWidgetState extends State<ListBudgetWidget> {
     budgetGoalBox = Hive.box<BudgetGoal>(BudgetGoalService.boxName);
   }
 
+  double? _numberOfMonths;
+
   @override
   Widget build(BuildContext context) {
     return ValueListenableBuilder(
@@ -28,45 +30,39 @@ class _ListBudgetWidgetState extends State<ListBudgetWidget> {
       builder: (context, budgetGoals, _) {
         if (budgetGoals.isEmpty) {
           return Center(
-            child: Text('No budget goal added yet', style: TextStyle(color: Theme.of(context).disabledColor)),
+            child: Text(
+              'No budget goal added yet',
+              style: TextStyle(color: Theme.of(context).disabledColor),
+            ),
           );
         }
-        List<BudgetGoal> budgetGoalList = budgetGoals.values.toList();
-        return ListView.builder(
-          itemCount: budgetGoalList.length,
-          itemBuilder: (context, index) {
-            BudgetGoal budgetGoal = budgetGoalList[index];
-            return ListTile(
-              leading: CircleAvatar(
-                backgroundColor: Colors.blue.withOpacity(.7),
-                child: Icon(Icons.money, color: Theme.of(context).primaryColorLight,),
-              ),
-              title: Text(
-                budgetGoal.label,
-                style: TextStyle(
-                  color: Theme.of(context).disabledColor.withOpacity(.7),
-                  fontSize: 20,
-                ),
-              ),
-              trailing: Text(
-                budgetGoal.amount.toString(),
-                style: TextStyle(
-                  color: Theme.of(context).disabledColor,
-                  fontSize: 15,
-                ),
-              ),
-              subtitle: Text(
-                budgetGoal.salaryMonthly.toString(),
-                style: TextStyle(
-                  color: Theme.of(context).focusColor,
-                  fontSize: 15,
-                ),
-              ),
-            );
-          },
 
+        BudgetGoal? firstBudgetGoal = budgetGoals.values.isNotEmpty ? budgetGoals.values.first : null;
+
+        if (firstBudgetGoal == null) {
+          return Center(
+            child: Text(
+              'No budget goal available',
+              style: TextStyle(color: Theme.of(context).disabledColor),
+            ),
+          );
+        }
+
+        double getNumberOfMonths(int goalAmount, int income, int expense) {
+          return (goalAmount / (income - expense));
+        }
+
+        _numberOfMonths = getNumberOfMonths(firstBudgetGoal.amount, firstBudgetGoal.salaryMonthly, firstBudgetGoal.expenseMonthly);
+
+        return Center(
+          child: Text(
+            "You will get your ${firstBudgetGoal.label} in only ${_numberOfMonths?.round()} months",
+            style: const TextStyle(
+              color: Colors.green,
+            ),
+          ),
         );
-      },
+      }
     );
   }
 }
