@@ -5,6 +5,7 @@ class BudgetGoalAdapter extends TypeAdapter<BudgetGoal> {
   @override
   BudgetGoal read(BinaryReader reader) {
     return BudgetGoal(
+      key: reader.read(),
       salaryMonthly: reader.read(),
       expenseMonthly: reader.read(),
       label: reader.read(),

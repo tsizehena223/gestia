@@ -10,11 +10,14 @@ class BudgetGoal {
   String label;
   @HiveField(3)
   int amount;
+  @HiveField(4)
+  String key;
 
   BudgetGoal({
     required this.salaryMonthly,
     required this.expenseMonthly,
     required this.label,
-    required this.amount
+    required this.amount,
+    required this.key
   });
 }

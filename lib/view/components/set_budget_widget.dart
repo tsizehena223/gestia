@@ -3,6 +3,7 @@ import 'package:gestia/model/budget_goal.dart';
 import 'package:gestia/service/budget_goal_service.dart';
 import 'package:gestia/view/components/snack_bar_message.dart';
 import 'package:hive/hive.dart';
+import 'package:uuid/uuid.dart';
 
 class SetBudgetWidget extends StatefulWidget {
   const SetBudgetWidget({
@@ -98,6 +99,7 @@ class SetBudgetWidgetState extends State<SetBudgetWidget> {
             if (_formKey.currentState?.validate() ?? false) {
               // Save the new budgetGoal
               BudgetGoal newBudgetGoal = BudgetGoal(
+                key: const Uuid().v1(),
                 salaryMonthly: int.parse(widget.salaryController.text),
                 expenseMonthly: int.parse(widget.expenseController.text),
                 label: widget.labelController.text,
