@@ -66,7 +66,7 @@ class SetBudgetWidgetState extends State<SetBudgetWidget> {
                 controller: widget.expenseController,
                 label: 'Expense monthly',
                 keyboardType: TextInputType.number,
-                validator: (value) => validatePositiveNumber(value, 'Expense'),
+                validator: (value) => validateExpense(value),
               ),
               const SizedBox(height: 10),
               buildTextField(
@@ -173,6 +173,24 @@ class SetBudgetWidgetState extends State<SetBudgetWidget> {
   String? validateNotEmpty(String? value, String fieldName) {
     if (value == null || value.isEmpty) {
       return '$fieldName cannot be empty';
+    }
+    return null;
+  }
+
+  String? validateExpense(String? expenseValue) {
+    final salaryValue = widget.salaryController.text;
+
+    if (validatePositiveNumber(expenseValue, 'Expense') != null) {
+      return validatePositiveNumber(expenseValue, 'Expense');
+    }
+
+    if (double.tryParse(salaryValue) != null && double.tryParse(expenseValue!) != null) {
+      final salary = double.parse(salaryValue);
+      final expense = double.parse(expenseValue);
+
+      if (expense > salary) {
+        return 'Expense cannot be higher than income';
+      }
     }
     return null;
   }
