@@ -4,6 +4,7 @@ import 'package:gestia/model/transaction.dart';
 import 'package:gestia/service/transaction_service.dart';
 import 'package:gestia/utils/format_data.dart';
 import 'package:gestia/view/components/header_widget.dart';
+import 'package:gestia/view/components/set_budget_widget.dart';
 import 'package:gestia/view/components/total_transactions.dart';
 import 'package:hive/hive.dart';
 
@@ -59,6 +60,26 @@ class ReportPageState extends State<ReportPage> {
     changeGraph(selectedYear);
   }
 
+  Future<void> _showSetBudget(BuildContext context) async {
+    TextEditingController salaryController = TextEditingController();
+    TextEditingController expenseController= TextEditingController();
+    TextEditingController labelController= TextEditingController();
+    TextEditingController amountController= TextEditingController();
+
+    return await showDialog(
+      // ignore: use_build_context_synchronously
+      context: context,
+      builder: (BuildContext context) {
+        return SetBudgetWidget(
+          salaryController: salaryController,
+          expenseController: expenseController,
+          labelController: labelController,
+          amountController: amountController,
+        );
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
       final transactionBox = Hive.box<Transaction>(TransactionService.boxName);
@@ -88,27 +109,30 @@ class ReportPageState extends State<ReportPage> {
                 color: Theme.of(context).primaryColorDark,
                 borderRadius: BorderRadius.circular(10),
               ),
-              child: ListTile(
-                leading: CircleAvatar(
-                  backgroundColor: Theme.of(context).primaryColor,
-                  child: const Icon(Icons.gps_fixed),
-                ),
-                title: Text(
-                  "Budget",
-                  style: TextStyle(
-                    color: Theme.of(context).primaryColorLight,
+              child: GestureDetector(
+                onTap: () => _showSetBudget(context),
+                child: ListTile(
+                  leading: CircleAvatar(
+                    backgroundColor: Theme.of(context).primaryColor,
+                    child: const Icon(Icons.gps_fixed),
                   ),
-                ),
-                subtitle: Text(
-                  "Set your budget goal with GestIA Bot",
-                  style: TextStyle(
-                    fontSize: 12,
-                    color: Theme.of(context).primaryColorLight,
+                  title: Text(
+                    "Budget",
+                    style: TextStyle(
+                      color: Theme.of(context).primaryColorLight,
+                    ),
                   ),
-                ),
-                trailing: CircleAvatar(
-                  backgroundColor: Theme.of(context).primaryColor,
-                  child: const Icon(Icons.add),
+                  subtitle: Text(
+                    "Set your budget goal with GestIA Bot",
+                    style: TextStyle(
+                      fontSize: 12,
+                      color: Theme.of(context).primaryColorLight,
+                    ),
+                  ),
+                  trailing: CircleAvatar(
+                    backgroundColor: Theme.of(context).primaryColor,
+                    child: const Icon(Icons.add),
+                  ),
                 ),
               ),
             ),

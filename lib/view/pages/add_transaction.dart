@@ -4,6 +4,7 @@ import 'package:gestia/model/transaction.dart';
 import 'package:gestia/service/transaction_service.dart';
 import 'package:gestia/utils/shared_preferences_util.dart';
 import 'package:gestia/view/components/header_widget.dart';
+import 'package:gestia/view/components/snack_bar_message.dart';
 import 'package:gestia/view/pages/home.dart';
 import 'package:hive/hive.dart';
 import 'package:uuid/uuid.dart';
@@ -69,50 +70,6 @@ class _AddTransactionState extends State<AddTransaction> {
         dateController.text = "${picked.toLocal()}".split(' ')[0];
       });
     }
-  }
-
-  void _showSuccessMessage(BuildContext context) {
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        duration: const Duration(seconds: 3),
-        backgroundColor: Colors.transparent,
-        content: Container(
-          decoration: BoxDecoration(
-          color: const Color.fromARGB(255, 17, 141, 21),
-            borderRadius: BorderRadius.circular(10),
-          ),
-          padding: const EdgeInsets.all(10),
-          child: const Center(
-            child: Text(
-              'Transaction added successfully',
-              style: TextStyle(color: Colors.white, fontSize: 16),
-            ),
-          ),
-        ),
-      ),
-    );
-  }
-
-  void _showErrorMessage(String text) {
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        duration: const Duration(seconds: 3),
-        backgroundColor: Colors.transparent,
-        content: Container(
-          decoration: BoxDecoration(
-            color: Theme.of(context).primaryColorDark.withOpacity(.7),
-            borderRadius: BorderRadius.circular(10),
-          ),
-          padding: const EdgeInsets.all(10),
-          child: Center(
-            child: Text(
-              text,
-              style: const TextStyle(color: Colors.white, fontSize: 16),
-            ),
-          ),
-        ),
-      ),
-    );
   }
 
   Color _getColorForIcon(IconData ic) {
@@ -276,7 +233,8 @@ class _AddTransactionState extends State<AddTransaction> {
                                 // check if the amount entered is higher thant the actual balance
                                 int currentBalance = await SharedPreferencesUtil.retrieveBalance() ?? 0;
                                 if ((int.parse(amountController.text) > currentBalance) && (_selectedCategory == "expense")) {
-                                  _showErrorMessage("You don't have enough money");
+                                  // ignore: use_build_context_synchronously
+                                  showErrorMessage(context, "You don't have enough money");
                                   return;
                                 }
 
@@ -284,7 +242,7 @@ class _AddTransactionState extends State<AddTransaction> {
                                 Transaction newTransaction = Transaction(
                                   key: uuid,
                                   title: titleController.text,
-                                  amount: int.parse(amountController.text),
+                                  amount: (int.parse(amountController.text) < 0) ? - int.parse(amountController.text) : int.parse(amountController.text),
                                   category: _selectedCategory ?? "income",
                                   date: _selectedDate ?? DateTime.now(),
                                   iconCode: _selectedIcon?.codePoint ?? Icons.monetization_on.codePoint,
@@ -303,7 +261,7 @@ class _AddTransactionState extends State<AddTransaction> {
                                 await SharedPreferencesUtil.storeBalance(currentBalance + amount);
                                 // End update balance
                                 // ignore: use_build_context_synchronously
-                                _showSuccessMessage(context);
+                                showSuccessMessage(context, "Transaction added successfully");
                                 Navigator.pushReplacement(
                                   // ignore: use_build_context_synchronously
                                   context,

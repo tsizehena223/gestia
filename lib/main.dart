@@ -1,6 +1,9 @@
 import 'package:device_preview/device_preview.dart';
 import 'package:flutter/material.dart';
+import 'package:gestia/model/budget_goal.dart';
 import 'package:gestia/model/transaction.dart';
+import 'package:gestia/service/budget_goal_adapter.dart';
+import 'package:gestia/service/budget_goal_service.dart';
 import 'package:gestia/service/transaction_adapter.dart';
 import 'package:gestia/service/transaction_service.dart';
 import 'package:gestia/utils/shared_preferences_util.dart';
@@ -16,8 +19,10 @@ void main() async {
   Hive
     ..init(appDocumentDir.path)
     ..registerAdapter(TransactionAdapter())
+    ..registerAdapter(BudgetGoalAdapter())
     ..registerAdapter(ColorAdapter());
   await Hive.openBox<Transaction>(TransactionService.boxName);
+  await Hive.openBox<BudgetGoal>(BudgetGoalService.boxName);
 
   runApp(const MyApp());
 }
