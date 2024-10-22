@@ -19,6 +19,7 @@ class BudgetGoalAdapter extends TypeAdapter<BudgetGoal> {
     writer.write(obj.expenseMonthly);
     writer.write(obj.label);
     writer.write(obj.amount);
+    writer.write(obj.key);
   }
 
   @override

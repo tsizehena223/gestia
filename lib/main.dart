@@ -21,8 +21,13 @@ void main() async {
     ..registerAdapter(TransactionAdapter())
     ..registerAdapter(BudgetGoalAdapter())
     ..registerAdapter(ColorAdapter());
-  await Hive.openBox<Transaction>(TransactionService.boxName);
-  await Hive.openBox<BudgetGoal>(BudgetGoalService.boxName);
+
+  try {
+    await Hive.openBox<Transaction>(TransactionService.boxName);
+    await Hive.openBox<BudgetGoal>(BudgetGoalService.boxName);
+  } catch (e) {
+    print('Error opening boxes: $e'); 
+  }
 
   runApp(const MyApp());
 }

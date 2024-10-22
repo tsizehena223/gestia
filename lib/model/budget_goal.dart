@@ -1,6 +1,6 @@
 import 'package:hive/hive.dart';
 
-@HiveType(typeId: 0)
+@HiveType(typeId: 1)
 class BudgetGoal {
   @HiveField(0)
   int salaryMonthly;
