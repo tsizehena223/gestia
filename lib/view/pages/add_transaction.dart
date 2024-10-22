@@ -95,7 +95,7 @@ class _AddTransactionState extends State<AddTransaction> {
 
   @override
   Widget build(BuildContext context) {
-    final transcationBox = Hive.box<Transaction>(TransactionService.boxName);
+    final transactionBox = Hive.box<Transaction>(TransactionService.boxName);
 
     return SafeArea(
       child: Scaffold(
@@ -147,7 +147,7 @@ class _AddTransactionState extends State<AddTransaction> {
                           style: TextStyle(color: Theme.of(context).disabledColor),
                           decoration: inputDecoration(context, 'Amount'),
                           onChanged: (String? value) => {
-                            if (value == null || value == "" || int.tryParse(value) == null) {
+                            if (!_validatePositiveNumber(value)) {
                               setState(
                                 () {
                                   _isInputAmountValid = false;
@@ -249,7 +249,7 @@ class _AddTransactionState extends State<AddTransaction> {
                                   color: _getColorForIcon(_selectedIcon ?? Icons.monetization_on),
                                   // ignore: use_build_context_synchronously
                                 );
-                                transcationBox.add(newTransaction);
+                                transactionBox.add(newTransaction);
                                 // End store data
                                 // Update balance
                                 int amount;
@@ -346,5 +346,16 @@ class _AddTransactionState extends State<AddTransaction> {
         borderRadius: BorderRadius.all(Radius.circular(10)),
       ),
     );
+  }
+
+  bool _validatePositiveNumber(String? value) {
+    if (value == null || value.isEmpty) {
+      return false;
+    }
+    final number = int.tryParse(value);
+    if (number == null || number <= 0) {
+      return false;
+    }
+    return true;
   }
 }
