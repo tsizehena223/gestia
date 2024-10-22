@@ -24,31 +24,33 @@ class _BudgetGoalListState extends State<BudgetGoalList> {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: SizedBox(
-        width: MediaQuery.sizeOf(context).width,
-        height: MediaQuery.sizeOf(context).height,
-        child: Column(
-          children: [
-            const HeaderWidget(
-              title: 'Budget goals',
-              subtitle: 'List of your budget goals',
-              icon: Icons.money,
-            ),
-
-            Expanded(
-              child: Container(
-                margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-                decoration: BoxDecoration(
-                  color: Theme.of(context).primaryColorLight,
-                  borderRadius: BorderRadius.circular(10),
-                ),
-                child: const ListBudgetWidget(),
+    return Scaffold(
+      body: SafeArea(
+        child: SizedBox(
+          width: MediaQuery.sizeOf(context).width,
+          height: MediaQuery.sizeOf(context).height,
+          child: Column(
+            children: [
+              const HeaderWidget(
+                title: 'Budget goals',
+                subtitle: 'List of your budget goals',
+                icon: Icons.money,
               ),
-            ),
-          ],
+              Expanded(
+                child: Container(
+                  margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+                  decoration: BoxDecoration(
+                    color: Theme.of(context).primaryColorLight,
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  child: const ListBudgetWidget(),
+                ),
+              ),
+            ],
+          ),
         ),
       ),
+      backgroundColor: Theme.of(context).primaryColor,
     );
   }
 }

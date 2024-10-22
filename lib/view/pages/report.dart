@@ -1,11 +1,14 @@
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
+import 'package:gestia/model/budget_goal.dart';
 import 'package:gestia/model/transaction.dart';
+import 'package:gestia/service/budget_goal_service.dart';
 import 'package:gestia/service/transaction_service.dart';
 import 'package:gestia/utils/format_data.dart';
 import 'package:gestia/view/components/header_widget.dart';
 import 'package:gestia/view/components/set_budget_widget.dart';
 import 'package:gestia/view/components/total_transactions.dart';
+import 'package:gestia/view/pages/budget_goal_list.dart';
 import 'package:hive/hive.dart';
 
 class ReportPage extends StatefulWidget {
@@ -54,17 +57,28 @@ class ReportPageState extends State<ReportPage> {
     }
   }
 
+  late Box<BudgetGoal> budgetGoalBox;
+
   @override
   void initState() {
     super.initState();
     changeGraph(selectedYear);
+    budgetGoalBox = Hive.box<BudgetGoal>(BudgetGoalService.boxName);
   }
 
-  Future<void> _showSetBudget(BuildContext context) async {
+  Future<Object?> _showSetBudget(BuildContext context) async {
     TextEditingController salaryController = TextEditingController();
     TextEditingController expenseController= TextEditingController();
     TextEditingController labelController= TextEditingController();
     TextEditingController amountController= TextEditingController();
+
+    // Check if there is already an budget goal
+    if (budgetGoalBox.isNotEmpty) {
+      return Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (context) => const BudgetGoalList()),
+      );
+    }
 
     return await showDialog(
       // ignore: use_build_context_synchronously
