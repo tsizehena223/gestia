@@ -46,46 +46,48 @@ class SetBudgetWidgetState extends State<SetBudgetWidget> {
           ),
         ),
       ),
-      content: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 10),
-        height: 350,
-        child: Form(
-          key: _formKey, // Form key to track the form state
-          child: Column(
-            children: [
-              buildTextField(
-                context: context,
-                controller: widget.salaryController,
-                label: 'Income monthly',
-                keyboardType: TextInputType.number,
-                validator: (value) => validatePositiveNumber(value, 'Salary'),
-              ),
-              const SizedBox(height: 10),
-              buildTextField(
-                context: context,
-                controller: widget.expenseController,
-                label: 'Expense monthly',
-                keyboardType: TextInputType.number,
-                validator: (value) => validateExpense(value),
-              ),
-              const SizedBox(height: 10),
-              buildTextField(
-                context: context,
-                controller: widget.labelController,
-                label: 'Target label',
-                keyboardType: TextInputType.text,
-                validator: (value) => validateNotEmpty(value, 'Label'),
-              ),
-              const SizedBox(height: 10),
-              buildTextField(
-                context: context,
-                controller: widget.amountController,
-                label: 'Target amount',
-                keyboardType: TextInputType.number,
-                validator: (value) => validatePositiveNumber(value, 'Amount'),
-              ),
-              const SizedBox(height: 10),
-            ],
+      content: SingleChildScrollView(
+        child: Container(
+          padding: const EdgeInsets.symmetric(horizontal: 10),
+          height: 370,
+          child: Form(
+            key: _formKey, // Form key to track the form state
+            child: Column(
+              children: [
+                buildTextField(
+                  context: context,
+                  controller: widget.salaryController,
+                  label: 'Income monthly',
+                  keyboardType: TextInputType.number,
+                  validator: (value) => validatePositiveNumber(value, 'Salary'),
+                ),
+                const SizedBox(height: 10),
+                buildTextField(
+                  context: context,
+                  controller: widget.expenseController,
+                  label: 'Expense monthly',
+                  keyboardType: TextInputType.number,
+                  validator: (value) => validateExpense(value),
+                ),
+                const SizedBox(height: 10),
+                buildTextField(
+                  context: context,
+                  controller: widget.labelController,
+                  label: 'Target label',
+                  keyboardType: TextInputType.text,
+                  validator: (value) => validateNotEmpty(value, 'Label'),
+                ),
+                const SizedBox(height: 10),
+                buildTextField(
+                  context: context,
+                  controller: widget.amountController,
+                  label: 'Target amount',
+                  keyboardType: TextInputType.number,
+                  validator: (value) => validatePositiveNumber(value, 'Amount'),
+                ),
+                const SizedBox(height: 10),
+              ],
+            ),
           ),
         ),
       ),
