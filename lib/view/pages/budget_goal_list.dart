@@ -39,7 +39,8 @@ class _BudgetGoalListState extends State<BudgetGoalList> {
               ),
               Expanded(
                 child: Container(
-                  margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+                  margin:
+                      const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
                   decoration: BoxDecoration(
                     color: Theme.of(context).primaryColorLight,
                     borderRadius: BorderRadius.circular(10),
@@ -70,23 +71,21 @@ class _BudgetGoalListState extends State<BudgetGoalList> {
                 height: 40,
                 width: 40,
                 decoration: BoxDecoration(
-                  color: Theme.of(context).primaryColor,
-                  borderRadius: BorderRadius.circular(20)
-                ),
+                    color: Theme.of(context).primaryColor,
+                    borderRadius: BorderRadius.circular(20)),
                 child: IconButton(
-                  icon: Icon(
-                    Icons.home_filled,
-                    color: Theme.of(context).primaryColorDark,
-                  ),
-                  onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => const Home()),
-                    );
-                  }
-                ),
-              )
-            )
+                    icon: Icon(
+                      Icons.home_filled,
+                      color: Theme.of(context).primaryColorDark,
+                    ),
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => const Home()),
+                      );
+                    }),
+              ),
+            ),
           ),
         ),
       ),

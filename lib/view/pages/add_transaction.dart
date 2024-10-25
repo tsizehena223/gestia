@@ -33,12 +33,12 @@ class _AddTransactionState extends State<AddTransaction> {
   final List<String> _categories = ["expense", "income"];
 
   final Map<IconData, String> _icons = {
-    Icons.fastfood : 'Food',
-    Icons.local_hospital : 'Health',
-    Icons.card_giftcard : 'Gift',
-    Icons.monetization_on : 'Salary',
-    Icons.school : 'Education',
-    Icons.train : 'Travel',
+    Icons.fastfood: 'Food',
+    Icons.local_hospital: 'Health',
+    Icons.card_giftcard: 'Gift',
+    Icons.monetization_on: 'Salary',
+    Icons.school: 'Education',
+    Icons.train: 'Travel',
     Icons.devices_other: 'Other'
   };
 
@@ -112,7 +112,8 @@ class _AddTransactionState extends State<AddTransaction> {
                 ),
                 logo(context),
                 Container(
-                  margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+                  margin:
+                      const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
                   child: Container(
                     padding: const EdgeInsets.all(20),
                     decoration: BoxDecoration(
@@ -124,43 +125,51 @@ class _AddTransactionState extends State<AddTransaction> {
                         TextField(
                           keyboardType: TextInputType.text,
                           controller: titleController,
-                          style: TextStyle(color: Theme.of(context).disabledColor),
+                          style:
+                              TextStyle(color: Theme.of(context).disabledColor),
                           decoration: inputDecoration(context, 'Title'),
                           onChanged: (String? value) => {
-                            if (value == null || value == "") {
-                              setState(
-                                () {
+                            if (value == null || value == "")
+                              {
+                                setState(() {
                                   _isInputTitleValid = false;
-                                }
-                              )
-                            } else {
-                              setState(() {
-                                _isInputTitleValid = true;
-                              })
-                            },
+                                })
+                              }
+                            else
+                              {
+                                setState(() {
+                                  _isInputTitleValid = true;
+                                })
+                              },
                           },
                         ),
-                        const SizedBox(height: 20,),
+                        const SizedBox(
+                          height: 20,
+                        ),
                         TextField(
                           keyboardType: TextInputType.number,
                           controller: amountController,
-                          style: TextStyle(color: Theme.of(context).disabledColor),
+                          style:
+                              TextStyle(color: Theme.of(context).disabledColor),
                           decoration: inputDecoration(context, 'Amount'),
                           onChanged: (String? value) => {
-                            if (!_validatePositiveNumber(value)) {
-                              setState(
-                                () {
+                            if (!_validatePositiveNumber(value))
+                              {
+                                setState(() {
                                   _isInputAmountValid = false;
-                                }
-                              )
-                            } else {
-                              setState(() {
-                                _isInputAmountValid = true;
-                              })
-                            },
+                                })
+                              }
+                            else
+                              {
+                                setState(() {
+                                  _isInputAmountValid = true;
+                                })
+                              },
                           },
                         ),
-                        const SizedBox(height: 20,),
+                        const SizedBox(
+                          height: 20,
+                        ),
                         DropdownButtonFormField<String>(
                           style: TextStyle(
                             color: Theme.of(context).disabledColor,
@@ -168,22 +177,28 @@ class _AddTransactionState extends State<AddTransaction> {
                           dropdownColor: Theme.of(context).primaryColor,
                           decoration: inputDecoration(context, 'Category'),
                           value: widget.defaultCategory,
-                          onChanged: (widget.defaultCategory != null) ? null : (String? newValue) {
-                            setState(() {
-                              _selectedCategory = newValue;
-                            });
-                          },
-                          items: _categories.map<DropdownMenuItem<String>>((String value) {
+                          onChanged: (widget.defaultCategory != null)
+                              ? null
+                              : (String? newValue) {
+                                  setState(() {
+                                    _selectedCategory = newValue;
+                                  });
+                                },
+                          items: _categories
+                              .map<DropdownMenuItem<String>>((String value) {
                             return DropdownMenuItem<String>(
                               value: value,
                               child: Text(value),
                             );
                           }).toList(),
                         ),
-                        const SizedBox(height: 20,),
+                        const SizedBox(
+                          height: 20,
+                        ),
                         // Icon
                         DropdownButtonFormField<IconData>(
-                          style: TextStyle(color: Theme.of(context).disabledColor),
+                          style:
+                              TextStyle(color: Theme.of(context).disabledColor),
                           dropdownColor: Theme.of(context).primaryColor,
                           decoration: inputDecoration(context, 'Icon'),
                           value: _selectedIcon,
@@ -198,7 +213,10 @@ class _AddTransactionState extends State<AddTransaction> {
                               value: entry.key,
                               child: Row(
                                 children: [
-                                  Icon(entry.key, color: Theme.of(context).disabledColor,),
+                                  Icon(
+                                    entry.key,
+                                    color: Theme.of(context).disabledColor,
+                                  ),
                                   const SizedBox(width: 10),
                                   Text(entry.value),
                                 ],
@@ -210,7 +228,8 @@ class _AddTransactionState extends State<AddTransaction> {
                         // End icon
                         TextFormField(
                           controller: dateController,
-                          style: TextStyle(color: Theme.of(context).disabledColor),
+                          style:
+                              TextStyle(color: Theme.of(context).disabledColor),
                           decoration: inputDecoration(context, 'Date'),
                           readOnly: true,
                           onTap: () {
@@ -218,75 +237,97 @@ class _AddTransactionState extends State<AddTransaction> {
                           },
                         ),
                         Visibility(
-                          visible: (
-                            _isInputTitleValid &&
-                            _isInputAmountValid &&
-                            _selectedCategory != null &&
-                            _selectedDate != null &&
-                            _selectedIcon != null
-                          ) ? true : false,
+                          visible: (_isInputTitleValid &&
+                                  _isInputAmountValid &&
+                                  _selectedCategory != null &&
+                                  _selectedDate != null &&
+                                  _selectedIcon != null)
+                              ? true
+                              : false,
                           child: Container(
                             margin: const EdgeInsets.only(top: 30),
                             height: 50,
                             child: ElevatedButton(
-                              onPressed: !(_isInputTitleValid && _isInputAmountValid) ? null : () async {
-                                // check if the amount entered is higher thant the actual balance
-                                int currentBalance = await SharedPreferencesUtil.retrieveBalance() ?? 0;
-                                if ((int.parse(amountController.text) > currentBalance) && (_selectedCategory == "expense")) {
-                                  // ignore: use_build_context_synchronously
-                                  showErrorMessage(context, "You don't have enough money");
-                                  return;
-                                }
+                              onPressed: !(_isInputTitleValid &&
+                                      _isInputAmountValid)
+                                  ? null
+                                  : () async {
+                                      // check if the amount entered is higher thant the actual balance
+                                      int currentBalance =
+                                          await SharedPreferencesUtil
+                                                  .retrieveBalance() ??
+                                              0;
+                                      if ((int.parse(amountController.text) >
+                                              currentBalance) &&
+                                          (_selectedCategory == "expense")) {
+                                        // ignore: use_build_context_synchronously
+                                        showErrorMessage(context,
+                                            "You don't have enough money");
+                                        return;
+                                      }
 
-                                // Store data
-                                Transaction newTransaction = Transaction(
-                                  key: uuid,
-                                  title: titleController.text,
-                                  amount: (int.parse(amountController.text) < 0) ? - int.parse(amountController.text) : int.parse(amountController.text),
-                                  category: _selectedCategory ?? "income",
-                                  date: _selectedDate ?? DateTime.now(),
-                                  iconCode: _selectedIcon?.codePoint ?? Icons.monetization_on.codePoint,
-                                  color: _getColorForIcon(_selectedIcon ?? Icons.monetization_on),
-                                  // ignore: use_build_context_synchronously
-                                );
-                                transactionBox.add(newTransaction);
-                                // End store data
-                                // Update balance
-                                int amount;
-                                if (_selectedCategory == "expense") {
-                                  amount = - int.parse(amountController.text);
-                                } else {
-                                  amount = int.parse(amountController.text);
-                                }
-                                await SharedPreferencesUtil.storeBalance(currentBalance + amount);
-                                // End update balance
-                                // ignore: use_build_context_synchronously
-                                showSuccessMessage(context, "Transaction added successfully");
-                                Navigator.pushReplacement(
-                                  // ignore: use_build_context_synchronously
-                                  context,
-                                  MaterialPageRoute(builder: (context) => const Home()),
-                                );
-                              },
+                                      // Store data
+                                      Transaction newTransaction = Transaction(
+                                        key: uuid,
+                                        title: titleController.text,
+                                        amount: (int.parse(
+                                                    amountController.text) <
+                                                0)
+                                            ? -int.parse(amountController.text)
+                                            : int.parse(amountController.text),
+                                        category: _selectedCategory ?? "income",
+                                        date: _selectedDate ?? DateTime.now(),
+                                        iconCode: _selectedIcon?.codePoint ??
+                                            Icons.monetization_on.codePoint,
+                                        color: _getColorForIcon(_selectedIcon ??
+                                            Icons.monetization_on),
+                                        // ignore: use_build_context_synchronously
+                                      );
+                                      transactionBox.add(newTransaction);
+                                      // End store data
+                                      // Update balance
+                                      int amount;
+                                      if (_selectedCategory == "expense") {
+                                        amount =
+                                            -int.parse(amountController.text);
+                                      } else {
+                                        amount =
+                                            int.parse(amountController.text);
+                                      }
+                                      await SharedPreferencesUtil.storeBalance(
+                                          currentBalance + amount);
+                                      // End update balance
+                                      // ignore: use_build_context_synchronously
+                                      showSuccessMessage(context,
+                                          "Transaction added successfully");
+                                      Navigator.pushReplacement(
+                                        // ignore: use_build_context_synchronously
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) => const Home()),
+                                      );
+                                    },
                               style: ElevatedButton.styleFrom(
                                 padding: const EdgeInsets.symmetric(
                                   vertical: 10,
                                   horizontal: 70,
                                 ),
-                                backgroundColor: Theme.of(context).primaryColorDark,
+                                backgroundColor:
+                                    Theme.of(context).primaryColorDark,
                               ),
                               child: const Text(
                                 "Save",
                                 style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 20,
-                                  fontWeight: FontWeight.bold
-                                ),
+                                    color: Colors.white,
+                                    fontSize: 20,
+                                    fontWeight: FontWeight.bold),
                               ),
                             ),
                           ),
                         ),
-                        const SizedBox(height: 10,)
+                        const SizedBox(
+                          height: 10,
+                        )
                       ],
                     ),
                   ),
@@ -313,7 +354,8 @@ class _AddTransactionState extends State<AddTransaction> {
         children: [
           SvgPicture.asset(
             "assets/images/logo.svg",
-            colorFilter: const ColorFilter.mode(Color.fromARGB(255, 5, 105, 8), BlendMode.srcIn),
+            colorFilter: const ColorFilter.mode(
+                Color.fromARGB(255, 5, 105, 8), BlendMode.srcIn),
             height: 120,
           ),
           Image.asset(
