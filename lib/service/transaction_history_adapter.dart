@@ -6,6 +6,7 @@ class TransactionHistoryAdapter extends TypeAdapter<TransactionHistory> {
   TransactionHistory read(BinaryReader reader) {
     return TransactionHistory(
       month: reader.read(),
+      year: reader.read(),
       expense: reader.read(),
       income: reader.read(),
     );
@@ -14,6 +15,7 @@ class TransactionHistoryAdapter extends TypeAdapter<TransactionHistory> {
   @override
   void write(BinaryWriter writer, TransactionHistory obj) {
     writer.write(obj.month);
+    writer.write(obj.year);
     writer.write(obj.income);
     writer.write(obj.expense);
   }

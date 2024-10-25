@@ -43,7 +43,7 @@ class _ListTransactionHistoryWidgetState
             return Card(
               margin: const EdgeInsets.all(8.0),
               child: ListTile(
-                title: Text(transaction.month),
+                title: Text("${transaction.year} : ${transaction.month}"),
                 subtitle: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
