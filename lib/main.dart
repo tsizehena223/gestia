@@ -2,9 +2,12 @@ import 'package:device_preview/device_preview.dart';
 import 'package:flutter/material.dart';
 import 'package:gestia/model/budget_goal.dart';
 import 'package:gestia/model/transaction.dart';
+import 'package:gestia/model/transaction_history.dart';
 import 'package:gestia/service/budget_goal_adapter.dart';
 import 'package:gestia/service/budget_goal_service.dart';
 import 'package:gestia/service/transaction_adapter.dart';
+import 'package:gestia/service/transaction_history_adapter.dart';
+import 'package:gestia/service/transaction_history_service.dart';
 import 'package:gestia/service/transaction_service.dart';
 import 'package:gestia/utils/shared_preferences_util.dart';
 import 'package:gestia/view/pages/accueil.dart';
@@ -20,13 +23,15 @@ void main() async {
     ..init(appDocumentDir.path)
     ..registerAdapter(TransactionAdapter())
     ..registerAdapter(BudgetGoalAdapter())
-    ..registerAdapter(ColorAdapter());
+    ..registerAdapter(ColorAdapter())
+    ..registerAdapter(TransactionHistoryAdapter());
 
   try {
     await Hive.openBox<Transaction>(TransactionService.boxName);
     await Hive.openBox<BudgetGoal>(BudgetGoalService.boxName);
+    await Hive.openBox<TransactionHistory>(TransactionHistoryService.boxName);
   } catch (e) {
-    print('Error opening boxes: $e'); 
+    print('Error opening boxes: $e');
   }
 
   runApp(const MyApp());
