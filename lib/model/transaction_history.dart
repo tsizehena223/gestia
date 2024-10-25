@@ -10,11 +10,14 @@ class TransactionHistory {
   int expense;
   @HiveField(3)
   int income;
+  @HiveField(4)
+  String key;
 
   TransactionHistory({
     required this.month,
     required this.year,
     required this.expense,
     required this.income,
+    required this.key,
   });
 }

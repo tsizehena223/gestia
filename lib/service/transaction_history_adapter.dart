@@ -9,6 +9,7 @@ class TransactionHistoryAdapter extends TypeAdapter<TransactionHistory> {
       year: reader.read(),
       expense: reader.read(),
       income: reader.read(),
+      key: reader.read(),
     );
   }
 
@@ -18,6 +19,7 @@ class TransactionHistoryAdapter extends TypeAdapter<TransactionHistory> {
     writer.write(obj.year);
     writer.write(obj.income);
     writer.write(obj.expense);
+    writer.write(obj.key);
   }
 
   @override

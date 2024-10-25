@@ -285,6 +285,9 @@ class _AddTransactionState extends State<AddTransaction> {
                                       );
                                       transactionBox.add(newTransaction);
                                       // End store data
+
+                                      // TODO: Add transaction to the transaction history
+
                                       // Update balance
                                       int amount;
                                       if (_selectedCategory == "expense") {
@@ -297,9 +300,12 @@ class _AddTransactionState extends State<AddTransaction> {
                                       await SharedPreferencesUtil.storeBalance(
                                           currentBalance + amount);
                                       // End update balance
-                                      // ignore: use_build_context_synchronously
-                                      showSuccessMessage(context,
-                                          "Transaction added successfully");
+                                      showSuccessMessage(
+                                        // ignore: use_build_context_synchronously
+                                        context,
+                                        "Transaction added successfully",
+                                      );
+
                                       Navigator.pushReplacement(
                                         // ignore: use_build_context_synchronously
                                         context,
