@@ -46,7 +46,6 @@ class _ListTransactionHistoryWidgetState
                 'Sort by',
                 style: TextStyle(
                   color: Theme.of(context).focusColor,
-                  decoration: TextDecoration.underline,
                 ),
               ),
               IconButton(

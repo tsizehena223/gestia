@@ -80,37 +80,36 @@ class _ListTransactionWidgetState extends State<ListTransactionWidget> {
     return Column(
       children: [
         // Sorting toggle button
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Container(
-              padding: const EdgeInsets.only(left: 20, right: 20, top: 15, bottom: 15),
-              child: Text(
-                'Sort',
-                style: TextStyle(
-                  color: Theme.of(context).focusColor,
+        Visibility(
+          visible: !widget.isPreview,
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Container(
+                padding: const EdgeInsets.only(left: 20, right: 20, top: 15, bottom: 15),
+                child: Text(
+                  'Sort',
+                  style: TextStyle(
+                    color: Theme.of(context).focusColor,
+                  ),
                 ),
               ),
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: [
-                Text(
-                  _isAscending ? 'ASC' : 'DESC',
-                  style: TextStyle(color: Theme.of(context).focusColor),   
-                ),
-                IconButton(
-                  icon: Icon(_isAscending ? Icons.arrow_upward : Icons.arrow_downward),
-                  onPressed: () {
-                    setState(() {
-                      _isAscending = !_isAscending; // Toggle sorting order
-                    });
-                  },
-                ),
-              ],
-            )
-            
-          ],
+              Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  IconButton(
+                    icon: Icon(_isAscending ? Icons.arrow_upward : Icons.arrow_downward),
+                    onPressed: () {
+                      setState(() {
+                        _isAscending = !_isAscending; // Toggle sorting order
+                      });
+                    },
+                  ),
+                ],
+              )
+              
+            ],
+          ),
         ),
         Expanded(
           child: ValueListenableBuilder(
