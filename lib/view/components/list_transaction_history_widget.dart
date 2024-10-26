@@ -2,11 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:gestia/model/transaction_history.dart';
 import 'package:gestia/service/transaction_history_service.dart';
 import 'package:hive_flutter/adapters.dart';
+import 'package:intl/intl.dart';
 
 class ListTransactionHistoryWidget extends StatefulWidget {
-  const ListTransactionHistoryWidget({
-    super.key,
-  });
+  const ListTransactionHistoryWidget({super.key});
 
   @override
   State<ListTransactionHistoryWidget> createState() =>
@@ -20,40 +19,72 @@ class _ListTransactionHistoryWidgetState
   @override
   void initState() {
     super.initState();
-    transactionBox =
-        Hive.box<TransactionHistory>(TransactionHistoryService.boxName);
+    transactionBox = Hive.box<TransactionHistory>(TransactionHistoryService.boxName);
   }
 
   @override
   Widget build(BuildContext context) {
+    final currentYear = DateTime.now().year;
+    final currentMonth = DateFormat.MMMM().format(DateTime.now());
+
     return ValueListenableBuilder(
       valueListenable: transactionBox.listenable(),
       builder: (context, transactions, _) {
         if (transactions.isEmpty) {
           return Center(
-            child: Text('No transaction added yet',
-                style: TextStyle(color: Theme.of(context).disabledColor)),
+            child: Text(
+              'No transaction added yet',
+              style: TextStyle(
+                color: Theme.of(context).disabledColor,
+              ),
+            ),
           );
         }
         List<TransactionHistory> transactionList = transactions.values.toList();
-        return ListView.builder(
-          itemCount: transactions.length,
-          itemBuilder: (context, index) {
-            final transaction = transactionList[index];
-            return Card(
-              margin: const EdgeInsets.all(8.0),
-              child: ListTile(
-                title: Text("${transaction.year} : ${transaction.month}"),
-                subtitle: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text('Expense: \$${transaction.expense}'),
-                    Text('Income: \$${transaction.income}'),
-                  ],
+        return Container(
+          padding: const EdgeInsets.symmetric(vertical: 10),
+          child: ListView.builder(
+            itemCount: transactions.length,
+            itemBuilder: (context, index) {
+              final transaction = transactionList[index];
+              // Determine if the transaction history is for the current month and year
+              final isCurrentMonth = transaction.year == currentYear && transaction.month == currentMonth;
+          
+              return Card(
+                margin: const EdgeInsets.all(8),
+                color: isCurrentMonth
+                    ? Theme.of(context).primaryColorDark
+                    : Theme.of(context).primaryColor,
+                child: ListTile(
+                  title: Text(
+                    isCurrentMonth ? "Current month" : "${transaction.year} : ${transaction.month}",
+                    style: TextStyle(color: isCurrentMonth ? Theme.of(context).primaryColorLight : Theme.of(context).disabledColor),
+                  ),
+                  subtitle: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        'Income: ${transaction.income} Ar',
+                        style: TextStyle(
+                          color: isCurrentMonth
+                            ? Theme.of(context).primaryColor.withOpacity(.9)
+                            : Theme.of(context).primaryColorDark,
+                        ),
+                      ),
+                      Text(
+                        'Expense: ${transaction.expense} Ar',
+                        style: TextStyle(
+                          color: isCurrentMonth
+                            ? Theme.of(context).disabledColor.withOpacity(.6)
+                            : Theme.of(context).focusColor,
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
-              ),
-            );
-          },
+              );
+            },
+          ),
         );
       },
     );

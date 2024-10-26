@@ -1,12 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:gestia/model/transaction.dart';
+import 'package:gestia/model/transaction_history.dart';
+import 'package:gestia/service/transaction_history_service.dart';
 import 'package:gestia/service/transaction_service.dart';
 import 'package:gestia/utils/shared_preferences_util.dart';
 import 'package:gestia/view/components/header_widget.dart';
 import 'package:gestia/view/components/snack_bar_message.dart';
 import 'package:gestia/view/pages/home.dart';
 import 'package:hive/hive.dart';
+import 'package:intl/intl.dart';
 import 'package:uuid/uuid.dart';
 
 class AddTransaction extends StatefulWidget {
@@ -96,6 +99,8 @@ class _AddTransactionState extends State<AddTransaction> {
   @override
   Widget build(BuildContext context) {
     final transactionBox = Hive.box<Transaction>(TransactionService.boxName);
+    final transactionHistoryBox =
+        Hive.box<TransactionHistory>(TransactionHistoryService.boxName);
 
     return SafeArea(
       child: Scaffold(
@@ -286,7 +291,43 @@ class _AddTransactionState extends State<AddTransaction> {
                                       transactionBox.add(newTransaction);
                                       // End store data
 
-                                      // TODO: Add transaction to the transaction history
+                                      // Add transaction to the transaction history
+                                      final year = _selectedDate?.year ?? DateTime.now().year;
+                                      final month = DateFormat.MMMM().format(_selectedDate ?? DateTime.now());
+                                      final transactionHistoryService = TransactionHistoryService();
+                                      
+                                      // Find existing transaction history for the year and month
+                                      final existingHistoryKey = transactionHistoryBox.keys.firstWhere(
+                                        (key) {
+                                          final entry = transactionHistoryBox.get(key) as TransactionHistory;
+                                          return entry.year == year && entry.month == month;
+                                        },
+                                        orElse: () => null,
+                                      );
+                                      
+                                      if (existingHistoryKey == null) {
+                                        // If no entry exists, create a new one and use the service to add it
+                                        final newTransactionHistory = TransactionHistory(
+                                          month: month,
+                                          year: year,
+                                          expense: _selectedCategory == "expense" ? int.parse(amountController.text) : 0,
+                                          income: _selectedCategory == "income" ? int.parse(amountController.text) : 0,
+                                          key: uuid,
+                                        );
+                                        transactionHistoryService.addTransactionHistory(newTransactionHistory);
+                                      } else {
+                                        // If entry exists, update it and use the service to update
+                                        final existingHistory = transactionHistoryBox.get(existingHistoryKey) as TransactionHistory;
+                                      
+                                        if (_selectedCategory == "expense") {
+                                          existingHistory.expense += int.parse(amountController.text);
+                                        } else {
+                                          existingHistory.income += int.parse(amountController.text);
+                                        }
+                                      
+                                        // Update using the service method
+                                        transactionHistoryService.updateTransactionHistory(existingHistoryKey, existingHistory);
+                                      }
 
                                       // Update balance
                                       int amount;
