@@ -88,7 +88,7 @@ class _ListTransactionWidgetState extends State<ListTransactionWidget> {
               Container(
                 padding: const EdgeInsets.only(left: 20, right: 20, top: 15, bottom: 15),
                 child: Text(
-                  'Sort',
+                  'Sort by',
                   style: TextStyle(
                     color: Theme.of(context).focusColor,
                   ),
