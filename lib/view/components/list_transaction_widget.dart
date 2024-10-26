@@ -20,6 +20,8 @@ class ListTransactionWidget extends StatefulWidget {
 }
 
 class _ListTransactionWidgetState extends State<ListTransactionWidget> {
+  bool _isAscending = true; // Track sorting order (ASC or DESC)
+
   Future<bool?> _confirmDismiss(BuildContext context, Transaction transaction) async {
     // Check if the balance will be negative
     int currentBalance = await SharedPreferencesUtil.retrieveBalance() ?? 0;
@@ -46,7 +48,7 @@ class _ListTransactionWidgetState extends State<ListTransactionWidget> {
               visible: canBeDeleted,
               child: TextButton(
                 onPressed: () => Navigator.of(context).pop(canBeDeleted),
-                child: const Text('Delete', style: TextStyle(color: Colors.red),),
+                child: const Text('Delete', style: TextStyle(color: Colors.red)),
               ),
             ),
           ],
@@ -75,69 +77,119 @@ class _ListTransactionWidgetState extends State<ListTransactionWidget> {
 
   @override
   Widget build(BuildContext context) {
-    return ValueListenableBuilder(
-      valueListenable: transactionBox.listenable(),
-      builder: (context, transactions, _) {
-        if (transactions.isEmpty) {
-          return Center(
-            child: Text('No transaction added yet', style: TextStyle(color: Theme.of(context).disabledColor)),
-          );
-        }
-        List<Transaction> transactionList = transactions.values.toList();
-        return ListView.builder(
-          physics: widget.isPreview ? const NeverScrollableScrollPhysics() : null,
-          itemCount: transactionList.length,
-          itemBuilder: (context, index) {
-            Transaction transaction = transactionList[index];
-            if (widget.isPreview && index > 2) {
-              return const SizedBox.shrink();
-            }
-            return Dismissible(
-              key: Key(transaction.key),
-              direction: DismissDirection.endToStart,
-              background: Container(
-                color: transaction.color.withOpacity(.4),
-                alignment: Alignment.centerRight,
-                padding: const EdgeInsets.symmetric(horizontal: 20),
-                child: const Icon(Icons.delete, color: Colors.white),
-              ),
-              confirmDismiss: (direction) => _confirmDismiss(context, transaction),
-              onDismissed: (direction) {
-                transactions.deleteAt(index);
-                _reloadApp(context);
-              },
-              child: ListTile(
-                leading: CircleAvatar(
-                  backgroundColor: transaction.color.withOpacity(.7),
-                  child: Icon(transaction.iconData, color: Theme.of(context).primaryColorLight,),
-                ),
-                title: Text(
-                  transaction.title,
-                  style: TextStyle(
-                    color: Theme.of(context).disabledColor.withOpacity(.7),
-                    fontSize: 20,
-                  ),
-                ),
-                trailing: Text(
-                  "${(transaction.category == "expense") ? '-' : ''} ${FormatData.formatNumber(transaction.amount)} Ar",
-                  style: TextStyle(
-                    color: Theme.of(context).disabledColor,
-                    fontSize: 15,
-                  ),
-                ),
-                subtitle: Text(
-                  DateFormat('yyyy-MM-dd').format(transaction.date),
-                  style: TextStyle(
-                    color: Theme.of(context).focusColor,
-                    fontSize: 15,
-                  ),
+    return Column(
+      children: [
+        // Sorting toggle button
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Container(
+              padding: const EdgeInsets.only(left: 20, right: 20, top: 15, bottom: 15),
+              child: Text(
+                'Sort',
+                style: TextStyle(
+                  color: Theme.of(context).focusColor,
                 ),
               ),
-            );
-          },
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                Text(
+                  _isAscending ? 'ASC' : 'DESC',
+                  style: TextStyle(color: Theme.of(context).focusColor),   
+                ),
+                IconButton(
+                  icon: Icon(_isAscending ? Icons.arrow_upward : Icons.arrow_downward),
+                  onPressed: () {
+                    setState(() {
+                      _isAscending = !_isAscending; // Toggle sorting order
+                    });
+                  },
+                ),
+              ],
+            )
+            
+          ],
+        ),
+        Expanded(
+          child: ValueListenableBuilder(
+            valueListenable: transactionBox.listenable(),
+            builder: (context, transactions, _) {
+              if (transactions.isEmpty) {
+                return Center(
+                  child: Text(
+                    'No transaction added yet',
+                    style: TextStyle(color: Theme.of(context).disabledColor),
+                  ),
+                );
+              }
+              List<Transaction> transactionList = transactions.values.toList();
 
-        );
-      },
+              // Sort transactions based on _isAscending
+              transactionList.sort((a, b) => _isAscending
+                  ? a.date.compareTo(b.date) // Ascending order
+                  : b.date.compareTo(a.date)); // Descending order
+
+              return ListView.builder(
+                physics: widget.isPreview ? const NeverScrollableScrollPhysics() : null,
+                itemCount: transactionList.length,
+                itemBuilder: (context, index) {
+                  Transaction transaction = transactionList[index];
+                  if (widget.isPreview && index > 2) {
+                    return const SizedBox.shrink();
+                  }
+                  return Dismissible(
+                    key: Key(transaction.key),
+                    direction: DismissDirection.endToStart,
+                    background: Container(
+                      color: transaction.color.withOpacity(.4),
+                      alignment: Alignment.centerRight,
+                      padding: const EdgeInsets.symmetric(horizontal: 20),
+                      child: const Icon(Icons.delete, color: Colors.white),
+                    ),
+                    confirmDismiss: (direction) => _confirmDismiss(context, transaction),
+                    onDismissed: (direction) {
+                      transactions.deleteAt(index);
+                      _reloadApp(context);
+                    },
+                    child: ListTile(
+                      leading: CircleAvatar(
+                        backgroundColor: transaction.color.withOpacity(.7),
+                        child: Icon(
+                          transaction.iconData,
+                          color: Theme.of(context).primaryColorLight,
+                        ),
+                      ),
+                      title: Text(
+                        transaction.title,
+                        style: TextStyle(
+                          color: Theme.of(context).disabledColor.withOpacity(.7),
+                          fontSize: 20,
+                        ),
+                      ),
+                      trailing: Text(
+                        "${(transaction.category == "expense") ? '-' : ''} ${FormatData.formatNumber(transaction.amount)} Ar",
+                        style: TextStyle(
+                          color: Theme.of(context).disabledColor,
+                          fontSize: 15,
+                        ),
+                      ),
+                      subtitle: Text(
+                        DateFormat('yyyy-MM-dd').format(transaction.date),
+                        style: TextStyle(
+                          color: Theme.of(context).focusColor,
+                          fontSize: 15,
+                        ),
+                      ),
+                    ),
+                  );
+                },
+              );
+            },
+          ),
+        ),
+      ],
     );
   }
 }

@@ -6,6 +6,7 @@ import 'package:gestia/view/components/list_transaction_widget.dart';
 import 'package:gestia/view/pages/add_transaction.dart';
 import 'package:gestia/view/pages/report.dart';
 import 'package:gestia/view/pages/transaction_history_list.dart';
+import 'package:gestia/view/pages/transaction_list.dart';
 import 'package:intl/intl.dart';
 
 class Home extends StatefulWidget {
@@ -275,7 +276,11 @@ class _HomeState extends State<Home> {
                   child: GestureDetector(
                     onTap: () {
                       setState(() {
-                        _currentPageIndex = 2;
+                        // _currentPageIndex = 2;
+                        Navigator.pushReplacement(
+                          context,
+                          MaterialPageRoute(builder: (context) => const TransactionListPage()),
+                        );
                       });
                     },
                     child: Text(
