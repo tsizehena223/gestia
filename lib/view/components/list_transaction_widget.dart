@@ -59,7 +59,7 @@ class _ListTransactionWidgetState extends State<ListTransactionWidget> {
     );
   }
 
-  void _updateTransactionHistory(Transaction transaction) async {
+  void _updateTransactionHistory(int index, Transaction transaction) async {
     final transactionHistoryService = TransactionHistoryService();
     final transactionHistoryBox = Hive.box<TransactionHistory>(TransactionHistoryService.boxName);
 
@@ -77,18 +77,17 @@ class _ListTransactionWidgetState extends State<ListTransactionWidget> {
       final existingHistory = transactionHistoryBox.get(existingHistoryKey);
 
       if (existingHistory != null) {
-        const int maxInt = 9223372036854775807; // 2^63 - 1
         if (transaction.category == "expense") {
-          existingHistory.expense = (existingHistory.expense - transaction.amount).clamp(0, maxInt);
+          existingHistory.expense -= transaction.amount;
         } else {
-          existingHistory.income = (existingHistory.income - transaction.amount).clamp(0, maxInt);
+          existingHistory.income -= transaction.amount;
         }
 
-        // Delete the box if it's empty, else update
+        // if history is empty then delete, else update
         if (existingHistory.expense == 0 && existingHistory.income == 0) {
-          transactionHistoryService.deleteTransactionHistory(existingHistoryKey);
+          transactionHistoryService.deleteTransactionHistory(index);
         } else {
-          transactionHistoryService.updateTransactionHistory(existingHistoryKey, existingHistory);
+          transactionHistoryService.updateTransactionHistory(index, existingHistory);
         }
       }
     }
@@ -192,7 +191,7 @@ class _ListTransactionWidgetState extends State<ListTransactionWidget> {
                     confirmDismiss: (direction) => _confirmDismiss(context, transaction),
                     onDismissed: (direction) {
                       transactions.deleteAt(index);
-                      _updateTransactionHistory(transaction);
+                      _updateTransactionHistory(index, transaction);
                       _reloadApp(context);
                     },
                     child: ListTile(
