@@ -15,11 +15,16 @@ class ListTransactionHistoryWidget extends StatefulWidget {
 class _ListTransactionHistoryWidgetState
     extends State<ListTransactionHistoryWidget> {
   late Box<TransactionHistory> transactionBox;
+  bool isAscending = true;
 
   @override
   void initState() {
     super.initState();
     transactionBox = Hive.box<TransactionHistory>(TransactionHistoryService.boxName);
+  }
+
+  int _monthToInt(String month) {
+    return DateFormat.MMMM().parse(month).month;
   }
 
   @override
@@ -29,6 +34,24 @@ class _ListTransactionHistoryWidgetState
 
     return Column(
       children: [
+        // Toggle button for sorting
+        Padding(
+          padding: const EdgeInsets.only(right: 12),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: [
+              IconButton(
+                icon: Icon(isAscending ? Icons.arrow_upward : Icons.arrow_downward, color: Theme.of(context).focusColor.withOpacity(.7)),
+                onPressed: () {
+                  setState(() {
+                    isAscending = !isAscending;
+                  });
+                },
+              ),
+              Text(isAscending ? "ASC" : "DESC", style: TextStyle(color: Theme.of(context).focusColor.withOpacity(.7)),),
+            ],
+          ),
+        ),
         Expanded(
           child: ValueListenableBuilder(
             valueListenable: transactionBox.listenable(),
@@ -44,8 +67,18 @@ class _ListTransactionHistoryWidgetState
                 );
               }
 
-              // Convert transactions to a list and sort
               List<TransactionHistory> transactionList = transactions.values.toList();
+              transactionList.sort((a, b) {
+                if (a.year != b.year) {
+                  return isAscending ? a.year.compareTo(b.year) : b.year.compareTo(a.year);
+                } else {
+                  int monthA = _monthToInt(a.month);
+                  int monthB = _monthToInt(b.month);
+                  return isAscending
+                      ? monthA.compareTo(monthB)
+                      : monthB.compareTo(monthA);
+                }
+              });
 
               return ListView.builder(
                 itemCount: transactionList.length,
@@ -101,4 +134,3 @@ class _ListTransactionHistoryWidgetState
     );
   }
 }
-
