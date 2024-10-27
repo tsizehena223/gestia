@@ -52,7 +52,8 @@ class _ListBudgetWidgetState extends State<ListBudgetWidget> {
           return (goalAmount / (income - expense));
         }
 
-        _numberOfMonths = getNumberOfMonths(firstBudgetGoal.amount, firstBudgetGoal.salaryMonthly, firstBudgetGoal.expenseMonthly);
+        // _numberOfMonths = getNumberOfMonths(firstBudgetGoal.amount, firstbudgetgoal.salarymonthly, firstbudgetgoal.expensemonthly);
+        _numberOfMonths = 3.5;
 
         return Center(
           child: Text(

@@ -67,8 +67,6 @@ class ReportPageState extends State<ReportPage> {
   }
 
   Future<Object?> _showSetBudget(BuildContext context) async {
-    TextEditingController salaryController = TextEditingController();
-    TextEditingController expenseController= TextEditingController();
     TextEditingController labelController= TextEditingController();
     TextEditingController amountController= TextEditingController();
 
@@ -85,8 +83,6 @@ class ReportPageState extends State<ReportPage> {
       context: context,
       builder: (BuildContext context) {
         return SetBudgetWidget(
-          salaryController: salaryController,
-          expenseController: expenseController,
           labelController: labelController,
           amountController: amountController,
         );

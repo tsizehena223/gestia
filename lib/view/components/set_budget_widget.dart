@@ -8,14 +8,10 @@ import 'package:hive/hive.dart';
 class SetBudgetWidget extends StatefulWidget {
   const SetBudgetWidget({
     super.key,
-    required this.salaryController,
-    required this.expenseController,
     required this.labelController,
     required this.amountController,
   });
 
-  final TextEditingController salaryController;
-  final TextEditingController expenseController;
   final TextEditingController labelController;
   final TextEditingController amountController;
 
@@ -54,21 +50,6 @@ class SetBudgetWidgetState extends State<SetBudgetWidget> {
             key: _formKey, // Form key to track the form state
             child: Column(
               children: [
-                buildTextField(
-                  context: context,
-                  controller: widget.salaryController,
-                  label: 'Income monthly',
-                  keyboardType: TextInputType.number,
-                  validator: (value) => validatePositiveNumber(value, 'Salary'),
-                ),
-                const SizedBox(height: 10),
-                buildTextField(
-                  context: context,
-                  controller: widget.expenseController,
-                  label: 'Expense monthly',
-                  keyboardType: TextInputType.number,
-                  validator: (value) => validateExpense(value),
-                ),
                 const SizedBox(height: 10),
                 buildTextField(
                   context: context,
@@ -101,8 +82,6 @@ class SetBudgetWidgetState extends State<SetBudgetWidget> {
             if (_formKey.currentState?.validate() ?? false) {
               // Save the new budgetGoal
               BudgetGoal newBudgetGoal = BudgetGoal(
-                salaryMonthly: int.parse(widget.salaryController.text),
-                expenseMonthly: int.parse(widget.expenseController.text),
                 label: widget.labelController.text,
                 amount: int.parse(widget.amountController.text),
               );
@@ -175,24 +154,6 @@ class SetBudgetWidgetState extends State<SetBudgetWidget> {
   String? validateNotEmpty(String? value, String fieldName) {
     if (value == null || value.isEmpty) {
       return '$fieldName cannot be empty';
-    }
-    return null;
-  }
-
-  String? validateExpense(String? expenseValue) {
-    final salaryValue = widget.salaryController.text;
-
-    if (validatePositiveNumber(expenseValue, 'Expense') != null) {
-      return validatePositiveNumber(expenseValue, 'Expense');
-    }
-
-    if (double.tryParse(salaryValue) != null && double.tryParse(expenseValue!) != null) {
-      final salary = double.parse(salaryValue);
-      final expense = double.parse(expenseValue);
-
-      if (expense > salary) {
-        return 'Expense cannot be higher than income';
-      }
     }
     return null;
   }

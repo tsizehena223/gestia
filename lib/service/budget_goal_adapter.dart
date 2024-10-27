@@ -5,8 +5,6 @@ class BudgetGoalAdapter extends TypeAdapter<BudgetGoal> {
   @override
   BudgetGoal read(BinaryReader reader) {
     return BudgetGoal(
-      salaryMonthly: reader.read(),
-      expenseMonthly: reader.read(),
       label: reader.read(),
       amount: reader.read(),
     );
@@ -14,8 +12,6 @@ class BudgetGoalAdapter extends TypeAdapter<BudgetGoal> {
 
   @override
   void write(BinaryWriter writer, BudgetGoal obj) {
-    writer.write(obj.salaryMonthly);
-    writer.write(obj.expenseMonthly);
     writer.write(obj.label);
     writer.write(obj.amount);
   }

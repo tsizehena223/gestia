@@ -58,7 +58,7 @@ class _ListTransactionWidgetState extends State<ListTransactionWidget> {
     );
   }
 
-  void _updateTransactionHistory(int index, Transaction transaction) async {
+  void _updateTransactionHistory(Transaction transaction) async {
     final transactionHistoryService = TransactionHistoryService();
     final transactionHistoryBox = Hive.box<TransactionHistory>(TransactionHistoryService.boxName);
 
@@ -82,12 +82,7 @@ class _ListTransactionWidgetState extends State<ListTransactionWidget> {
           existingHistory.income -= transaction.amount;
         }
 
-        // if history is empty then delete, else update
-        if (existingHistory.expense == 0 && existingHistory.income == 0) {
-          transactionHistoryService.deleteTransactionHistory(index);
-        } else {
-          transactionHistoryService.updateTransactionHistory(index, existingHistory);
-        }
+        transactionHistoryService.updateTransactionHistory(existingHistoryKey, existingHistory);
       }
     }
 
@@ -153,7 +148,7 @@ class _ListTransactionWidgetState extends State<ListTransactionWidget> {
                     confirmDismiss: (direction) => _confirmDismiss(context, transaction),
                     onDismissed: (direction) {
                       transactions.deleteAt(index);
-                      _updateTransactionHistory(index, transaction);
+                      _updateTransactionHistory(transaction);
                       _reloadApp(context);
                     },
                     child: ListTile(
