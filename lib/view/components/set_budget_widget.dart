@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:gestia/model/budget_goal.dart';
 import 'package:gestia/service/budget_goal_service.dart';
-import 'package:gestia/view/components/snack_bar_message.dart';
 import 'package:gestia/view/pages/budget_goal_list.dart';
 import 'package:hive/hive.dart';
 
@@ -88,7 +87,6 @@ class SetBudgetWidgetState extends State<SetBudgetWidget> {
 
               // Put in the box (Database)
               _budgetGoalBox.add(newBudgetGoal);
-              showSuccessMessage(context, "Budget goal set successfully");
 
               Navigator.push(
                 context, 
