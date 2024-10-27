@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:gestia/main.dart';
 import 'package:gestia/model/transaction.dart';
-import 'package:gestia/model/transaction_history.dart';
-import 'package:gestia/service/transaction_history_service.dart';
+// import 'package:gestia/model/transaction_history.dart';
+// import 'package:gestia/service/transaction_history_service.dart';
 import 'package:gestia/service/transaction_service.dart';
 import 'package:gestia/utils/format_data.dart';
 import 'package:gestia/utils/shared_preferences_util.dart';
@@ -60,37 +60,37 @@ class _ListTransactionWidgetState extends State<ListTransactionWidget> {
   }
 
   void _updateTransactionHistory(int index, Transaction transaction) async {
-    final transactionHistoryService = TransactionHistoryService();
-    final transactionHistoryBox = Hive.box<TransactionHistory>(TransactionHistoryService.boxName);
+    // final transactionHistoryService = TransactionHistoryService();
+    // final transactionHistoryBox = Hive.box<TransactionHistory>(TransactionHistoryService.boxName);
 
-    final existingHistoryKey = transactionHistoryBox.keys.firstWhere(
-      (key) {
-        final entry = transactionHistoryBox.get(key);
-        return entry != null &&
-               entry.year == transaction.date.year &&
-               entry.month == DateFormat.MMMM().format(transaction.date);
-      },
-      orElse: () => null,
-    );
+    // final existingHistoryKey = transactionHistoryBox.keys.firstWhere(
+    //   (key) {
+    //     final entry = transactionHistoryBox.get(key);
+    //     return entry != null &&
+    //            entry.year == transaction.date.year &&
+    //            entry.month == DateFormat.MMMM().format(transaction.date);
+    //   },
+    //   orElse: () => null,
+    // );
 
-    if (existingHistoryKey != null) {
-      final existingHistory = transactionHistoryBox.get(existingHistoryKey);
+    // if (existingHistoryKey != null) {
+    //   final existingHistory = transactionHistoryBox.get(existingHistoryKey);
 
-      if (existingHistory != null) {
-        if (transaction.category == "expense") {
-          existingHistory.expense -= transaction.amount;
-        } else {
-          existingHistory.income -= transaction.amount;
-        }
+    //   if (existingHistory != null) {
+    //     if (transaction.category == "expense") {
+    //       existingHistory.expense -= transaction.amount;
+    //     } else {
+    //       existingHistory.income -= transaction.amount;
+    //     }
 
-        // if history is empty then delete, else update
-        if (existingHistory.expense == 0 && existingHistory.income == 0) {
-          transactionHistoryService.deleteTransactionHistory(index);
-        } else {
-          transactionHistoryService.updateTransactionHistory(index, existingHistory);
-        }
-      }
-    }
+    //     // if history is empty then delete, else update
+    //     if (existingHistory.expense == 0 && existingHistory.income == 0) {
+    //       transactionHistoryService.deleteTransactionHistory(index);
+    //     } else {
+    //       transactionHistoryService.updateTransactionHistory(index, existingHistory);
+    //     }
+    //   }
+    // }
 
     // update current balance
     int currentBalance = await SharedPreferencesUtil.retrieveBalance() ?? 0;
