@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:gestia/main.dart';
 import 'package:gestia/model/transaction.dart';
+import 'package:gestia/model/transaction_history.dart';
+import 'package:gestia/service/transaction_history_service.dart';
 import 'package:gestia/service/transaction_service.dart';
 import 'package:gestia/utils/format_data.dart';
 import 'package:gestia/utils/shared_preferences_util.dart';
@@ -32,8 +34,6 @@ class _ListTransactionWidgetState extends State<ListTransactionWidget> {
       confirmationText = 'This transaction can\'t be deleted';
     }
 
-    // TODO : delete also the transaction history
-
     return await showDialog(
       // ignore: use_build_context_synchronously
       context: context,
@@ -57,6 +57,46 @@ class _ListTransactionWidgetState extends State<ListTransactionWidget> {
         );
       },
     );
+  }
+
+  void _updateTransactionHistory(Transaction transaction) async {
+    final transactionHistoryService = TransactionHistoryService();
+    final transactionHistoryBox = Hive.box<TransactionHistory>(TransactionHistoryService.boxName);
+
+    final existingHistoryKey = transactionHistoryBox.keys.firstWhere(
+      (key) {
+        final entry = transactionHistoryBox.get(key);
+        return entry != null &&
+               entry.year == transaction.date.year &&
+               entry.month == DateFormat.MMMM().format(transaction.date);
+      },
+      orElse: () => null,
+    );
+
+    if (existingHistoryKey != null) {
+      final existingHistory = transactionHistoryBox.get(existingHistoryKey);
+
+      if (existingHistory != null) {
+        const int maxInt = 9223372036854775807; // 2^63 - 1
+        if (transaction.category == "expense") {
+          existingHistory.expense = (existingHistory.expense - transaction.amount).clamp(0, maxInt);
+        } else {
+          existingHistory.income = (existingHistory.income - transaction.amount).clamp(0, maxInt);
+        }
+
+        // Delete the box if it's empty, else update
+        if (existingHistory.expense == 0 && existingHistory.income == 0) {
+          transactionHistoryService.deleteTransactionHistory(existingHistoryKey);
+        } else {
+          transactionHistoryService.updateTransactionHistory(existingHistoryKey, existingHistory);
+        }
+      }
+    }
+
+    // update current balance
+    int currentBalance = await SharedPreferencesUtil.retrieveBalance() ?? 0;
+    int updatedBalance = transaction.category == "expense" ? currentBalance + transaction.amount : currentBalance - transaction.amount;
+    await SharedPreferencesUtil.storeBalance(updatedBalance);
   }
 
   void _reloadApp(BuildContext context) {
@@ -152,6 +192,7 @@ class _ListTransactionWidgetState extends State<ListTransactionWidget> {
                     confirmDismiss: (direction) => _confirmDismiss(context, transaction),
                     onDismissed: (direction) {
                       transactions.deleteAt(index);
+                      _updateTransactionHistory(transaction);
                       _reloadApp(context);
                     },
                     child: ListTile(
