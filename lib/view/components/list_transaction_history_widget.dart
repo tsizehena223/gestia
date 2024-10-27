@@ -15,18 +15,11 @@ class ListTransactionHistoryWidget extends StatefulWidget {
 class _ListTransactionHistoryWidgetState
     extends State<ListTransactionHistoryWidget> {
   late Box<TransactionHistory> transactionBox;
-  bool _isAscending = true; // Track sorting order
 
   @override
   void initState() {
     super.initState();
     transactionBox = Hive.box<TransactionHistory>(TransactionHistoryService.boxName);
-  }
-
-  void _toggleSortOrder() {
-    setState(() {
-      _isAscending = !_isAscending;
-    });
   }
 
   @override
@@ -36,26 +29,6 @@ class _ListTransactionHistoryWidgetState
 
     return Column(
       children: [
-        // Sort Order Button
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text(
-                'Sort by',
-                style: TextStyle(
-                  color: Theme.of(context).focusColor,
-                ),
-              ),
-              IconButton(
-                icon: Icon(_isAscending ? Icons.arrow_upward : Icons.arrow_downward),
-                onPressed: _toggleSortOrder,
-                tooltip: _isAscending ? 'Sort Descending' : 'Sort Ascending',
-              ),
-            ],
-          ),
-        ),
         Expanded(
           child: ValueListenableBuilder(
             valueListenable: transactionBox.listenable(),
@@ -73,16 +46,6 @@ class _ListTransactionHistoryWidgetState
 
               // Convert transactions to a list and sort
               List<TransactionHistory> transactionList = transactions.values.toList();
-              transactionList.sort((a, b) {
-                int yearComparison = a.year.compareTo(b.year);
-                return _isAscending
-                    ? yearComparison != 0
-                        ? yearComparison
-                        : a.month.compareTo(b.month)
-                    : yearComparison != 0
-                        ? -yearComparison
-                        : b.month.compareTo(a.month);
-              });
 
               return ListView.builder(
                 itemCount: transactionList.length,

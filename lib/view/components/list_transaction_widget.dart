@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:gestia/main.dart';
 import 'package:gestia/model/transaction.dart';
-// import 'package:gestia/model/transaction_history.dart';
-// import 'package:gestia/service/transaction_history_service.dart';
+import 'package:gestia/model/transaction_history.dart';
+import 'package:gestia/service/transaction_history_service.dart';
 import 'package:gestia/service/transaction_service.dart';
 import 'package:gestia/utils/format_data.dart';
 import 'package:gestia/utils/shared_preferences_util.dart';
@@ -22,7 +22,6 @@ class ListTransactionWidget extends StatefulWidget {
 }
 
 class _ListTransactionWidgetState extends State<ListTransactionWidget> {
-  bool _isAscending = true; // Track sorting order (ASC or DESC)
 
   Future<bool?> _confirmDismiss(BuildContext context, Transaction transaction) async {
     // Check if the balance will be negative
@@ -60,37 +59,37 @@ class _ListTransactionWidgetState extends State<ListTransactionWidget> {
   }
 
   void _updateTransactionHistory(int index, Transaction transaction) async {
-    // final transactionHistoryService = TransactionHistoryService();
-    // final transactionHistoryBox = Hive.box<TransactionHistory>(TransactionHistoryService.boxName);
+    final transactionHistoryService = TransactionHistoryService();
+    final transactionHistoryBox = Hive.box<TransactionHistory>(TransactionHistoryService.boxName);
 
-    // final existingHistoryKey = transactionHistoryBox.keys.firstWhere(
-    //   (key) {
-    //     final entry = transactionHistoryBox.get(key);
-    //     return entry != null &&
-    //            entry.year == transaction.date.year &&
-    //            entry.month == DateFormat.MMMM().format(transaction.date);
-    //   },
-    //   orElse: () => null,
-    // );
+    final existingHistoryKey = transactionHistoryBox.keys.firstWhere(
+      (key) {
+        final entry = transactionHistoryBox.get(key);
+        return entry != null &&
+               entry.year == transaction.date.year &&
+               entry.month == DateFormat.MMMM().format(transaction.date);
+      },
+      orElse: () => null,
+    );
 
-    // if (existingHistoryKey != null) {
-    //   final existingHistory = transactionHistoryBox.get(existingHistoryKey);
+    if (existingHistoryKey != null) {
+      final existingHistory = transactionHistoryBox.get(existingHistoryKey);
 
-    //   if (existingHistory != null) {
-    //     if (transaction.category == "expense") {
-    //       existingHistory.expense -= transaction.amount;
-    //     } else {
-    //       existingHistory.income -= transaction.amount;
-    //     }
+      if (existingHistory != null) {
+        if (transaction.category == "expense") {
+          existingHistory.expense -= transaction.amount;
+        } else {
+          existingHistory.income -= transaction.amount;
+        }
 
-    //     // if history is empty then delete, else update
-    //     if (existingHistory.expense == 0 && existingHistory.income == 0) {
-    //       transactionHistoryService.deleteTransactionHistory(index);
-    //     } else {
-    //       transactionHistoryService.updateTransactionHistory(index, existingHistory);
-    //     }
-    //   }
-    // }
+        // if history is empty then delete, else update
+        if (existingHistory.expense == 0 && existingHistory.income == 0) {
+          transactionHistoryService.deleteTransactionHistory(index);
+        } else {
+          transactionHistoryService.updateTransactionHistory(index, existingHistory);
+        }
+      }
+    }
 
     // update current balance
     int currentBalance = await SharedPreferencesUtil.retrieveBalance() ?? 0;
@@ -120,38 +119,6 @@ class _ListTransactionWidgetState extends State<ListTransactionWidget> {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        // Sorting toggle button
-        Visibility(
-          visible: !widget.isPreview,
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Container(
-                padding: const EdgeInsets.only(left: 20, right: 20, top: 15, bottom: 15),
-                child: Text(
-                  'Sort by',
-                  style: TextStyle(
-                    color: Theme.of(context).focusColor,
-                  ),
-                ),
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: [
-                  IconButton(
-                    icon: Icon(_isAscending ? Icons.arrow_upward : Icons.arrow_downward),
-                    onPressed: () {
-                      setState(() {
-                        _isAscending = !_isAscending; // Toggle sorting order
-                      });
-                    },
-                  ),
-                ],
-              )
-              
-            ],
-          ),
-        ),
         Expanded(
           child: ValueListenableBuilder(
             valueListenable: transactionBox.listenable(),
@@ -165,11 +132,6 @@ class _ListTransactionWidgetState extends State<ListTransactionWidget> {
                 );
               }
               List<Transaction> transactionList = transactions.values.toList();
-
-              // Sort transactions based on _isAscending
-              transactionList.sort((a, b) => _isAscending
-                  ? a.date.compareTo(b.date) // Ascending order
-                  : b.date.compareTo(a.date)); // Descending order
 
               return ListView.builder(
                 physics: widget.isPreview ? const NeverScrollableScrollPhysics() : null,
