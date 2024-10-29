@@ -53,11 +53,17 @@ class _HeaderState extends State<Header> {
             ),
             TextButton(
               onPressed: () async {
-                  await SharedPreferencesUtil.storeUserName(nameController.text);
-                  // ignore: use_build_context_synchronously
-                  Navigator.of(context).pop(true);
-                  // ignore: use_build_context_synchronously
-                  _reloadApp(context);
+                if (nameController.text.isEmpty) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(content: Text('User name should not be null')),
+                  );
+                  return;
+                }
+                await SharedPreferencesUtil.storeUserName(nameController.text);
+                // ignore: use_build_context_synchronously
+                Navigator.of(context).pop(true);
+                // ignore: use_build_context_synchronously
+                _reloadApp(context);
               },
               child: Text('Confirm', style: TextStyle(color: Theme.of(context).primaryColorDark),),
             ),
