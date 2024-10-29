@@ -67,9 +67,19 @@ class _HomeState extends State<Home> {
 
     return Scaffold(
       extendBody: true,
-      body: IndexedStack(
-        index: _currentPageIndex,
-        children: pages,
+      body: Stack(
+        children: [
+          Positioned.fill(
+            child: Image.asset(
+              'assets/images/bg.jpeg',
+              fit: BoxFit.cover,
+            ),
+          ),
+          IndexedStack(
+            index: _currentPageIndex,
+            children: pages,
+          ),
+        ],
       ),
       bottomNavigationBar: SizedBox(
         height: 80,

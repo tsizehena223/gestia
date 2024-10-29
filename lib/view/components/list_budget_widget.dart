@@ -16,6 +16,9 @@ class _ListBudgetWidgetState extends State<ListBudgetWidget> {
   late Box<BudgetGoal> budgetGoalBox;
   late Box<TransactionHistory> transactionHistoryBox;
   late List<TransactionHistory> transactionsHistory;
+  
+  int totalIncome = 0;
+  int totalExpense = 0;
 
   @override
   void initState() {
@@ -25,6 +28,12 @@ class _ListBudgetWidgetState extends State<ListBudgetWidget> {
 
     // Get all transactions and store in the list
     transactionsHistory = transactionHistoryBox.values.toList();
+
+    // Calculate total income and total expense from transactions
+    for (var transaction in transactionsHistory) {
+      totalIncome += transaction.income;
+      totalExpense += transaction.expense;
+    }
   }
 
   double? _numberOfMonths;
@@ -32,9 +41,6 @@ class _ListBudgetWidgetState extends State<ListBudgetWidget> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text("Transaction History"),
-      ),
       body: Column(
         children: [
           ValueListenableBuilder(
@@ -64,13 +70,13 @@ class _ListBudgetWidgetState extends State<ListBudgetWidget> {
                 return (goalAmount / (income - expense));
               }
 
-              // Calculate months to reach the budget goal
-              _numberOfMonths = getNumberOfMonths(firstBudgetGoal.amount, 5000000, 300000);
+              // Use calculated total income and total expense
+              _numberOfMonths = getNumberOfMonths(firstBudgetGoal.amount, totalIncome, totalExpense);
 
               return Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: Text(
-                  "You will get your ${firstBudgetGoal.label} in ${_numberOfMonths?.round()} months",
+                  "You will get your ${firstBudgetGoal.label} of ${firstBudgetGoal.amount} in ${_numberOfMonths?.round()} months",
                   style: const TextStyle(color: Colors.green),
                 ),
               );
@@ -82,10 +88,10 @@ class _ListBudgetWidgetState extends State<ListBudgetWidget> {
               itemBuilder: (context, index) {
                 final transaction = transactionsHistory[index];
                 return ListTile(
-                  leading: Text("Income : ${transaction.income}"),
                   title: Text("Transaction ${index + 1}"),
-                  subtitle: Text("${transaction.year} : ${transaction.month}"), 
-                  trailing: Text("Expense : ${transaction.expense}"),
+                  subtitle: Text(
+                    "Year : ${transaction.year}, Month : ${transaction.month}, Income : ${transaction.income}, Expense : ${transaction.expense}"
+                  ),
                 );
               },
             ),

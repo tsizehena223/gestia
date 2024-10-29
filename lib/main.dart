@@ -1,4 +1,3 @@
-import 'package:device_preview/device_preview.dart';
 import 'package:flutter/material.dart';
 import 'package:gestia/model/budget_goal.dart';
 import 'package:gestia/model/transaction.dart';
@@ -43,8 +42,6 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      locale: DevicePreview.locale(context),
-      builder: DevicePreview.appBuilder,
       title: 'GestIA App',
       home: const MyHomePage(),
       debugShowCheckedModeBanner: false,
@@ -95,11 +92,21 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: IndexedStack(
-        index: (_userName == null || _userBalance == null) ? 0 : 1,
-        children: _pages,
+      body: Stack(
+        children: [
+          Positioned.fill(
+            child: Image.asset(
+              'assets/images/bg.jpeg',
+              fit: BoxFit.cover,
+            ),
+          ),
+          // Main content
+          IndexedStack(
+            index: (_userName == null || _userBalance == null) ? 0 : 1,
+            children: _pages,
+          ),
+        ],
       ),
-      backgroundColor: Theme.of(context).primaryColor,
     );
   }
 }
