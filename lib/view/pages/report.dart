@@ -92,17 +92,17 @@ class ReportPageState extends State<ReportPage> {
 
   @override
   Widget build(BuildContext context) {
-      final transactionBox = Hive.box<Transaction>(TransactionService.boxName);
-      List<Transaction> transactions = transactionBox.values.toList();
-      FormatData.sortWithDate(transactions);
+    final transactionBox = Hive.box<Transaction>(TransactionService.boxName);
+    List<Transaction> transactions = transactionBox.values.toList();
+    FormatData.sortWithDate(transactions);
 
-      int totalExpense = transactions
-        .where((transaction) => transaction.category == "expense")
-        .fold(0, (sum, transaction) => sum + transaction.amount);
+    int totalExpense = transactions
+      .where((transaction) => transaction.category == "expense")
+      .fold(0, (sum, transaction) => sum + transaction.amount);
 
-      int totalIncome = transactions
-        .where((transaction) => transaction.category == "income")
-        .fold(0, (sum, transaction) => sum + transaction.amount);
+    int totalIncome = transactions
+      .where((transaction) => transaction.category == "income")
+      .fold(0, (sum, transaction) => sum + transaction.amount);
 
     return SingleChildScrollView(
       child: SafeArea(
@@ -116,15 +116,15 @@ class ReportPageState extends State<ReportPage> {
             Container(
               margin: const EdgeInsets.all(10),
               decoration: BoxDecoration(
-                color: Theme.of(context).primaryColorDark,
+                color: Theme.of(context).primaryColorDark.withOpacity(.8),
                 borderRadius: BorderRadius.circular(10),
               ),
               child: GestureDetector(
                 onTap: () => _showSetBudget(context),
                 child: ListTile(
                   leading: CircleAvatar(
-                    backgroundColor: Theme.of(context).primaryColor,
-                    child: const Icon(Icons.gps_fixed),
+                    backgroundColor: Theme.of(context).disabledColor.withOpacity(.2),
+                    child: Icon(Icons.gps_fixed, color: Theme.of(context).primaryColor,),
                   ),
                   title: Text(
                     "Budget",
@@ -140,8 +140,8 @@ class ReportPageState extends State<ReportPage> {
                     ),
                   ),
                   trailing: CircleAvatar(
-                    backgroundColor: Theme.of(context).primaryColor,
-                    child: const Icon(Icons.add),
+                    backgroundColor: Theme.of(context).disabledColor.withOpacity(.2),
+                    child: Icon(Icons.add, color: Theme.of(context).primaryColor,),
                   ),
                 ),
               ),
@@ -152,7 +152,7 @@ class ReportPageState extends State<ReportPage> {
               padding: const EdgeInsets.symmetric(horizontal: 20),
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(10),
-                color: Theme.of(context).primaryColorLight,
+                color: Theme.of(context).disabledColor.withOpacity(.2),
               ),
               child: Column(
                 children: <Widget>[
@@ -163,15 +163,15 @@ class ReportPageState extends State<ReportPage> {
                       Text(
                         "Analytics",
                         style: TextStyle(
-                          color: Theme.of(context).disabledColor,
+                          color: Theme.of(context).primaryColor.withOpacity(.9),
                         ),
                       ),
                       yearDropDown(),
                       IconButton(
                         onPressed: _reloadPage,
-                        icon: Icon(
+                        icon: const Icon(
                           Icons.refresh,
-                          color: Theme.of(context).focusColor,
+                          color: Color.fromARGB(255, 16, 95, 19),
                         ),
                       )
                     ],
@@ -261,8 +261,8 @@ class ReportPageState extends State<ReportPage> {
       space: 10,
       child: Text(
         titles[value.toInt()],
-        style: const TextStyle(
-          color: Color(0xff7589a2),
+        style: TextStyle(
+          color: Theme.of(context).primaryColor.withOpacity(.7),
           fontWeight: FontWeight.bold,
           fontSize: 10,
         ),
@@ -301,7 +301,7 @@ class ReportPageState extends State<ReportPage> {
             child: Text(
               year.toString(),
               style: TextStyle(
-                color: Theme.of(context).focusColor,
+                color: Theme.of(context).primaryColor.withOpacity(.9),
                 fontSize: 15,
               ),
             ),

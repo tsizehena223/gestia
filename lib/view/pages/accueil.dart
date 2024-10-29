@@ -31,7 +31,7 @@ class _AccueilState extends State<Accueil> {
               margin: const EdgeInsets.only(bottom: 1),
               child: SvgPicture.asset(
                 "assets/images/logo.svg",
-                colorFilter: const ColorFilter.mode(Color.fromARGB(255, 17, 141, 21), BlendMode.srcIn),
+                colorFilter: ColorFilter.mode(Theme.of(context).primaryColor, BlendMode.srcIn),
                 height: 250,
               ),
             ),
@@ -39,7 +39,7 @@ class _AccueilState extends State<Accueil> {
               "Take control of your finances\nwith AI's optimization",
               textAlign: TextAlign.center,
               style: TextStyle(
-                color: Theme.of(context).focusColor,
+                color: Theme.of(context).primaryColor.withOpacity(.7),
                 fontSize: 23,
                 fontWeight: FontWeight.w100,
               ),
@@ -50,7 +50,7 @@ class _AccueilState extends State<Accueil> {
               child: TextField(
                 keyboardType: TextInputType.text,
                 controller: userNameController,
-                style: const TextStyle(color: Colors.black),
+                style: TextStyle(color: Theme.of(context).primaryColor),
                 decoration: InputDecoration(
                   enabledBorder: const OutlineInputBorder(
                     borderSide: BorderSide(
@@ -66,7 +66,7 @@ class _AccueilState extends State<Accueil> {
                     borderRadius: BorderRadius.all(Radius.circular(20)),
                   ),
                   labelText: "Type your name",
-                  labelStyle: TextStyle(color: Theme.of(context).focusColor),
+                  labelStyle: TextStyle(color: Theme.of(context).primaryColor.withOpacity(.7)),
                   border: const OutlineInputBorder(
                     borderRadius: BorderRadius.all(Radius.circular(20)),
                   ),

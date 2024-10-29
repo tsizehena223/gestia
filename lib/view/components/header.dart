@@ -79,7 +79,7 @@ class _HeaderState extends State<Header> {
       margin: const EdgeInsets.all(10),
       width: MediaQuery.of(context).size.width,
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: Theme.of(context).disabledColor.withOpacity(.2),
         borderRadius: BorderRadius.circular(30),
       ),
       child: FutureBuilder(
@@ -88,25 +88,25 @@ class _HeaderState extends State<Header> {
           String data = snapshot.data ?? "UserName";
           return ListTile(
             leading: CircleAvatar(
-              backgroundColor: Theme.of(context).primaryColor,
-              child: Icon(Icons.home_filled, color: Theme.of(context).focusColor,),
+              backgroundColor: Theme.of(context).primaryColor.withOpacity(.2),
+              child: Icon(Icons.home_filled, color: Theme.of(context).primaryColor,),
             ),
             title: Text(
               data,
-              style: const TextStyle(
-                color: Colors.black,
+              style: TextStyle(
+                color: Theme.of(context).primaryColor,
                 fontSize: 15,
                 fontWeight: FontWeight.bold,
               ),
             ),
             subtitle: Text(
               "Welcome to GestIA",
-              style: TextStyle(color: Theme.of(context).focusColor, fontSize: 12),
+              style: TextStyle(color: Theme.of(context).primaryColor.withOpacity(.8), fontSize: 12),
             ),
             trailing: GestureDetector(
               onTap: () => _updateProfile(context),
               child: CircleAvatar(
-                backgroundColor: Theme.of(context).primaryColor,
+                backgroundColor: Theme.of(context).primaryColor.withOpacity(.2),
                 child: Icon(Icons.person, color: Theme.of(context).primaryColorDark,),
               ),
             ),

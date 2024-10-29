@@ -122,7 +122,7 @@ class _ListTransactionWidgetState extends State<ListTransactionWidget> {
                 return Center(
                   child: Text(
                     'No transaction added yet',
-                    style: TextStyle(color: Theme.of(context).disabledColor),
+                    style: TextStyle(color: Theme.of(context).primaryColor.withOpacity(.7)),
                   ),
                 );
               }
@@ -162,14 +162,14 @@ class _ListTransactionWidgetState extends State<ListTransactionWidget> {
                       title: Text(
                         transaction.title,
                         style: TextStyle(
-                          color: Theme.of(context).disabledColor.withOpacity(.7),
+                          color: Theme.of(context).primaryColor,
                           fontSize: 20,
                         ),
                       ),
                       trailing: Text(
                         "${(transaction.category == "expense") ? '-' : ''} ${FormatData.formatNumber(transaction.amount)} Ar",
                         style: TextStyle(
-                          color: Theme.of(context).disabledColor,
+                          color: Theme.of(context).primaryColor,
                           fontSize: 15,
                         ),
                       ),

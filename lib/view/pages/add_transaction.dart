@@ -122,7 +122,7 @@ class _AddTransactionState extends State<AddTransaction> {
                   child: Container(
                     padding: const EdgeInsets.all(20),
                     decoration: BoxDecoration(
-                      color: Theme.of(context).primaryColorLight,
+                      color: Theme.of(context).disabledColor.withOpacity(.2),
                       borderRadius: BorderRadius.circular(10),
                     ),
                     child: Column(
@@ -131,7 +131,7 @@ class _AddTransactionState extends State<AddTransaction> {
                           keyboardType: TextInputType.text,
                           controller: titleController,
                           style:
-                              TextStyle(color: Theme.of(context).disabledColor),
+                              TextStyle(color: Theme.of(context).primaryColor),
                           decoration: inputDecoration(context, 'Title'),
                           onChanged: (String? value) => {
                             if (value == null || value == "")
@@ -155,7 +155,7 @@ class _AddTransactionState extends State<AddTransaction> {
                           keyboardType: TextInputType.number,
                           controller: amountController,
                           style:
-                              TextStyle(color: Theme.of(context).disabledColor),
+                              TextStyle(color: Theme.of(context).primaryColor),
                           decoration: inputDecoration(context, 'Amount'),
                           onChanged: (String? value) => {
                             if (!_validatePositiveNumber(value))
@@ -177,9 +177,9 @@ class _AddTransactionState extends State<AddTransaction> {
                         ),
                         DropdownButtonFormField<String>(
                           style: TextStyle(
-                            color: Theme.of(context).disabledColor,
+                            color: Theme.of(context).primaryColor,
                           ),
-                          dropdownColor: Theme.of(context).primaryColor,
+                          dropdownColor: const Color.fromARGB(255, 42, 4, 87).withOpacity(.9),
                           decoration: inputDecoration(context, 'Category'),
                           value: widget.defaultCategory,
                           onChanged: (widget.defaultCategory != null)
@@ -203,8 +203,8 @@ class _AddTransactionState extends State<AddTransaction> {
                         // Icon
                         DropdownButtonFormField<IconData>(
                           style:
-                              TextStyle(color: Theme.of(context).disabledColor),
-                          dropdownColor: Theme.of(context).primaryColor,
+                              TextStyle(color: Theme.of(context).primaryColor),
+                          dropdownColor: const Color.fromARGB(255, 42, 4, 87).withOpacity(.9),
                           decoration: inputDecoration(context, 'Icon'),
                           value: _selectedIcon,
                           onChanged: (IconData? newIcon) {
@@ -220,7 +220,7 @@ class _AddTransactionState extends State<AddTransaction> {
                                 children: [
                                   Icon(
                                     entry.key,
-                                    color: Theme.of(context).disabledColor,
+                                    color: Theme.of(context).primaryColor,
                                   ),
                                   const SizedBox(width: 10),
                                   Text(entry.value),
@@ -234,7 +234,7 @@ class _AddTransactionState extends State<AddTransaction> {
                         TextFormField(
                           controller: dateController,
                           style:
-                              TextStyle(color: Theme.of(context).disabledColor),
+                              TextStyle(color: Theme.of(context).primaryColor),
                           decoration: inputDecoration(context, 'Date'),
                           readOnly: true,
                           onTap: () {
@@ -383,7 +383,7 @@ class _AddTransactionState extends State<AddTransaction> {
             ),
           ),
         ),
-        backgroundColor: Theme.of(context).primaryColor,
+        backgroundColor: Theme.of(context).primaryColor.withOpacity(0),
       ),
     );
   }
@@ -394,15 +394,15 @@ class _AddTransactionState extends State<AddTransaction> {
       margin: const EdgeInsets.symmetric(horizontal: 10),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(10),
-        color: Theme.of(context).primaryColorLight,
+        color: Theme.of(context).primaryColor.withOpacity(.1),
       ),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
           SvgPicture.asset(
             "assets/images/logo.svg",
-            colorFilter: const ColorFilter.mode(
-                Color.fromARGB(255, 5, 105, 8), BlendMode.srcIn),
+            colorFilter: ColorFilter.mode(
+                Theme.of(context).primaryColorDark.withOpacity(.8), BlendMode.srcIn),
             height: 120,
           ),
           Image.asset(

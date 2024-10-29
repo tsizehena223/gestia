@@ -18,28 +18,28 @@ class HeaderWidget extends StatelessWidget {
       margin: const EdgeInsets.all(10),
       width: MediaQuery.of(context).size.width,
       decoration: BoxDecoration(
-        color: Theme.of(context).primaryColorLight,
+        color: Theme.of(context).disabledColor.withOpacity(.2),
         borderRadius: BorderRadius.circular(30),
       ),
       child: ListTile(
         leading: CircleAvatar(
-          backgroundColor: Theme.of(context).primaryColor,
-          child: Icon(icon, color: Theme.of(context).focusColor,),
+          backgroundColor: Theme.of(context).primaryColor.withOpacity(.2),
+          child: Icon(icon, color: Theme.of(context).primaryColor,),
         ),
         title: Text(
           title,
           style: TextStyle(
-            color: Theme.of(context).disabledColor,
+            color: Theme.of(context).primaryColor,
             fontSize: 15,
             fontWeight: FontWeight.bold,
           ),
         ),
         subtitle: Text(
           subtitle,
-          style: TextStyle(color: Theme.of(context).focusColor, fontSize: 12),
+          style: TextStyle(color: Theme.of(context).primaryColor.withOpacity(.7), fontSize: 12),
         ),
         trailing: CircleAvatar(
-              backgroundColor: Theme.of(context).primaryColor,
+              backgroundColor: Theme.of(context).primaryColor.withOpacity(.2),
               child: Icon(Icons.person, color: Theme.of(context).primaryColorDark,),
             ),
       ),

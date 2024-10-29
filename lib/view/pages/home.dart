@@ -87,7 +87,7 @@ class _HomeState extends State<Home> {
         child: Container(
           margin: const EdgeInsets.all(10),
           decoration: BoxDecoration(
-            color: Colors.white,
+            color: Theme.of(context).disabledColor.withOpacity(.2),
             borderRadius: BorderRadius.circular(25),
           ),
           child: Row(
@@ -99,7 +99,7 @@ class _HomeState extends State<Home> {
                         height: 40,
                         width: 40,
                         decoration: BoxDecoration(
-                            color: Theme.of(context).primaryColor,
+                            color: Theme.of(context).primaryColor.withOpacity(.1),
                             borderRadius: BorderRadius.circular(20)),
                         child: IconButton(
                           icon: Icon(
@@ -112,7 +112,7 @@ class _HomeState extends State<Home> {
                                         : Icons.add,
                             color: (index == _currentPageIndex)
                                 ? Theme.of(context).primaryColorDark
-                                : Theme.of(context).focusColor,
+                                : Theme.of(context).primaryColor,
                           ),
                           onPressed: () =>
                               setState(() => _currentPageIndex = index),
@@ -128,13 +128,12 @@ class _HomeState extends State<Home> {
       BuildContext context, String balanceFormated, String formattedDate) {
     var children = [
       const Header(),
-      // Begin
       Container(
         margin: const EdgeInsets.symmetric(horizontal: 10),
         padding: const EdgeInsets.symmetric(vertical: 10),
         width: MediaQuery.of(context).size.width,
         decoration: BoxDecoration(
-          color: Theme.of(context).primaryColorLight,
+          color: Theme.of(context).primaryColor.withOpacity(.1),
           borderRadius: BorderRadius.circular(10),
         ),
         child: Column(
@@ -144,7 +143,7 @@ class _HomeState extends State<Home> {
                 child: Text(
                   formattedDate,
                   style: TextStyle(
-                      color: Theme.of(context).focusColor,
+                      color: Theme.of(context).primaryColor,
                       fontWeight: FontWeight.bold),
                 ),
               ),
@@ -153,7 +152,7 @@ class _HomeState extends State<Home> {
                   'Your balance',
                   style: TextStyle(
                     fontWeight: FontWeight.normal,
-                    color: Theme.of(context).focusColor,
+                    color: Theme.of(context).primaryColor.withOpacity(.7),
                   ),
                 ),
               ),
@@ -168,15 +167,15 @@ class _HomeState extends State<Home> {
                       fontWeight: FontWeight.bold,
                     ),
                   ),
-                  const Text(
+                  Text(
                     "  Ariary",
-                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: Theme.of(context).primaryColor),
                   ),
                 ]),
                 trailing: IconButton(
                   icon: (_isShow)
-                      ? const Icon(Icons.visibility)
-                      : const Icon(Icons.visibility_off),
+                      ? Icon(Icons.visibility, color: Theme.of(context).primaryColor.withOpacity(.5),)
+                      : Icon(Icons.visibility_off, color: Theme.of(context).primaryColor.withOpacity(.5),),
                   onPressed: _toggleShow,
                 )),
           ],
@@ -233,7 +232,7 @@ class _HomeState extends State<Home> {
               },
               child: Container(
                 decoration: BoxDecoration(
-                  color: Theme.of(context).primaryColorDark,
+                  color: Theme.of(context).primaryColorDark.withOpacity(.8),
                   borderRadius: BorderRadius.circular(10),
                 ),
                 child: ListTile(
@@ -262,7 +261,7 @@ class _HomeState extends State<Home> {
         width: MediaQuery.sizeOf(context).width,
         height: 300,
         decoration: BoxDecoration(
-          color: Theme.of(context).primaryColorLight,
+          color: Theme.of(context).disabledColor.withOpacity(.2),
           borderRadius: BorderRadius.circular(10),
         ),
         margin: const EdgeInsets.symmetric(horizontal: 10),
@@ -276,7 +275,7 @@ class _HomeState extends State<Home> {
                   child: Text(
                     "Recents",
                     style: TextStyle(
-                      color: Theme.of(context).focusColor,
+                      color: Theme.of(context).primaryColor.withOpacity(.7),
                       fontSize: 25,
                     ),
                   ),
@@ -286,7 +285,6 @@ class _HomeState extends State<Home> {
                   child: GestureDetector(
                     onTap: () {
                       setState(() {
-                        // _currentPageIndex = 2;
                         Navigator.pushReplacement(
                           context,
                           MaterialPageRoute(builder: (context) => const TransactionListPage()),
@@ -296,7 +294,7 @@ class _HomeState extends State<Home> {
                     child: Text(
                       "View all",
                       style: TextStyle(
-                        color: Theme.of(context).focusColor,
+                        color: Theme.of(context).primaryColor.withOpacity(.7),
                         fontSize: 15,
                       ),
                     ),
