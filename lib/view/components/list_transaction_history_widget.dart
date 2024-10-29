@@ -72,7 +72,7 @@ class _ListTransactionHistoryWidgetState
                     elevation: 8,
                     child: Container(
                       padding: const EdgeInsets.all(16),
-                      height: 150,
+                      height: 170,
                       width: double.infinity,
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
