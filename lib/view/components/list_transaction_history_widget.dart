@@ -22,10 +22,6 @@ class _ListTransactionHistoryWidgetState
     transactionBox = Hive.box<TransactionHistory>(TransactionHistoryService.boxName);
   }
 
-  int _monthToInt(String month) {
-    return DateFormat.MMMM().parse(month).month;
-  }
-
   @override
   Widget build(BuildContext context) {
     final currentYear = DateTime.now().year;
