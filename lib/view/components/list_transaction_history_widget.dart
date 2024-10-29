@@ -97,7 +97,7 @@ class _ListTransactionHistoryWidgetState
                           ),
                           const SizedBox(height: 8),
                           Text(
-                            isCurrentMonth ? "Current Month" : "${transaction.year} : ${transaction.month}",
+                            isCurrentMonth ? "Current Month" : "${transaction.month} ${transaction.year}",
                             style: TextStyle(
                               fontSize: 20,
                               color: isCurrentMonth

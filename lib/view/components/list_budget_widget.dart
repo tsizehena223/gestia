@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:gestia/model/budget_goal.dart';
+import 'package:gestia/model/transaction.dart';
 import 'package:gestia/model/transaction_history.dart';
 import 'package:gestia/service/budget_goal_service.dart';
 import 'package:gestia/service/transaction_history_service.dart';
+import 'package:gestia/view/components/prediction_card_widget.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
 class ListBudgetWidget extends StatefulWidget {
@@ -16,6 +18,7 @@ class _ListBudgetWidgetState extends State<ListBudgetWidget> {
   late Box<BudgetGoal> budgetGoalBox;
   late Box<TransactionHistory> transactionHistoryBox;
   late List<TransactionHistory> transactionsHistory;
+  late Transaction transaction;
   
   int totalIncome = 0;
   int totalExpense = 0;
@@ -36,68 +39,30 @@ class _ListBudgetWidgetState extends State<ListBudgetWidget> {
     }
   }
 
-  double? _numberOfMonths;
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Column(
-        children: [
-          ValueListenableBuilder(
-            valueListenable: budgetGoalBox.listenable(),
-            builder: (context, budgetGoals, _) {
-              if (budgetGoals.isEmpty) {
-                return Center(
-                  child: Text(
-                    'No budget goal added yet',
-                    style: TextStyle(color: Theme.of(context).disabledColor),
+      body: SafeArea(
+        child: SizedBox(
+          width: MediaQuery.sizeOf(context).width,
+          height: MediaQuery.sizeOf(context).height,
+          child: Column(
+            children: [
+              Expanded(
+                child: Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+                  decoration: BoxDecoration(
+                    color: Theme.of(context).disabledColor.withOpacity(.1),
+                    borderRadius: BorderRadius.circular(10),
                   ),
-                );
-              }
-
-              BudgetGoal? firstBudgetGoal = budgetGoals.values.isNotEmpty ? budgetGoals.values.first : null;
-
-              if (firstBudgetGoal == null) {
-                return Center(
-                  child: Text(
-                    'No budget goal available',
-                    style: TextStyle(color: Theme.of(context).disabledColor),
-                  ),
-                );
-              }
-
-              double getNumberOfMonths(int goalAmount, int income, int expense) {
-                return (goalAmount / (income - expense));
-              }
-
-              // Use calculated total income and total expense
-              _numberOfMonths = getNumberOfMonths(firstBudgetGoal.amount, totalIncome, totalExpense);
-
-              return Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Text(
-                  "You will get your ${firstBudgetGoal.label} of ${firstBudgetGoal.amount} in ${_numberOfMonths?.round()} months",
-                  style: const TextStyle(color: Colors.green),
+                  child: const PredictionCardWidget(),
                 ),
-              );
-            },
+              ),
+            ],
           ),
-          Expanded(
-            child: ListView.builder(
-              itemCount: transactionsHistory.length,
-              itemBuilder: (context, index) {
-                final transaction = transactionsHistory[index];
-                return ListTile(
-                  title: Text("Transaction ${index + 1}"),
-                  subtitle: Text(
-                    "Year : ${transaction.year}, Month : ${transaction.month}, Income : ${transaction.income}, Expense : ${transaction.expense}"
-                  ),
-                );
-              },
-            ),
-          ),
-        ],
+        ),
       ),
+      backgroundColor: Theme.of(context).primaryColor.withOpacity(0),
     );
   }
 }
