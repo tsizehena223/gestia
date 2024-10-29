@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:gestia/model/transaction_history.dart';
 import 'package:gestia/service/transaction_history_service.dart';
@@ -35,11 +36,22 @@ class _ListTransactionHistoryWidgetState
             builder: (context, transactions, _) {
               if (transactions.isEmpty) {
                 return Center(
-                  child: Text(
-                    'No transaction added yet',
-                    style: TextStyle(
-                      color: Theme.of(context).disabledColor,
-                    ),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(
+                        'No transaction added yet',
+                        style: TextStyle(
+                          color: Theme.of(context).primaryColor,
+                          fontSize: 18,
+                        ),
+                      ),
+                      const SizedBox(height: 20,),
+                      CircleAvatar(
+                        backgroundColor: Theme.of(context).primaryColorDark.withOpacity(.7),
+                        child: Icon(CupertinoIcons.question, color: Theme.of(context).primaryColor.withOpacity(.8),)
+                      ),
+                    ],
                   ),
                 );
               }

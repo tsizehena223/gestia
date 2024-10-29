@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:gestia/main.dart';
 import 'package:gestia/model/transaction.dart';
@@ -120,12 +121,27 @@ class _ListTransactionWidgetState extends State<ListTransactionWidget> {
             builder: (context, transactions, _) {
               if (transactions.isEmpty) {
                 return Center(
-                  child: Text(
-                    'No transaction added yet',
-                    style: TextStyle(color: Theme.of(context).primaryColor.withOpacity(.7)),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(
+                        'No transaction added yet',
+                        style: TextStyle(
+                          color: Theme.of(context).primaryColor,
+                          fontSize: 15,
+                        ),
+                      ),
+                      const SizedBox(height: 20,),
+                      CircleAvatar(
+                        radius: 15,
+                        backgroundColor: Theme.of(context).primaryColorDark.withOpacity(.7),
+                        child: Icon(CupertinoIcons.question, color: Theme.of(context).primaryColor.withOpacity(.8), size: 20,)
+                      ),
+                    ],
                   ),
                 );
               }
+
               List<Transaction> transactionList = transactions.values.toList();
 
               return ListView.builder(

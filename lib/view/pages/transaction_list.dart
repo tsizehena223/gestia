@@ -49,69 +49,82 @@ class _TransactionListPageState extends State<TransactionListPage> {
 
     return Scaffold(
       body: SafeArea(
-        child: SizedBox(
-          width: MediaQuery.sizeOf(context).width,
-          height: MediaQuery.sizeOf(context).height,
-          child: Column(
-            children: [
-              const HeaderWidget(
-                title: 'Transactions',
-                subtitle: 'List of your transactions',
-                icon: Icons.compare_arrows,
+        child: Stack(
+          children: [ 
+            Positioned.fill(
+              child: Image.asset(
+                'assets/images/bg.jpeg',
+                fit: BoxFit.cover,
               ),
-              Expanded(
-                child: Container(
-                  margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-                  decoration: BoxDecoration(
-                    color: Theme.of(context).primaryColorLight,
-                    borderRadius: BorderRadius.circular(10),
+            ),
+            SizedBox(
+              width: MediaQuery.sizeOf(context).width,
+              height: MediaQuery.sizeOf(context).height,
+              child: Column(
+                children: [
+                  const HeaderWidget(
+                    title: 'Transactions',
+                    subtitle: 'List of your transactions',
+                    icon: Icons.compare_arrows,
                   ),
-                  child: const ListTransactionWidget(isPreview: false),
-                ),
+                  Expanded(
+                    child: Container(
+                      margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+                      decoration: BoxDecoration(
+                        color: Theme.of(context).disabledColor.withOpacity(.2),
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      child: const ListTransactionWidget(isPreview: false),
+                    ),
+                  ),
+                  Container(
+                    margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 20),
+                    child: TotalTransactions(totalExpense: totalExpense, totalIncome: totalIncome),
+                  ),
+                ],
               ),
-              Container(
-                margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 20),
-                child: TotalTransactions(totalExpense: totalExpense, totalIncome: totalIncome),
-              ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
-      backgroundColor: Theme.of(context).primaryColor,
-      bottomNavigationBar: SizedBox(
-        height: 80,
-        width: MediaQuery.sizeOf(context).width,
-        child: Container(
-          margin: const EdgeInsets.all(10),
-          decoration: BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.circular(25),
-          ),
-          child: Row(
-            mainAxisSize: MainAxisSize.max,
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [
-              Container(
-                height: 40,
-                width: 40,
-                decoration: BoxDecoration(
-                  color: Theme.of(context).primaryColor,
-                  borderRadius: BorderRadius.circular(20),
-                ),
-                child: IconButton(
-                  icon: Icon(
-                    Icons.home_filled,
-                    color: Theme.of(context).primaryColorDark,
+      backgroundColor: Theme.of(context).primaryColor.withOpacity(0),
+      bottomNavigationBar: Container(
+        color: const Color.fromARGB(255, 50, 4, 134).withOpacity(.8),
+        child: SizedBox(
+          height: 80,
+          width: MediaQuery.sizeOf(context).width,
+          child: Container(
+            margin: const EdgeInsets.all(10),
+            decoration: BoxDecoration(
+              color: Theme.of(context).disabledColor.withOpacity(.2),
+              borderRadius: BorderRadius.circular(25),
+            ),
+            child: Row(
+              mainAxisSize: MainAxisSize.max,
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                Container(
+                  height: 40,
+                  width: 40,
+                  decoration: BoxDecoration(
+                    color: Theme.of(context).primaryColor.withOpacity(.2),
+                    borderRadius: BorderRadius.circular(20),
                   ),
-                  onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => const Home()),
-                    );
-                  },
+                  child: IconButton(
+                    icon: Icon(
+                      Icons.home_filled,
+                      color: Theme.of(context).primaryColorDark,
+                    ),
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => const Home()),
+                      );
+                    },
+                  ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
       ),
