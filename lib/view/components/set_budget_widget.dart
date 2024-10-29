@@ -44,7 +44,7 @@ class SetBudgetWidgetState extends State<SetBudgetWidget> {
       content: SingleChildScrollView(
         child: Container(
           padding: const EdgeInsets.symmetric(horizontal: 10),
-          height: 370,
+          height: 200,
           child: Form(
             key: _formKey, // Form key to track the form state
             child: Column(
