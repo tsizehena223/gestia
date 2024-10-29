@@ -38,10 +38,10 @@ class _TransactionHistoryListState extends State<TransactionHistoryList> {
               ),
               Expanded(
                 child: Container(
-                  margin:
-                      const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+                  margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+                  padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
                   decoration: BoxDecoration(
-                    color: Theme.of(context).primaryColorLight,
+                    color: Theme.of(context).primaryColor.withOpacity(.1),
                     borderRadius: BorderRadius.circular(10),
                   ),
                   child: const ListTransactionHistoryWidget(),

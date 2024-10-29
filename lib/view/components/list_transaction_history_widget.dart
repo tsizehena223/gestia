@@ -55,30 +55,24 @@ class _ListTransactionHistoryWidgetState
                   return Card(
                     margin: const EdgeInsets.all(8),
                     color: isCurrentMonth
-                        ? Theme.of(context).primaryColorDark
-                        : Theme.of(context).primaryColor,
+                        ? Theme.of(context).primaryColorDark.withOpacity(.8)
+                        : Theme.of(context).disabledColor.withOpacity(.1),
                     child: ListTile(
-                      title: Text(
-                        isCurrentMonth
-                            ? "Current month"
-                            : "${transaction.year} : ${transaction.month}",
-                        style: TextStyle(
-                          color: isCurrentMonth
-                              ? Theme.of(context).primaryColorLight
-                              : Theme.of(context).disabledColor,
+                      title: Center(
+                        child: Text(
+                          isCurrentMonth
+                              ? "Current month"
+                              : "${transaction.year} : ${transaction.month}",
+                          style: TextStyle(
+                            color: isCurrentMonth
+                                ? Theme.of(context).primaryColorLight
+                                : Theme.of(context).primaryColor,
+                          ),
                         ),
                       ),
-                      subtitle: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
+                      subtitle: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Text(
-                            'Income: ${transaction.income} Ar',
-                            style: TextStyle(
-                              color: isCurrentMonth
-                                  ? Theme.of(context).primaryColor.withOpacity(.9)
-                                  : Theme.of(context).primaryColorDark,
-                            ),
-                          ),
                           Text(
                             'Expense: ${transaction.expense} Ar',
                             style: TextStyle(
@@ -87,6 +81,14 @@ class _ListTransactionHistoryWidgetState
                                   : Theme.of(context).focusColor,
                             ),
                           ),
+                          Text(
+                            'Income: ${transaction.income} Ar',
+                            style: TextStyle(
+                              color: isCurrentMonth
+                                  ? Theme.of(context).primaryColor.withOpacity(.9)
+                                  : Theme.of(context).primaryColorDark,
+                            ),
+                          ), 
                         ],
                       ),
                     ),
