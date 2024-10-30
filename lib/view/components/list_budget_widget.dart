@@ -6,6 +6,8 @@ import 'package:gestia/service/transaction_history_service.dart';
 import 'package:gestia/view/components/prediction_card_widget.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:intl/intl.dart';
+import 'dart:convert';
+import 'package:http/http.dart' as http;
 
 class ListBudgetWidget extends StatefulWidget {
   const ListBudgetWidget({super.key});
@@ -23,7 +25,8 @@ class _ListBudgetWidgetState extends State<ListBudgetWidget> {
   int totalExpense = 0;
   int monthsToGoal = 0;
   String message = "";
-  List<int> monthlyNetIncomes = []; 
+  List<double> monthlyNetIncomes = [];
+  List<double> predictions = []; 
 
   @override
   void initState() {
@@ -34,6 +37,8 @@ class _ListBudgetWidgetState extends State<ListBudgetWidget> {
     transactionsHistory = transactionHistoryBox.values.toList();
     calculateMonthlyNetIncomes();
     calculateMonthsToGoal();
+    _getFutureTransactions();
+    print(monthlyNetIncomes);
   }
 
   void calculateMonthlyNetIncomes() {
@@ -49,7 +54,7 @@ class _ListBudgetWidgetState extends State<ListBudgetWidget> {
     monthlyIncomeMap.forEach((month, income) {
       int expenses = monthlyExpenseMap[month] ?? 0;
       int netIncome = income - expenses;
-      monthlyNetIncomes.add(netIncome);
+      monthlyNetIncomes.add(netIncome.toDouble());
     });
   }
 
@@ -75,6 +80,41 @@ class _ListBudgetWidgetState extends State<ListBudgetWidget> {
     }
   }
 
+  void _getFutureTransactions() async {
+    try {
+      List<double> history = monthlyNetIncomes;
+      List<double> fetchedPredictions = await _fetchPredictions(history, 12);
+
+      setState(() {
+        predictions = fetchedPredictions;
+      });
+
+      print("Predicted Future Transactions: $predictions");
+    } catch (error) {
+      print("Error fetching predictions: $error");
+    }
+  }
+
+  Future<List<double>> _fetchPredictions(List<double> transactionHistory, int periods) async {
+    final url = Uri.parse('http://127.0.0.1:5000/predict');
+
+    final response = await http.post(
+      url,
+      headers: {'Content-Type': 'application/json'},
+      body: jsonEncode({
+        'transactions': transactionHistory,
+        'periods': periods,
+      }),
+    );
+
+    if (response.statusCode == 200) {
+      final data = jsonDecode(response.body);
+      return List<double>.from(data['predictions']);
+    } else {
+      throw Exception('Failed to fetch predictions: ${response.body}');
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -91,7 +131,10 @@ class _ListBudgetWidgetState extends State<ListBudgetWidget> {
                     color: Theme.of(context).disabledColor.withOpacity(.1),
                     borderRadius: BorderRadius.circular(10),
                   ),
-                  child: PredictionCardWidget(message: message),
+                  child: PredictionCardWidget(
+                    message: message,
+                    predictions: predictions,
+                  ),
                 ),
               ),
             ],
