@@ -3,7 +3,10 @@ import 'package:flutter/material.dart';
 class PredictionCardWidget extends StatelessWidget {
   const PredictionCardWidget({
     super.key,
+    required this.message
   });
+
+  final String message;
 
   @override
   Widget build(BuildContext context) {
@@ -11,15 +14,15 @@ class PredictionCardWidget extends StatelessWidget {
       children: [
         newCard(
           context,
-          Theme.of(context).primaryColor.withOpacity(.4),
+          Theme.of(context).primaryColor.withOpacity(.2),
           'Prediction',
-          'Fanazavana prediction',
+          message,
         ),
         newCard(
           context,
           Theme.of(context).disabledColor.withOpacity(.5),
           'Duration',
-          'Fanazavant duration',
+          'New features, comming soon ...',
         ),
       ],
     );

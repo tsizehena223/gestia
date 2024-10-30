@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:gestia/model/budget_goal.dart';
-import 'package:gestia/model/transaction.dart';
 import 'package:gestia/model/transaction_history.dart';
 import 'package:gestia/service/budget_goal_service.dart';
 import 'package:gestia/service/transaction_history_service.dart';
 import 'package:gestia/view/components/prediction_card_widget.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:intl/intl.dart';
 
 class ListBudgetWidget extends StatefulWidget {
   const ListBudgetWidget({super.key});
@@ -18,10 +18,12 @@ class _ListBudgetWidgetState extends State<ListBudgetWidget> {
   late Box<BudgetGoal> budgetGoalBox;
   late Box<TransactionHistory> transactionHistoryBox;
   late List<TransactionHistory> transactionsHistory;
-  late Transaction transaction;
-  
+
   int totalIncome = 0;
   int totalExpense = 0;
+  int monthsToGoal = 0;
+  String message = "";
+  List<int> monthlyNetIncomes = []; 
 
   @override
   void initState() {
@@ -29,13 +31,47 @@ class _ListBudgetWidgetState extends State<ListBudgetWidget> {
     budgetGoalBox = Hive.box<BudgetGoal>(BudgetGoalService.boxName);
     transactionHistoryBox = Hive.box<TransactionHistory>(TransactionHistoryService.boxName);
 
-    // Get all transactions and store in the list
     transactionsHistory = transactionHistoryBox.values.toList();
+    calculateMonthlyNetIncomes();
+    calculateMonthsToGoal();
+  }
 
-    // Calculate total income and total expense from transactions
+  void calculateMonthlyNetIncomes() {
+    Map<int, int> monthlyIncomeMap = {};
+    Map<int, int> monthlyExpenseMap = {};
+
     for (var transaction in transactionsHistory) {
-      totalIncome += transaction.income;
-      totalExpense += transaction.expense;
+      int month = DateFormat('MMMM').parse(transaction.month).month;
+      monthlyIncomeMap.update(month, (value) => value + transaction.income, ifAbsent: () => transaction.income);
+      monthlyExpenseMap.update(month, (value) => value + transaction.expense, ifAbsent: () => transaction.expense);
+    }
+
+    monthlyIncomeMap.forEach((month, income) {
+      int expenses = monthlyExpenseMap[month] ?? 0;
+      int netIncome = income - expenses;
+      monthlyNetIncomes.add(netIncome);
+    });
+  }
+
+  void calculateMonthsToGoal() {
+    if (budgetGoalBox.isNotEmpty) {
+      BudgetGoal goal = budgetGoalBox.getAt(0)!;
+      int goalAmount = goal.amount;
+
+      double averageNetIncome = monthlyNetIncomes.isNotEmpty
+          ? monthlyNetIncomes.reduce((a, b) => a + b) / monthlyNetIncomes.length
+          : 0;
+
+      if (averageNetIncome > 0) {
+        monthsToGoal = (goalAmount / averageNetIncome).ceil();
+        message = "Months to reach goal: $monthsToGoal";
+      } else {
+        monthsToGoal = 0;
+        message = "There's no transaction yet";
+      }
+    } else {
+      monthsToGoal = 0;
+      message = "There's no goal yet";
     }
   }
 
@@ -55,7 +91,7 @@ class _ListBudgetWidgetState extends State<ListBudgetWidget> {
                     color: Theme.of(context).disabledColor.withOpacity(.1),
                     borderRadius: BorderRadius.circular(10),
                   ),
-                  child: const PredictionCardWidget(),
+                  child: PredictionCardWidget(message: message),
                 ),
               ),
             ],
