@@ -1,3 +1,4 @@
+import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:flutter/material.dart';
 
 class PredictionCardWidget extends StatelessWidget {
@@ -92,11 +93,19 @@ class PredictionCardWidget extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.only(top: 10),
             child: Center(
-              child: Text(
-                explication,
-                style: TextStyle(
-                  color: Theme.of(context).primaryColor,
-                ),
+              child: AnimatedTextKit(
+                animatedTexts: [
+                  TyperAnimatedText(
+                    explication,
+                    speed: const Duration(milliseconds: 100),
+                    textStyle: TextStyle(
+                      color: (text == 'Goal deadline') ? Theme.of(context).primaryColor : Colors.green,
+                      fontWeight: (text == 'Goal deadline') ? FontWeight.normal : FontWeight.bold,
+                    ),
+                  ),
+                ],
+                repeatForever: (text == 'Goal deadline') ? false : true,
+                totalRepeatCount: 1,
               ),
             ),
           ),
