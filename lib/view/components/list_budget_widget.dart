@@ -64,14 +64,14 @@ class _ListBudgetWidgetState extends State<ListBudgetWidget> {
 
       if (averageNetIncome > 0) {
         monthsToGoal = (goalAmount / averageNetIncome).ceil();
-        message = "Months to reach goal: $monthsToGoal";
+        message = "You will reach your goal in $monthsToGoal months";
       } else {
         monthsToGoal = 0;
-        message = "There's no transaction yet";
+        message = "No transaction yet";
       }
     } else {
       monthsToGoal = 0;
-      message = "There's no goal yet";
+      message = "No goal set";
     }
   }
 

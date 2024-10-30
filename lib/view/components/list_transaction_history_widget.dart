@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:gestia/model/transaction_history.dart';
 import 'package:gestia/service/transaction_history_service.dart';
+import 'package:gestia/utils/format_data.dart';
 import 'package:hive_flutter/adapters.dart';
 import 'package:intl/intl.dart';
 
@@ -111,7 +112,7 @@ class _ListTransactionHistoryWidgetState
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               Text(
-                                'Income: ${transaction.income} Ar',
+                                'Inc: ${FormatData.formatTotalNumber(transaction.income)} Ar',
                                 style: TextStyle(
                                   color: isCurrentMonth
                                       ? Theme.of(context).primaryColor.withOpacity(.9)
@@ -119,7 +120,7 @@ class _ListTransactionHistoryWidgetState
                                 ),
                               ),
                               Text(
-                                'Expense: ${transaction.expense} Ar',
+                                'Exp: ${FormatData.formatTotalNumber(transaction.expense)} Ar',
                                 style: TextStyle(
                                   color: isCurrentMonth
                                       ? Theme.of(context).disabledColor

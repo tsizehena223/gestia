@@ -12,17 +12,19 @@ class PredictionCardWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
+        const SizedBox(height: 50,),
         newCard(
           context,
           Theme.of(context).primaryColor.withOpacity(.2),
           'Prediction',
           message,
         ),
+        const SizedBox(height: 20,),
         newCard(
           context,
-          Theme.of(context).disabledColor.withOpacity(.5),
-          'Duration',
-          'New features, comming soon ...',
+          Theme.of(context).disabledColor.withOpacity(.3),
+          'Goal deadline',
+          '(New features, comming soon ...)',
         ),
       ],
     );
@@ -84,14 +86,17 @@ class PredictionCardWidget extends StatelessWidget {
                   ),
                 ),
               ),
-              const Icon(Icons.arrow_circle_right_rounded, size: 30, color: Color.fromARGB(255, 17, 155, 22),),
+              Icon(Icons.arrow_circle_right_outlined, size: 40, color: Theme.of(context).primaryColorDark, ),
             ],
           ),
-          Center(
-            child: Text(
-              explication,
-              style: TextStyle(
-                color: Theme.of(context).primaryColor,
+          Padding(
+            padding: const EdgeInsets.only(top: 10),
+            child: Center(
+              child: Text(
+                explication,
+                style: TextStyle(
+                  color: Theme.of(context).primaryColor,
+                ),
               ),
             ),
           ),
